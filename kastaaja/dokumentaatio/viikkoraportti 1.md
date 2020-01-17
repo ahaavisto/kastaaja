@@ -1,20 +1,11 @@
-#Viikkoraportti 1#
+#Viikkoraportti 1
 
-Aloitettu on.
+Aiheenvalinta oli hyvin vaikeaa, sillä tira-harjoitustyö voi olla melkeinpä mitä tahansa. Varsinaisen tiran käymisestäkin on aikaa eikä algoritmitietämystä ole tullut kartetettua sen jälkeen, joten oli vaikea keksiä, millainen ongelma olisi kurssin kontekstissa mielenkiintoinen ja sopivan vaikea.
 
-Ohjeet kopipastana:
-Raportti on noin puolesta sivusta kahteen sivua pitkä. Raportti palautetaan aina viikkopalautuksen yhteydessä sijoitettuna samaan kansioon muun dokumentaation kanssa ja nimetään selkeästi, esim. Viikkoraportti 1. Lisää viikkoraporttiin myös kuinka paljon aikaa käytit viikon aikana työhön. Käytetty tuntimäärä ei vaikuta arvosteluun.
+Oli mielenkiintoista pitkästä aikaa lukea algoritmeista ja alkaa hahmottaa sitä, miten oikeassa elämässä kohtaamani ongelma muotoutuu matematiikaksi. Joskus vuosia sitten olen törmännyt vakaan avioliiton ongelmaan, ja oli hauska tajuta sen olevan tämän käytännön tehtävän ytimessä.
 
-Raportti tulee laatia käyttäen mark downia tai palauttaa pdf:nä.
+##Seuraavaksi
+En ehtinyt aloittaa vielä ohjelmointia, joten seuraavaksi on selkeää aloittaa ohjelman perustoiminnallisuuden koodaaminen ja generoida testidata harjoitustyötä varten.
 
-Voit kirjoittaa viikkoraporttia joko jokaisen kehityspäivän jälkeen lyhyesti, tai kerran/useamman kerran viikon aikana pidemmällä tekstillä.
-
-Vastaa kirjoituksessa esimerkiksi seuraaviin kysymyksiin:
-
-    Mitä olen tehnyt tällä viikolla?
-    Miten ohjelma on edistynyt?
-    Mitä opin tällä viikolla / tänään?
-    Mikä jäi epäselväksi tai tuottanut vaikeuksia? Vastaa tähän kohtaan rehellisesti, koska saat tarvittaessa apua tämän kohdan perusteella.
-    Mitä teen seuraavaksi?
-
-Voit sisällyttää viikkoraporttin myös palautetta tai kysymyksiä kurssin ohjaajalle, kysymyksiin pyritään vastaamaan viikkopalautteessa.
+##Ajankäyttö
+Käytin ensimmäisellä viikolla eniten aikaa aiheen miettimiseen: useita tunteja keskusteluja kasvokkain tai netin välityksellä useiden ihmisten kanssa. Varsinaisen aiheen valinnan jälkeen käytin pari tuntia projektin luomiseen, tiedonhakuun ja dokumentaation kirjoittamiseen.
