@@ -1,4 +1,4 @@
-#Määrittelydokumentti, kastaaja
+# Määrittelydokumentti, kastaaja
 
 Työssä käsitelty ongelma on kastata larppi onnistuneesti eli yhdistää larpin hahmot ja pelaajat siten, että kaikilla hahmoilla olisi mahdollisimman sopiva pelaaja ja kaikilla pelaajilla mahdollisimman sopiva hahmo. Sopivuus määritellään työssä siten, että hahmon ominaisuudet vastaavat pelaajan toivomia ominaisuuksia mahdollisimman hyvin. Työssä käytetään numeeriksi parametreiksi yksinkertaistettuja ominaisuuksia, jotka kaikki vaihtelevat samalla välillä. Ominaisuuksia voisivat olla esimerkiksi "hahmolla on synkkä menneisyys", "hahmo on hierarkian huipulla", "hahmo käyttää magiaa", ja parametrin arvot tarkoittaisivat 0="ei lainkaan", 1="vähän", 2="ei paljon eikä vähän", 3="melko paljon" ja 4="paljon"
 
