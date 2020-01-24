@@ -11,13 +11,13 @@ import java.util.Random;
  *
  * @author arkkis
  */
-public class Hahmo {
+public class Profiili {
     int[] statsit;
     boolean vapaa = true;
-    Pelaaja kihlattu = null;
-    Pelaaja suosikit[];
+    Profiili kihlattu = null;
+    Profiili suosikit[];
     
-    public Hahmo() {
+    public Profiili() {
         this.statsit = new int[10];
         Random rand = new Random(); 
         for (int i=0; i < 10; i++) {
