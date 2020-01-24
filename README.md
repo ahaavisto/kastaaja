@@ -5,6 +5,9 @@ Larpin pelaajavalinnan automatisointia eli hahmojen ja pelaajien yhdistäminen m
 
 # Viikkoraportit
 [Viikko 2](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%202.md)
+
 [Viikko 1](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%201.md)
+
+# Muu dokumentaatio
 
 [Määrittelydokumentti](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/määrittelydokumentti.md)

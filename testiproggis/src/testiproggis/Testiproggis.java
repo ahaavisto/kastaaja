@@ -22,7 +22,7 @@ public class Testiproggis {
      * @param eka profiili jonka sopivuutta verrataan tokaan
      * @param toka profiili johon ekan sopivuutta verrataan
      * @param suosikit map joka mäppää ekan profiilin mätsäävyysarvon kuhunkin profiiliin
-     * @return 
+     * @return vastaus metodin nimen esittämään kysymykseen
      */
     public static boolean onko_isompi(Profiili eka, Profiili toka, HashMap<Profiili, Integer> suosikit) {
         int ekan_arvo = suosikit.get(eka);
@@ -33,7 +33,12 @@ public class Testiproggis {
         return false;
     }
     
-    public static void laske_erotukset(Profiili profiili, Profiili verrattavat[]) {
+    /**
+     * Luodaan kyseiselle profiilille (eli hahmolle/pelaajalle) lista, missä järjestyksessä se preferoi toisen profiililuokan profiileita
+     * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
+     * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
+     */
+    public static void luo_lista_suosikeista(Profiili profiili, Profiili verrattavat[]) {
         HashMap<Profiili, Integer> preferenssit = new HashMap<Profiili, Integer>();
             for (Profiili verrattava: verrattavat) {
                 int erotus = 0;
@@ -53,6 +58,12 @@ public class Testiproggis {
             kuplajarjestaminen(profiili, suosikit, preferenssit);
     }
     
+    /**
+     * Luodaan preferenssijärjestys sen perusteella, kuinka paljon kunkin ominaisuuden abs(hahmo-pelaaja) erotusten yhteissumma on
+     * @param profiili se jonka suosikit halutaan tallentaa järjestetyksi taulukoksi
+     * @param suosikit toistaiseksi järjestämätön taulukko toisen profiililuokan profiileista
+     * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin preferensseista toisen profiililuokan profiileihin
+     */
     public static void kuplajarjestaminen(Profiili profiili, Profiili suosikit[], HashMap<Profiili, Integer> preferenssit) {
         boolean eiValmis = true;
             while (eiValmis) {
@@ -73,6 +84,7 @@ public class Testiproggis {
     
         System.out.println("hello world");
         
+        //luodaan hahmot ja pelaajat:
         Profiili Hahmot[] = new Profiili[10];
         Profiili Pelaajat[] = new Profiili[10];
         for (int i = 0; i < 10; i++) {
@@ -81,15 +93,14 @@ public class Testiproggis {
         }
         
         for (Profiili hahmo: Hahmot) {
-            laske_erotukset(hahmo, Pelaajat);
+            luo_lista_suosikeista(hahmo, Pelaajat);
         }
         
         for (Profiili pelaaja: Pelaajat) {
-            laske_erotukset(pelaaja, Hahmot);
-        }
+            luo_lista_suosikeista(pelaaja, Hahmot);
+        }       
         
-        
-        //le algo
+        //tästä tulee varsinainen algoritmi; pahasti kesken
         for (Profiili kosija: Hahmot) { //väliaikainen pysähtymisehto, kaikki kerran läpi
             Profiili kosittava = kosija.suosikit[kosija.suosikit.length-1];
             kosittava.vapaa = false;
@@ -99,7 +110,7 @@ public class Testiproggis {
                 
         }
                 
-        /* Wikipediasta algon kuvaus:
+        /* Wikipediasta algon kuvaus muistiinpanoiksi:
         
         while (some man m is free) do
 	begin
@@ -113,12 +124,12 @@ public class Testiproggis {
 
         
         
-
+        //ei toimi koska ??, luonnostelua tiedostonluvusta
         
         /*
         try
         { 
-            //ei toimi koska ??, luonnostelua tiedostonluvusta
+           
             for(Scanner sc = new Scanner(new File("hahmot.csv")); sc.hasNext(); ) {
               String line = sc.nextLine();
               System.out.println(line);

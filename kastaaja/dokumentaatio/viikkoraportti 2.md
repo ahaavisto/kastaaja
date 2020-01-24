@@ -11,5 +11,7 @@ Kiireisimmin pitäisi saada Maven tai Gradle toimimaan, jotta voisi rakentaa tes
 
 ## Ajankäyttö
 n. 5 h Tuloksetonta konffaamista
+
 n. 3 h ohjelmointia
+
 alle 1 h dokumentaatiota
