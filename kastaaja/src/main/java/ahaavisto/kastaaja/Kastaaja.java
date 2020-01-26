@@ -5,7 +5,10 @@
  */
 package ahaavisto.kastaaja;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  *
@@ -76,9 +79,48 @@ public class Kastaaja {
             profiili.suosikit = suosikit;
     }
     
+    /**
+     * funktio yhdistää parametrina saamansa profiilit, ja päivittää muiden profiilien tarvittavat tiedot, eli purkaa mahdollisen edellisen kihlauksen ja poistaa suosikkilistoista ne vaihtoehdot, jotka eivät tule enää kysymykseen
+     * @param kosija profiili joka yhdistetään kosittavaan profiiliin 
+     * @param kosittava 
+     */
+    public static void vaihda_kihlaus (Profiili kosija, Profiili kosittava) {
+        if (kosittava.kihlattu != null) { //puretaan vanha kihlaus
+            Profiili ex = kosittava.kihlattu;
+            ex.kihlattu = null;
+        }
+        kosittava.kihlattu = kosija;
+        kosija.kihlattu = kosittava;
+        
+        //poistetaan kositun suosikeista nykyistä kihlattua huonommat vaihtoehdot
+        Profiili[] hylatyt_suosikit = new Profiili[10];
+        for (int i = 0; i < kosittava.suosikit.length; i++) {
+            if (kosittava.suosikit[i] == kosija) {
+                Profiili uudet_suosikit[] = Arrays.copyOfRange(kosittava.suosikit, 0, i);
+                kosittava.suosikit = uudet_suosikit;
+                if (i < kosittava.suosikit.length-1) {
+                    hylatyt_suosikit = Arrays.copyOfRange(uudet_suosikit, i+1, kosittava.suosikit.length-1);
+                }
+                break;
+            }
+        }
+        
+        //poistetaan hylättyjen kosijoiden suosikkilistoilta äsken kihlattu
+        for (Profiili profiili: hylatyt_suosikit) {
+            if (profiili == null) {
+                continue;
+            }
+            for (Profiili suosikki: profiili.suosikit) {
+                if (suosikki == kosittava) {
+                    suosikki = null;
+                }
+            }
+        }
+    }
+    
     public static void main(String[] args) {
     
-        System.out.println("hello world");
+        System.out.println("Hei, olen kastaaja");
         
         //luodaan hahmot ja pelaajat:
         Profiili Hahmot[] = new Profiili[10];
@@ -99,10 +141,8 @@ public class Kastaaja {
         //tästä tulee varsinainen algoritmi; pahasti kesken
         for (Profiili kosija: Hahmot) { //väliaikainen pysähtymisehto, kaikki kerran läpi
             Profiili kosittava = kosija.suosikit[kosija.suosikit.length-1];
-            kosittava.vapaa = false;
-            kosittava.kihlattu = kosija;
-            kosija.vapaa = false;
-            kosija.kihlattu = kosittava;
+            vaihda_kihlaus(kosija, kosittava);
+            
                 
         }
                 
@@ -120,13 +160,13 @@ public class Kastaaja {
 
         
         
-        //ei toimi koska ??, luonnostelua tiedostonluvusta
-        
+        //tiedostonluvun basic versio, käytetään myöhemmin
         /*
+        
         try
         { 
            
-            for(Scanner sc = new Scanner(new File("hahmot.csv")); sc.hasNext(); ) {
+            for(Scanner sc = new Scanner(new File("assets/hahmot.csv")); sc.hasNext(); ) {
               String line = sc.nextLine();
               System.out.println(line);
             } 
@@ -137,5 +177,6 @@ public class Kastaaja {
            ex.printStackTrace();
         }
         */
+        
 }
 }

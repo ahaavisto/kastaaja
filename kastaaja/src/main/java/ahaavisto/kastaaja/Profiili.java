@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class Profiili {
     int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
-    boolean vapaa = true; //onko profiili jo yhdistetty toisen profiililuokan profiiliin
+    //boolean vapaa = true; //onko profiili jo yhdistetty toisen profiililuokan profiiliin
     Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)
     Profiili suosikit[]; //preferenssijärjestys toisen profiililuokan hahmoille
 
