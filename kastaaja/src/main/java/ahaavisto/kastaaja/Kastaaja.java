@@ -6,8 +6,10 @@
 package ahaavisto.kastaaja;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -15,6 +17,8 @@ import java.util.Scanner;
  * @author arkkis
  */
 public class Kastaaja {
+    
+    static ArrayList<Profiili> vapaat = new ArrayList<Profiili>();
     
     /**
      * 
@@ -88,6 +92,7 @@ public class Kastaaja {
         if (kosittava.kihlattu != null) { //puretaan vanha kihlaus
             Profiili ex = kosittava.kihlattu;
             ex.kihlattu = null;
+            vapaat.add(ex);
         }
         kosittava.kihlattu = kosija;
         kosija.kihlattu = kosittava;
@@ -123,27 +128,40 @@ public class Kastaaja {
         System.out.println("Hei, olen kastaaja");
         
         //luodaan hahmot ja pelaajat:
-        Profiili Hahmot[] = new Profiili[10];
-        Profiili Pelaajat[] = new Profiili[10];
+        Profiili[] hahmot = new Profiili[10];
+        Profiili[] pelaajat = new Profiili[10];
         for (int i = 0; i < 10; i++) {
-            Hahmot[i] = new Profiili();
-            Pelaajat[i] = new Profiili();
+            hahmot[i] = new Profiili();
+            pelaajat[i] = new Profiili();
         }
         
-        for (Profiili hahmo: Hahmot) {
-            luo_lista_suosikeista(hahmo, Pelaajat);
+        for (Profiili hahmo: hahmot) {
+            luo_lista_suosikeista(hahmo, pelaajat);
         }
         
-        for (Profiili pelaaja: Pelaajat) {
-            luo_lista_suosikeista(pelaaja, Hahmot);
+        for (Profiili pelaaja: pelaajat) {
+            luo_lista_suosikeista(pelaaja, hahmot);
         }       
         
-        //tästä tulee varsinainen algoritmi; pahasti kesken
-        for (Profiili kosija: Hahmot) { //väliaikainen pysähtymisehto, kaikki kerran läpi
+        //varsinainen algoritmi
+        
+        
+        vapaat.addAll(Arrays.asList(hahmot));
+        
+        while (vapaat.size() > 1) {
+            Profiili kosija = vapaat.get(0);
+            vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.suosikit[kosija.suosikit.length-1];
             vaihda_kihlaus(kosija, kosittava);
-            
-                
+            System.out.println(kosija + "+" + kosittava + " " + vapaat.size());
+        }
+
+        for (Profiili hahmo: hahmot) {
+            System.out.println(hahmo.kihlattu);
+        }
+        System.out.println("PELAAJAT");
+        for (Profiili p: pelaajat) {
+            System.out.println(p.kihlattu);
         }
                 
         /* Wikipediasta algon kuvaus muistiinpanoiksi:
