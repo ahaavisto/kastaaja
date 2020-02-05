@@ -1,6 +1,7 @@
 
 package ahaavisto.kastaaja;
 
+import java.util.ArrayList;
 import java.util.Random; 
 
 /**
@@ -11,7 +12,7 @@ public class Profiili {
     int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
     //boolean vapaa = true; //onko profiili jo yhdistetty toisen profiililuokan profiiliin
     Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)
-    Profiili suosikit[]; //preferenssijärjestys toisen profiililuokan hahmoille
+    ArrayList<Profiili> suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
 
     public Profiili() {
         this.statsit = new int[10];
