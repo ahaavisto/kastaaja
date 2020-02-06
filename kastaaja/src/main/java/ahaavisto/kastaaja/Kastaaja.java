@@ -53,8 +53,8 @@ public class Kastaaja {
             }
             preferenssit.put(verrattava, erotus);
         }
-
-        kuplajarjestaminen(profiili, verrattavat, preferenssit);
+        ArrayList<Profiili> tulevat_suosikit = new ArrayList(verrattavat);//verrattavat
+        kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);
     }
 
     /**
@@ -104,12 +104,12 @@ public class Kastaaja {
         kosija.kihlattu = kosittava;
 
         //poistetaan kositun suosikeista nykyistä kihlattua huonommat vaihtoehdot
-        System.out.println("kosittavan suosikit aluksi, koko: " + kosittava.suosikit.size());
+        //System.out.println("kosittavan suosikit aluksi, koko: " + kosittava.suosikit.size());
         
         List<Profiili> hylatyt_suosikit = new ArrayList<>();
         for (int i = 0; i < kosittava.suosikit.size(); i++) {
             if (kosittava.suosikit.get(i) == kosija) {
-                System.out.println("kosijan indeksi " + i);
+                //System.out.println("kosijan indeksi " + i);
                 //List<Profiili> uudet_suosikit = kosittava.suosikit;
                 //hylatyt_suosikit.addAll(kosittava.suosikit);
                 if (i + 1 < kosittava.suosikit.size() - 1) {
@@ -125,21 +125,21 @@ public class Kastaaja {
                 }
                 kosittava.suosikit = uudet_suosikit;
                 */
-                System.out.println("uudet suosikit lopuksi, koko " + kosittava.suosikit.size());
-                System.out.println("hylätyt suosikit lopuksi, koko " + hylatyt_suosikit.size());
+                //System.out.println("uudet suosikit lopuksi, koko " + kosittava.suosikit.size());
+                //System.out.println("hylätyt suosikit lopuksi, koko " + hylatyt_suosikit.size());
                 break;
             }
         }
 
         //poistetaan hylättyjen kosijoiden suosikkilistoilta äsken kihlattu
-        for (Profiili profiili : hylatyt_suosikit) {
-            if (profiili == null) {
-                continue;
-            }
-            for (int i = 0; i < profiili.suosikit.size(); i++) {
-                if (profiili.suosikit.get(i) == kosittava) {
-                    System.out.println("poistettu pariskunta " + profiili.nimi + " + " + kosittava.nimi);
-                    profiili.suosikit.remove(i);
+        for (Profiili hylatty_hahmokandidaatti : hylatyt_suosikit) {
+            //System.out.println("--"+hylatty_hahmokandidaatti.nimi);
+
+            for (int i = 0; i < hylatty_hahmokandidaatti.suosikit.size(); i++) {
+                // System.out.println("\t"+hylatty_hahmokandidaatti.suosikit.get(i).nimi);
+                if (hylatty_hahmokandidaatti.suosikit.get(i).nimi.equals(kosittava.nimi)) {
+                    //System.out.println("poistettu pariskunta " + hylatty_hahmokandidaatti.nimi + " + " + kosittava.nimi);
+                    hylatty_hahmokandidaatti.suosikit.remove(i);
                 }
             }
         }
@@ -181,15 +181,15 @@ public class Kastaaja {
         //varsinainen algoritmi       
         vapaat.addAll(hahmot);
 
-        //while (vapaat.size() > 1) {
-        for (int i = 0; i < 10; i++) {
+        while (vapaat.size() > 1) {
+        //for (int i = 0; i < 10; i++) {
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.suosikit.get(kosija.suosikit.size() - 1);
             vaihda_kihlaus(kosija, kosittava);
             //System.out.println(kosija.nimi + "+" + kosittava.nimi + " vapaita vielä: " + vapaat.size());
             
-            //tulosta_parit(hahmot);
+            tulosta_parit(hahmot);
         }
 
         
