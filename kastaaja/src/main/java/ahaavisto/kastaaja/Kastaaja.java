@@ -59,7 +59,7 @@ public class Kastaaja {
 
     /**
      * Luodaan preferenssijärjestys sen perusteella, kuinka paljon kunkin
-     * ominaisuuden abs(hahmo-pelaaja) erotusten yhteissumma on
+     * ominaisuuden abs(hahmo-pelaaja) erotusten yhteissumma on, ensimmäisenä paras vaihtoehto
      * 
     * @param profiili se jonka suosikit halutaan tallentaa järjestetyksi
      * taulukoksi
@@ -94,7 +94,7 @@ public class Kastaaja {
      * @param kosittava
      */
     public static void vaihda_kihlaus(Profiili kosija, Profiili kosittava) {
-        System.out.println(kosittava);
+        System.out.println(kosittava.nimi);
         if (kosittava.kihlattu != null) { //puretaan vanha kihlaus
             Profiili ex = kosittava.kihlattu;
             ex.kihlattu = null;
@@ -104,26 +104,29 @@ public class Kastaaja {
         kosija.kihlattu = kosittava;
 
         //poistetaan kositun suosikeista nykyistä kihlattua huonommat vaihtoehdot
-        ArrayList<Profiili> hylatyt_suosikit = new ArrayList<>();
+        System.out.println("kosittavan suosikit aluksi, koko: " + kosittava.suosikit.size());
+        
+        List<Profiili> hylatyt_suosikit = new ArrayList<>();
         for (int i = 0; i < kosittava.suosikit.size(); i++) {
             if (kosittava.suosikit.get(i) == kosija) {
-                System.out.println(i);
-                ArrayList<Profiili> uudet_suosikit = kosittava.suosikit;
-                hylatyt_suosikit.addAll(kosittava.suosikit);
-                hylatyt_suosikit.subList(0, i-1); //todo tarkista että indeksit ok
+                System.out.println("kosijan indeksi " + i);
+                //List<Profiili> uudet_suosikit = kosittava.suosikit;
+                //hylatyt_suosikit.addAll(kosittava.suosikit);
+                if (i + 1 < kosittava.suosikit.size() - 1) {
+                    hylatyt_suosikit = kosittava.suosikit.subList(i+1, kosittava.suosikit.size());
+                }                            
                 
-                kosittava.suosikit.subList(i, kosittava.suosikit.size()-1); //säästetään vain kihlattu ja paremmat
+                kosittava.suosikit = kosittava.suosikit.subList(0, i+1); //säästetään vain kihlattu ja paremmat        
                 
-                
-                /**
+                /*
                 hylatyt_suosikit = Arrays.copyOfRange(kosittava.suosikit, 0, i); //huom atm väärin, pitäisi tässä olla i>len-1               
                 if (i < kosittava.suosikit.size() - 1) {
                     uudet_suosikit = Arrays.copyOfRange(kosittava.suosikit, i, kosittava.suosikit.length - 1);
                 }
                 kosittava.suosikit = uudet_suosikit;
-                **/
-                System.out.println("uudet suosikit.len " + kosittava.suosikit.size());
-                System.out.println("hylätyt suosikit.len " + hylatyt_suosikit.size());
+                */
+                System.out.println("uudet suosikit lopuksi, koko " + kosittava.suosikit.size());
+                System.out.println("hylätyt suosikit lopuksi, koko " + hylatyt_suosikit.size());
                 break;
             }
         }
@@ -135,22 +138,36 @@ public class Kastaaja {
             }
             for (int i = 0; i < profiili.suosikit.size(); i++) {
                 if (profiili.suosikit.get(i) == kosittava) {
-                    profiili.suosikit.add(i, null);
+                    System.out.println("poistettu pariskunta " + profiili.nimi + " + " + kosittava.nimi);
+                    profiili.suosikit.remove(i);
                 }
+            }
+        }
+    }
+    
+    public static void tulosta_parit (List<Profiili> hahmot) {
+        System.out.println("PARISKUNNAT ATM:");
+        for (Profiili hahmo: hahmot) {
+            if (hahmo.kihlattu != null) {
+            System.out.println(hahmo.nimi + " + " + hahmo.kihlattu.nimi);
+            } else {
+                System.out.println(hahmo.nimi + " 4everalone");
             }
         }
     }
 
     public static void main(String[] args) {
 
-        System.out.println("Hei, olen kastaaja");
+        //System.out.println("Hei, olen kastaaja");
 
         //luodaan hahmot ja pelaajat:
         ArrayList<Profiili> hahmot = new ArrayList<>();
         ArrayList<Profiili> pelaajat = new ArrayList<>();
+        String[] miehen_nimia = {"aapo", "juhani", "eero", "simeoni", "timo", "tuomas", "lauri", "uolevi", "minttupetteri", "pena"};
+        String[] naisen_nimia = {"aava", "bea", "cecilia", "daniela", "eeva", "fia", "gina", "hanna", "iina", "julia"};
         for (int i = 0; i < 10; i++) {
-            hahmot.add(new Profiili());
-            pelaajat.add(new Profiili());
+            hahmot.add(new Profiili(miehen_nimia[i]));
+            pelaajat.add(new Profiili(naisen_nimia[i]));
         }
 
         for (Profiili hahmo : hahmot) {
@@ -170,16 +187,12 @@ public class Kastaaja {
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.suosikit.get(kosija.suosikit.size() - 1);
             vaihda_kihlaus(kosija, kosittava);
-            System.out.println(kosija + "+" + kosittava + " " + vapaat.size());
+            //System.out.println(kosija.nimi + "+" + kosittava.nimi + " vapaita vielä: " + vapaat.size());
+            
+            //tulosta_parit(hahmot);
         }
 
-        for (Profiili hahmo : hahmot) {
-            System.out.println(hahmo.kihlattu);
-        }
-        System.out.println("PELAAJAT");
-        for (Profiili p : pelaajat) {
-            System.out.println(p.kihlattu);
-        }
+        
 
         /* Wikipediasta algon kuvaus muistiinpanoiksi:
         
