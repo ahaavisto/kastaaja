@@ -14,7 +14,7 @@ public class Profiili {
     //boolean vapaa = true; //onko profiili jo yhdistetty toisen profiililuokan profiiliin
     Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)
     List<Profiili> suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
-    String nimi;
+    String nimi; //"id"
 
     public Profiili(String nimi) {
         this.statsit = new int[10];
@@ -23,6 +23,10 @@ public class Profiili {
         for (int i=0; i < 10; i++) { //tällä hetkellä täytetään satunnaisilla luvuilla tässä vaiheessa
             statsit[i] = rand.nextInt(5); 
         }
-
+    }  
+    public List<Profiili> getSuosikit() {
+        return suosikit;
     }
+
+    
 }

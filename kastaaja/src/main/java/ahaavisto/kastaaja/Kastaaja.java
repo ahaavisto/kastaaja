@@ -48,7 +48,7 @@ public class Kastaaja {
         HashMap<Profiili, Integer> preferenssit = new HashMap<>();
         for (Profiili verrattava : verrattavat) {
             int erotus = 0;
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < verrattavat.size(); i++) {
                 erotus += Math.abs(profiili.statsit[i] - verrattava.statsit[i]);
             }
             preferenssit.put(verrattava, erotus);
@@ -109,24 +109,12 @@ public class Kastaaja {
         List<Profiili> hylatyt_suosikit = new ArrayList<>();
         for (int i = 0; i < kosittava.suosikit.size(); i++) {
             if (kosittava.suosikit.get(i) == kosija) {
-                //System.out.println("kosijan indeksi " + i);
-                //List<Profiili> uudet_suosikit = kosittava.suosikit;
-                //hylatyt_suosikit.addAll(kosittava.suosikit);
                 if (i + 1 < kosittava.suosikit.size() - 1) {
                     hylatyt_suosikit = kosittava.suosikit.subList(i+1, kosittava.suosikit.size());
                 }                            
                 
                 kosittava.suosikit = kosittava.suosikit.subList(0, i+1); //säästetään vain kihlattu ja paremmat        
-                
-                /*
-                hylatyt_suosikit = Arrays.copyOfRange(kosittava.suosikit, 0, i); //huom atm väärin, pitäisi tässä olla i>len-1               
-                if (i < kosittava.suosikit.size() - 1) {
-                    uudet_suosikit = Arrays.copyOfRange(kosittava.suosikit, i, kosittava.suosikit.length - 1);
-                }
-                kosittava.suosikit = uudet_suosikit;
-                */
-                //System.out.println("uudet suosikit lopuksi, koko " + kosittava.suosikit.size());
-                //System.out.println("hylätyt suosikit lopuksi, koko " + hylatyt_suosikit.size());
+
                 break;
             }
         }
