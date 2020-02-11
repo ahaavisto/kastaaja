@@ -11,14 +11,40 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 /**
  *
  * @author arkkis
  */
-public class Kastaaja {
+public class Kastaaja extends Application{
 
     static ArrayList<Profiili> vapaat = new ArrayList<>();
+    static File tiedosto;
+    
+    @Override
+    public void start(Stage primaryStage) {
+        primaryStage.setTitle("Kastaaja-app");
+
+        FileChooser valitsin = new FileChooser();
+
+        Button button = new Button("Valitse lähdetiedosto");
+        
+        button.setOnAction(e -> {
+            tiedosto = valitsin.showOpenDialog(primaryStage);
+        });
+
+        VBox vBox = new VBox(button);
+        Scene scene = new Scene(vBox, 960, 600);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
     /**
      *
@@ -81,7 +107,7 @@ public class Kastaaja {
                 }
             }
         }
-        profiili.suosikit = suosikit;
+        profiili.setSuosikit(suosikit);
     }
 
     /**
@@ -143,25 +169,28 @@ public class Kastaaja {
             }
         }
     }
+    
+    public static ArrayList<Profiili> setUp(String[] nimet) {
+        ArrayList<Profiili> profiilit = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            profiilit.add(new Profiili(nimet[i]));
+        }
+        return profiilit;
+    }
 
     public static void main(String[] args) {
-
-        //System.out.println("Hei, olen kastaaja");
-
+        launch(); //tiedostonvalitsin versio 1
+        
+        
         //luodaan hahmot ja pelaajat:
-        ArrayList<Profiili> hahmot = new ArrayList<>();
-        ArrayList<Profiili> pelaajat = new ArrayList<>();
         String[] miehen_nimia = {"aapo", "juhani", "eero", "simeoni", "timo", "tuomas", "lauri", "uolevi", "minttupetteri", "pena"};
-        String[] naisen_nimia = {"aava", "bea", "cecilia", "daniela", "eeva", "fia", "gina", "hanna", "iina", "julia"};
-        for (int i = 0; i < 10; i++) {
-            hahmot.add(new Profiili(miehen_nimia[i]));
-            pelaajat.add(new Profiili(naisen_nimia[i]));
-        }
-
+        String[] naisen_nimia = {"aava", "bea", "cecilia", "daniela", "eeva", "fia", "gina", "hanna", "iina", "julia"};       
+        ArrayList<Profiili> hahmot = setUp(miehen_nimia);
+        ArrayList<Profiili> pelaajat = setUp(naisen_nimia);
+        
         for (Profiili hahmo : hahmot) {
             luo_lista_suosikeista(hahmo, pelaajat);
         }
-
         for (Profiili pelaaja : pelaajat) {
             luo_lista_suosikeista(pelaaja, hahmot);
         }
@@ -169,8 +198,8 @@ public class Kastaaja {
         //varsinainen algoritmi       
         vapaat.addAll(hahmot);
 
-        while (vapaat.size() > 1) {
-        //for (int i = 0; i < 10; i++) {
+        //while (vapaat.size() > 1) {
+        for (int i = 0; i < 100; i++) { //väliaikainen ehto jotta ei ikuista silmukkaa
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.suosikit.get(kosija.suosikit.size() - 1);
