@@ -6,6 +6,7 @@
 package ahaavisto.kastaaja;
 
 import java.io.File;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,6 +15,8 @@ import java.util.Scanner;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,25 +28,53 @@ import javafx.stage.Stage;
 public class Kastaaja extends Application{
 
     static ArrayList<Profiili> vapaat = new ArrayList<>();
-    static File tiedosto;
+    static File hahmotiedosto;
+    static File pelaajatiedosto;
     
     @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Kastaaja-app");
+    public void start(Stage ikkuna) {
+        ikkuna.setTitle("Kastaaja-app");
 
         FileChooser valitsin = new FileChooser();
 
-        Button button = new Button("Valitse lähdetiedosto");
+        Label opaste = new Label("Valitse lähdetiedostot (.csv). Kun olet valinnut molemmat, ohjelma käynnistyy.");
+        Button hahmonappi = new Button("Valitse hahmolista-tiedosto");
+        Button pelaajanappi = new Button("Valitse pelaajalista-tiedosto");       
         
-        button.setOnAction(e -> {
-            tiedosto = valitsin.showOpenDialog(primaryStage);
+        hahmonappi.setOnAction(e -> {
+            hahmotiedosto = valitsin.showOpenDialog(ikkuna);
+            hahmonappi.setText("Hahmolista valittu");
+            hahmonappi.setDisable(true);
+            if (onkoTiedostotValittu()) {
+                ikkuna.close();
+            }
         });
+        
+        pelaajanappi.setOnAction(e -> {
+            pelaajatiedosto = valitsin.showOpenDialog(ikkuna);
+            pelaajanappi.setText("Pelaajalista valittu");
+            pelaajanappi.setDisable(true);
+            if (onkoTiedostotValittu()) {
+                ikkuna.close();
+            }
+        });      
+        
+        FlowPane komponenttiryhma = new FlowPane();
+        komponenttiryhma.getChildren().add(opaste);
+        komponenttiryhma.getChildren().add(hahmonappi);
+        komponenttiryhma.getChildren().add(pelaajanappi);
 
-        VBox vBox = new VBox(button);
-        Scene scene = new Scene(vBox, 960, 600);
+        Scene nakyma = new Scene(komponenttiryhma);
 
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        ikkuna.setScene(nakyma);
+        ikkuna.show();
+    }
+    
+    public static boolean onkoTiedostotValittu() {
+        if (hahmotiedosto != null && pelaajatiedosto != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -159,6 +190,11 @@ public class Kastaaja extends Application{
         }
     }
     
+    /**
+     * Tulostaa hahmo-pelaaja -parit debuggausta varten; jos hahmolla ei ole vielä pelaajaa,
+     * sen kanssa tulostuu 4everalone-teksti
+     * @param hahmot käsiteltävät hahmot
+     */
     public static void tulosta_parit (List<Profiili> hahmot) {
         System.out.println("PARISKUNNAT ATM:");
         for (Profiili hahmo: hahmot) {
@@ -170,23 +206,43 @@ public class Kastaaja extends Application{
         }
     }
     
-    public static ArrayList<Profiili> setUp(String[] nimet) {
-        ArrayList<Profiili> profiilit = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            profiilit.add(new Profiili(nimet[i]));
+    /**
+     * Datan lukeminen lähdetiedostoista Profiili-olioita listaaviksi listoiksi
+     * @param profiilit hahmot/pelaajalista, joka tässä funktiossa täytetään tiedostosta saadulla datalla
+     * @param tiedosto hahmo/pelaajalista tiedostomuodossa
+     * @return valmis hahmo/pelaajalista
+     */
+    public static ArrayList<Profiili> lueData(ArrayList<Profiili> profiilit, File tiedosto) {       
+        try
+        {          
+            for(Scanner sc = new Scanner(tiedosto); sc.hasNext(); ) {
+              String line = sc.nextLine();
+              String[] splitattu = line.split(",");
+              Profiili uusi = new Profiili(splitattu[0]); //tiedostossa ekana nimi-string
+              int[] statsit = new int[10];
+                for (int i = 1; i < splitattu.length; i++) { //ja sen jälkeen int-muotoiset statsit
+                    statsit[i-1] = parseInt(splitattu[i]);
+                }
+              uusi.setStatsit(statsit);
+              profiilit.add(uusi);
+            } 
+        } 
+        catch(Exception ex) 
+        { 
+           System.out.println("Tapahtui poikkeus lähdetiedoston käsittelyssä!");  
+           ex.printStackTrace();
         }
         return profiilit;
     }
 
     public static void main(String[] args) {
-        launch(); //tiedostonvalitsin versio 1
+        launch(); //tiedostonvalitsin
         
+        ArrayList<Profiili> hahmot = new ArrayList<>();
+        ArrayList<Profiili> pelaajat = new ArrayList<>();
         
-        //luodaan hahmot ja pelaajat:
-        String[] miehen_nimia = {"aapo", "juhani", "eero", "simeoni", "timo", "tuomas", "lauri", "uolevi", "minttupetteri", "pena"};
-        String[] naisen_nimia = {"aava", "bea", "cecilia", "daniela", "eeva", "fia", "gina", "hanna", "iina", "julia"};       
-        ArrayList<Profiili> hahmot = setUp(miehen_nimia);
-        ArrayList<Profiili> pelaajat = setUp(naisen_nimia);
+        hahmot = lueData(new ArrayList<Profiili>(), hahmotiedosto);
+        pelaajat = lueData(new ArrayList<Profiili>(), pelaajatiedosto);
         
         for (Profiili hahmo : hahmot) {
             luo_lista_suosikeista(hahmo, pelaajat);
@@ -221,23 +277,6 @@ public class Kastaaja extends Application{
 		    assign m' to be free;
 		for each (successor m'' of m on w’s list) do
 			delete the pair (m'', w)
-         */
-        //tiedostonluvun basic versio, käytetään myöhemmin
-        /*
-        
-        try
-        { 
-           
-            for(Scanner sc = new Scanner(new File("assets/hahmot.csv")); sc.hasNext(); ) {
-              String line = sc.nextLine();
-              System.out.println(line);
-            } 
-        } 
-        catch(Exception ex) 
-        { 
-           System.out.println("Exception is occured");  
-           ex.printStackTrace();
-        }
-         */
+        */
     }
 }

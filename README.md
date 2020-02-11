@@ -14,4 +14,6 @@ Larpin pelaajavalinnan automatisointia eli hahmojen ja pelaajien yhdistäminen m
 
 # Muu dokumentaatio
 
+[Käyttöohje](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/käyttöohje.md)
+
 [Määrittelydokumentti](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/määrittelydokumentti.md)

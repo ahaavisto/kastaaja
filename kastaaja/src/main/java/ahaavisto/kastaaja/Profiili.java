@@ -31,6 +31,10 @@ public class Profiili {
     public void setSuosikit(List<Profiili> suosikit) {
         this.suosikit = suosikit;
     }
+    
+    public void setStatsit(int[] statsit) {
+        this.statsit = statsit;
+    }
 
     
 }
