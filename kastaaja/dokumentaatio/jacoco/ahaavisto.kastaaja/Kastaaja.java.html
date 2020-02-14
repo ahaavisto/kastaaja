@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Kastaaja.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kastaaja</a> &gt; <a href="index.source.html" class="el_package">ahaavisto.kastaaja</a> &gt; <span class="el_source">Kastaaja.java</span></div><h1>Kastaaja.java</h1><pre class="source lang-java linenums">/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ahaavisto.kastaaja;
+
+import java.io.File;
+import static java.lang.Integer.parseInt;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Scanner;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+/**
+ *
+ * @author arkkis
+ */
+<span class="nc" id="L28">public class Kastaaja extends Application{</span>
+
+<span class="fc" id="L30">    static ArrayList&lt;Profiili&gt; vapaat = new ArrayList&lt;&gt;();</span>
+    static File hahmotiedosto;
+    static File pelaajatiedosto;
+    
+    /**
+     * Tiedostonvalitsin ja sen simppeli käyttöliittymä
+     * @param ikkuna 
+     */
+    @Override
+    public void start(Stage ikkuna) {
+<span class="nc" id="L40">        ikkuna.setTitle(&quot;Kastaaja-app&quot;);</span>
+
+<span class="nc" id="L42">        FileChooser valitsin = new FileChooser();</span>
+
+<span class="nc" id="L44">        Label opaste = new Label(&quot;Valitse lähdetiedostot (.csv). Kun olet valinnut molemmat, ohjelma käynnistyy.&quot;);</span>
+<span class="nc" id="L45">        Button hahmonappi = new Button(&quot;Valitse hahmolista-tiedosto&quot;);</span>
+<span class="nc" id="L46">        Button pelaajanappi = new Button(&quot;Valitse pelaajalista-tiedosto&quot;);       </span>
+        
+<span class="nc" id="L48">        hahmonappi.setOnAction(e -&gt; {</span>
+<span class="nc" id="L49">            hahmotiedosto = valitsin.showOpenDialog(ikkuna);</span>
+<span class="nc" id="L50">            hahmonappi.setText(&quot;Hahmolista valittu&quot;);</span>
+<span class="nc" id="L51">            hahmonappi.setDisable(true);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">            if (onkoTiedostotValittu()) {</span>
+<span class="nc" id="L53">                ikkuna.close();</span>
+            }
+<span class="nc" id="L55">        });</span>
+        
+<span class="nc" id="L57">        pelaajanappi.setOnAction(e -&gt; {</span>
+<span class="nc" id="L58">            pelaajatiedosto = valitsin.showOpenDialog(ikkuna);</span>
+<span class="nc" id="L59">            pelaajanappi.setText(&quot;Pelaajalista valittu&quot;);</span>
+<span class="nc" id="L60">            pelaajanappi.setDisable(true);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            if (onkoTiedostotValittu()) {</span>
+<span class="nc" id="L62">                ikkuna.close();</span>
+            }
+<span class="nc" id="L64">        });      </span>
+        
+<span class="nc" id="L66">        FlowPane komponenttiryhma = new FlowPane();</span>
+<span class="nc" id="L67">        komponenttiryhma.getChildren().add(opaste);</span>
+<span class="nc" id="L68">        komponenttiryhma.getChildren().add(hahmonappi);</span>
+<span class="nc" id="L69">        komponenttiryhma.getChildren().add(pelaajanappi);</span>
+
+<span class="nc" id="L71">        Scene nakyma = new Scene(komponenttiryhma);</span>
+
+<span class="nc" id="L73">        ikkuna.setScene(nakyma);</span>
+<span class="nc" id="L74">        ikkuna.show();</span>
+<span class="nc" id="L75">    }</span>
+    
+    public static boolean onkoTiedostotValittu() {
+<span class="nc bnc" id="L78" title="All 4 branches missed.">        if (hahmotiedosto != null &amp;&amp; pelaajatiedosto != null) {</span>
+<span class="nc" id="L79">            return true;</span>
+        }
+<span class="nc" id="L81">        return false;</span>
+    }
+
+    /**
+     *
+     * @param eka profiili jonka sopivuutta verrataan tokaan
+     * @param toka profiili johon ekan sopivuutta verrataan
+     * @param suosikit map joka mäppää ekan profiilin mätsäävyysarvon kuhunkin
+     * profiiliin
+     * @return vastaus metodin nimen esittämään kysymykseen
+     */
+    public static boolean onko_isompi(Profiili eka, Profiili toka, HashMap&lt;Profiili, Integer&gt; suosikit) {
+<span class="fc" id="L93">        int ekan_arvo = suosikit.get(eka);</span>
+<span class="fc" id="L94">        int tokan_arvo = suosikit.get(toka);</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (ekan_arvo &gt; tokan_arvo) {</span>
+<span class="nc" id="L96">            return true;</span>
+        }
+<span class="fc" id="L98">        return false;</span>
+    }
+
+    /**
+     * Luodaan kyseiselle profiilille (eli hahmolle/pelaajalle) lista, missä
+     * järjestyksessä se preferoi toisen profiililuokan profiileita
+     *
+     * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
+     * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
+     */
+    public static void luo_lista_suosikeista(Profiili profiili, ArrayList&lt;Profiili&gt; verrattavat) {
+<span class="nc" id="L109">        HashMap&lt;Profiili, Integer&gt; preferenssit = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L110" title="All 2 branches missed.">        for (Profiili verrattava : verrattavat) {</span>
+<span class="nc" id="L111">            int erotus = 0;</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            for (int i = 0; i &lt; verrattavat.size(); i++) {</span>
+<span class="nc" id="L113">                erotus += Math.abs(profiili.statsit[i] - verrattava.statsit[i]);</span>
+            }
+<span class="nc" id="L115">            preferenssit.put(verrattava, erotus);</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">        ArrayList&lt;Profiili&gt; tulevat_suosikit = new ArrayList(verrattavat);//verrattavat</span>
+<span class="nc" id="L118">        kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);</span>
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * Luodaan preferenssijärjestys sen perusteella, kuinka paljon kunkin
+     * ominaisuuden abs(hahmo-pelaaja) erotusten yhteissumma on, ensimmäisenä paras vaihtoehto
+     * 
+    * @param profiili se jonka suosikit halutaan tallentaa järjestetyksi
+     * taulukoksi
+     * @param suosikit toistaiseksi järjestämätön taulukko toisen profiililuokan
+     * profiileista
+     * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin
+     * preferensseista toisen profiililuokan profiileihin
+     */
+    public static void kuplajarjestaminen(Profiili profiili, ArrayList&lt;Profiili&gt; suosikit, HashMap&lt;Profiili, Integer&gt; preferenssit) {
+<span class="fc" id="L133">        boolean eiValmis = true;</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        while (eiValmis) {</span>
+<span class="fc" id="L135">            eiValmis = false;</span>
+<span class="fc bfc" id="L136" title="All 2 branches covered.">            for (int i = 0; i &lt; suosikit.size() - 1; i++) {</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">                if (onko_isompi(suosikit.get(i), suosikit.get(i + 1), preferenssit)) {</span>
+<span class="nc" id="L138">                    Profiili vaihto = suosikit.get(i);</span>
+<span class="nc" id="L139">                    suosikit.remove(i);</span>
+<span class="nc" id="L140">                    suosikit.add(i+1, vaihto); // laitetaan indeksistä i tallennettu seuraavaan indeksiin</span>
+<span class="nc" id="L141">                    eiValmis = true;</span>
+                }
+            }
+        }
+<span class="fc" id="L145">        profiili.setSuosikit(suosikit);</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * funktio yhdistää parametrina saamansa profiilit, ja päivittää muiden
+     * profiilien tarvittavat tiedot, eli purkaa mahdollisen edellisen
+     * kihlauksen ja poistaa suosikkilistoista ne vaihtoehdot, jotka eivät tule
+     * enää kysymykseen
+     *
+     * @param kosija profiili joka yhdistetään kosittavaan profiiliin
+     * @param kosittava
+     */
+    public static void vaihda_kihlaus(Profiili kosija, Profiili kosittava) {
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (kosittava.kihlattu != null) { //puretaan vanha kihlaus</span>
+<span class="nc" id="L159">            Profiili ex = kosittava.kihlattu;</span>
+<span class="nc" id="L160">            ex.kihlattu = null;</span>
+<span class="nc" id="L161">            vapaat.add(ex);</span>
+        }
+<span class="nc" id="L163">        kosittava.kihlattu = kosija;</span>
+<span class="nc" id="L164">        kosija.kihlattu = kosittava;</span>
+
+        //poistetaan kositun suosikeista nykyistä kihlattua huonommat vaihtoehdot
+<span class="nc" id="L167">        List&lt;Profiili&gt; hylatyt_suosikit = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        for (int i = 0; i &lt; kosittava.suosikit.size(); i++) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            if (kosittava.suosikit.get(i) == kosija) {</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">                if (i + 1 &lt;= kosittava.suosikit.size() - 1) {</span>
+<span class="nc" id="L171">                    hylatyt_suosikit = kosittava.suosikit.subList(i+1, kosittava.suosikit.size());</span>
+                }                          
+<span class="nc" id="L173">                kosittava.suosikit = kosittava.suosikit.subList(0, i+1); //säästetään vain kihlattu ja paremmat        </span>
+<span class="nc" id="L174">                break;</span>
+            }
+        }
+
+        //poistetaan hylättyjen kosijoiden suosikkilistoilta äsken kihlattu
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        for (Profiili hylatty_hahmokandidaatti : hylatyt_suosikit) {</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            for (int i = 0; i &lt; hylatty_hahmokandidaatti.suosikit.size(); i++) {</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">                if (hylatty_hahmokandidaatti.suosikit.get(i).nimi.equals(kosittava.nimi)) {</span>
+<span class="nc" id="L182">                    hylatty_hahmokandidaatti.suosikit.remove(i);</span>
+                }
+            }
+<span class="nc" id="L185">        }</span>
+<span class="nc" id="L186">    }</span>
+    
+    /**
+     * Tulostaa hahmo-pelaaja -parit debuggausta varten; jos hahmolla ei ole vielä pelaajaa,
+     * sen kanssa tulostuu 4everalone-teksti
+     * @param hahmot käsiteltävät hahmot
+     */
+    public static void tulosta_parit (List&lt;Profiili&gt; hahmot) {
+<span class="nc" id="L194">        System.out.println(&quot;PARISKUNNAT ATM:&quot;);</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">        for (Profiili hahmo: hahmot) {</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">            if (hahmo.kihlattu != null) {</span>
+<span class="nc" id="L197">            System.out.println(hahmo.nimi + &quot; + &quot; + hahmo.kihlattu.nimi);</span>
+            } else {
+<span class="nc" id="L199">                System.out.println(hahmo.nimi + &quot; 4everalone&quot;);</span>
+            }
+<span class="nc" id="L201">        }</span>
+<span class="nc" id="L202">    }</span>
+    
+    /**
+     * Datan lukeminen lähdetiedostoista Profiili-olioita listaaviksi listoiksi
+     * @param profiilit hahmot/pelaajalista, joka tässä funktiossa täytetään tiedostosta saadulla datalla
+     * @param tiedosto hahmo/pelaajalista tiedostomuodossa
+     * @return valmis hahmo/pelaajalista
+     */
+    public static ArrayList&lt;Profiili&gt; lueData(ArrayList&lt;Profiili&gt; profiilit, File tiedosto) {       
+        try
+        {          
+<span class="nc bnc" id="L213" title="All 2 branches missed.">            for(Scanner sc = new Scanner(tiedosto); sc.hasNext(); ) {</span>
+<span class="nc" id="L214">              String line = sc.nextLine();</span>
+<span class="nc" id="L215">              String[] splitattu = line.split(&quot;,&quot;);</span>
+<span class="nc" id="L216">              Profiili uusi = new Profiili(splitattu[0]); //tiedostossa ekana nimi-string</span>
+<span class="nc" id="L217">              int[] statsit = new int[10];</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">                for (int i = 1; i &lt; splitattu.length; i++) { //ja sen jälkeen int-muotoiset statsit</span>
+<span class="nc" id="L219">                    statsit[i-1] = parseInt(splitattu[i]);</span>
+                }
+<span class="nc" id="L221">              uusi.setStatsit(statsit);</span>
+<span class="nc" id="L222">              profiilit.add(uusi);</span>
+<span class="nc" id="L223">            } </span>
+        } 
+<span class="nc" id="L225">        catch(Exception ex) </span>
+        { 
+<span class="nc" id="L227">           System.out.println(&quot;Tapahtui poikkeus lähdetiedoston käsittelyssä!&quot;);  </span>
+<span class="nc" id="L228">           ex.printStackTrace();</span>
+<span class="nc" id="L229">        }</span>
+<span class="nc" id="L230">        return profiilit;</span>
+    }
+
+    public static void main(String[] args) {
+<span class="nc" id="L234">        launch(); //tiedostonvalitsin</span>
+        
+<span class="nc" id="L236">        ArrayList&lt;Profiili&gt; hahmot = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L237">        ArrayList&lt;Profiili&gt; pelaajat = new ArrayList&lt;&gt;();</span>
+        
+<span class="nc" id="L239">        hahmot = lueData(new ArrayList&lt;Profiili&gt;(), hahmotiedosto);</span>
+<span class="nc" id="L240">        pelaajat = lueData(new ArrayList&lt;Profiili&gt;(), pelaajatiedosto);</span>
+        
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        for (Profiili hahmo : hahmot) {</span>
+<span class="nc" id="L243">            luo_lista_suosikeista(hahmo, pelaajat);</span>
+<span class="nc" id="L244">        }</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        for (Profiili pelaaja : pelaajat) {</span>
+<span class="nc" id="L246">            luo_lista_suosikeista(pelaaja, hahmot);</span>
+<span class="nc" id="L247">        }</span>
+
+        //varsinainen algoritmi       
+<span class="nc" id="L250">        vapaat.addAll(hahmot);</span>
+
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        while (vapaat.size() &gt; 0) {</span>
+<span class="nc" id="L253">            Profiili kosija = vapaat.get(0);</span>
+<span class="nc" id="L254">            vapaat.remove(0); //poistetaan kosiomatkalle lähtijä</span>
+<span class="nc" id="L255">            Profiili kosittava = kosija.suosikit.get(0);</span>
+<span class="nc" id="L256">            vaihda_kihlaus(kosija, kosittava);</span>
+<span class="nc" id="L257">            tulosta_parit(hahmot);</span>
+<span class="nc" id="L258">        }</span>
+
+        
+
+        /* Wikipediasta algon kuvaus muistiinpanoiksi:
+        
+        while (some man m is free) do
+	begin
+		w := first woman on m’s list;
+		m proposes, and becomes engaged, to w;
+		if (some man m' is engaged to w) then
+		    assign m' to be free;
+		for each (successor m'' of m on w’s list) do
+			delete the pair (m'', w)
+        */
+<span class="nc" id="L273">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

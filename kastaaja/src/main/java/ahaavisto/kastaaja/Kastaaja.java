@@ -174,12 +174,22 @@ public class Kastaaja extends Application{
                 break;
             }
         }
-
+        poistetaanTurhatToiveet(hylatyt_suosikit, kosittava);
         //poistetaan hylättyjen kosijoiden suosikkilistoilta äsken kihlattu
-        for (Profiili hylatty_hahmokandidaatti : hylatyt_suosikit) {
-            for (int i = 0; i < hylatty_hahmokandidaatti.suosikit.size(); i++) {
-                if (hylatty_hahmokandidaatti.suosikit.get(i).nimi.equals(kosittava.nimi)) {
-                    hylatty_hahmokandidaatti.suosikit.remove(i);
+//        for (Profiili hylatty_hahmokandidaatti : hylatyt_suosikit) {
+//            for (int i = 0; i < hylatty_hahmokandidaatti.suosikit.size(); i++) {
+//                if (hylatty_hahmokandidaatti.suosikit.get(i).nimi.equals(kosittava.nimi)) {
+//                    hylatty_hahmokandidaatti.suosikit.remove(i);
+//                }
+//            }
+//        }
+    }
+    
+    public static void poistetaanTurhatToiveet(List<Profiili> hylatyt_suosikit, Profiili hylkaaja) {
+        for (Profiili hylatty : hylatyt_suosikit) {
+            for (int i = 0; i < hylatty.suosikit.size(); i++) {
+                if (hylatty.suosikit.get(i).equals(hylkaaja)) {
+                    hylatty.suosikit.remove(i);
                 }
             }
         }
