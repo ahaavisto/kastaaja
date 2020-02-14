@@ -30,7 +30,9 @@ public class TestKastaaja {
         
         pelaajat = new ArrayList<>();
         pelaaja1 = new Profiili("alice");
+        pelaajat.add(pelaaja1);
         pelaaja2 = new Profiili("eve");
+        pelaajat.add(pelaaja2);
         
         hahmo1.setSuosikit(pelaajat);
         hahmo2.setSuosikit(pelaajat);
@@ -63,7 +65,25 @@ public class TestKastaaja {
         List<Profiili> testilista = new ArrayList<>();
         testilista.add(hahmo1);
         testilista.add(hahmo2);
-        assertEquals("hahmojen järjestys on", pelaaja1.getSuosikit(), testilista);
+        assertEquals("hahmojen järjestys on", testilista, pelaaja1.getSuosikit());
+    }
+    
+    @Test
+    public void testPoistetaanTurhatToiveet() {
+        luo_profiilit();
+        ArrayList<Profiili> hylatyt = new ArrayList<>();
+        hylatyt.add(pelaaja1);        
+        Kastaaja.poistetaanTurhatToiveet(hylatyt, hahmo1);
+        assertTrue("Poistamaton yhä listalla", pelaaja1.getSuosikit().contains(hahmo2));
+        assertFalse("Poistettu ei ole enää listalla", pelaaja1.getSuosikit().contains(hahmo1));
+    }
+    
+    @Test
+    public void testPoistetaanHuonommatKuinNykyinen() {
+        luo_profiilit();
+        Kastaaja.poistetaanHuonommatKuinNykyinen(hahmo1, pelaaja1);
+        assertTrue("Poistamaton yhä listalla", hahmo1.getSuosikit().contains(pelaaja1));
+        assertFalse("Poistettu ei ole enää listalla", hahmo1.getSuosikit().contains(pelaaja2));
     }
     
     

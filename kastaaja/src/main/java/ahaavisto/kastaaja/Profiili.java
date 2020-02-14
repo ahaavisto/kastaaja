@@ -27,6 +27,10 @@ public class Profiili {
         return suosikit;
     }
     
+    public String getNimi () {
+        return nimi;
+    }
+    
     public void setSuosikit(List<Profiili> suosikit) {
         this.suosikit = suosikit;
     }

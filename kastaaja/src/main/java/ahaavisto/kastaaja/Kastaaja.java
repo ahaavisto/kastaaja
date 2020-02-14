@@ -168,14 +168,21 @@ public class Kastaaja extends Application{
         poistetaanTurhatToiveet(hylatyt, kosittava);
     }
     
+    /**
+     * Algoritmin perusidean mukaisesti, poistetaan "kihloihin" päätyneen hahmon
+     * listalta kaikki nykyistä huonommat vaihtoehdot
+     * @param profiili hahmo, jonka suosikkeja käsitellään
+     * @param kosija pelaaja, jonka kanssa ollaan nyt "kihloissa"
+     * @return lista hylätyistä pelaajista; näitä käsitellään seuraavaksi poistetaanTurhatToiveet-funktiossa
+     */
     public static List<Profiili> poistetaanHuonommatKuinNykyinen(Profiili profiili, Profiili kosija) {
         List<Profiili> hylatyt_suosikit = new ArrayList<>();
         for (int i = 0; i < profiili.suosikit.size(); i++) {
             if (profiili.suosikit.get(i) == kosija) {
                 if (i + 1 <= profiili.suosikit.size() - 1) {
                     hylatyt_suosikit = profiili.suosikit.subList(i+1, profiili.suosikit.size());
-                }                          
-                profiili.suosikit = profiili.suosikit.subList(0, i+1); //säästetään vain kihlattu ja paremmat        
+                }    
+                profiili.setSuosikit(profiili.suosikit.subList(0, i+1));   
                 break;
             }
         }
@@ -183,16 +190,16 @@ public class Kastaaja extends Application{
     }
     
     /**
-     * Poistetaan kunkin kyseisen pelaajan hylkäämän hahmon suosikkilistasta tuo hahmo,
+     * Poistetaan kunkin kyseisen hahmon hylkäämien pelaajien suosikkilistasta tuo hahmo,
      * sillä algoritmin mukaan niistä ei voi tulla enää paria
      * @param hylatyt_suosikit pelaajat, jotka ovat käsiteltävän hahmon 
      * suosikkilistassa alempana kuin nykyinen kihlattu, eli eivät voi tulla valituksi
-     * @param hylkaaja hahmo jota käsitellään
+     * @param hylkaajaHahmo hahmo jota käsitellään
      */
-    public static void poistetaanTurhatToiveet(List<Profiili> hylatyt_suosikit, Profiili hylkaaja) {
+    public static void poistetaanTurhatToiveet(List<Profiili> hylatyt_suosikit, Profiili hylkaajaHahmo) {
         for (Profiili hylatty : hylatyt_suosikit) {
             for (int i = 0; i < hylatty.suosikit.size(); i++) {
-                if (hylatty.suosikit.get(i).equals(hylkaaja)) {
+                if (hylatty.suosikit.get(i).equals(hylkaajaHahmo)) {
                     hylatty.suosikit.remove(i);
                 }
             }
@@ -246,12 +253,9 @@ public class Kastaaja extends Application{
 
     public static void main(String[] args) {
         launch(); //tiedostonvalitsin
-        
-        ArrayList<Profiili> hahmot = new ArrayList<>();
-        ArrayList<Profiili> pelaajat = new ArrayList<>();
-        
-        hahmot = lueData(new ArrayList<Profiili>(), hahmotiedosto);
-        pelaajat = lueData(new ArrayList<Profiili>(), pelaajatiedosto);
+
+        ArrayList<Profiili> hahmot = lueData(new ArrayList<Profiili>(), hahmotiedosto);
+        ArrayList<Profiili> pelaajat = lueData(new ArrayList<Profiili>(), pelaajatiedosto);
         
         for (Profiili hahmo : hahmot) {
             luo_lista_suosikeista(hahmo, pelaajat);
