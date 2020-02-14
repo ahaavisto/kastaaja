@@ -1,9 +1,13 @@
-# kastaaja
+# Kastaaja
 Tietorakenteiden ja algoritmien harjoitustyö, A Haavisto
 
-Larpin pelaajavalinnan automatisointia eli hahmojen ja pelaajien yhdistäminen mahdollisimman optimaalisesti ottaen huomion hahmojen ominaisuudet ja pelaajien toiveet.
+Larpin pelaajavalinnan (kastaamisen) automatisointia eli hahmojen ja pelaajien yhdistäminen mahdollisimman optimaalisesti ottaen huomion hahmojen ominaisuudet ja pelaajien toiveet.
 
-# Viikkoraportit
+[**Testikattavuusraportti**](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/jacoco/index.html)
+
+## Viikkoraportit
+[Viikko 5](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%205.md)
+
 [Viikko 4](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%204.md)
 
 [Viikko 3](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%203.md)
@@ -12,7 +16,7 @@ Larpin pelaajavalinnan automatisointia eli hahmojen ja pelaajien yhdistäminen m
 
 [Viikko 1](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%201.md)
 
-# Muu dokumentaatio
+## Muu dokumentaatio
 
 [Käyttöohje](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/käyttöohje.md)
 
