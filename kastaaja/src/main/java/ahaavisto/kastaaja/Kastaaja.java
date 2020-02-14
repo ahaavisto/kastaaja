@@ -162,29 +162,33 @@ public class Kastaaja extends Application{
         }
         kosittava.kihlattu = kosija;
         kosija.kihlattu = kosittava;
+        
+        List<Profiili> hylatyt = poistetaanHuonommatKuinNykyinen(kosittava, kosija);
 
-        //poistetaan kositun suosikeista nykyistä kihlattua huonommat vaihtoehdot
+        poistetaanTurhatToiveet(hylatyt, kosittava);
+    }
+    
+    public static List<Profiili> poistetaanHuonommatKuinNykyinen(Profiili profiili, Profiili kosija) {
         List<Profiili> hylatyt_suosikit = new ArrayList<>();
-        for (int i = 0; i < kosittava.suosikit.size(); i++) {
-            if (kosittava.suosikit.get(i) == kosija) {
-                if (i + 1 <= kosittava.suosikit.size() - 1) {
-                    hylatyt_suosikit = kosittava.suosikit.subList(i+1, kosittava.suosikit.size());
+        for (int i = 0; i < profiili.suosikit.size(); i++) {
+            if (profiili.suosikit.get(i) == kosija) {
+                if (i + 1 <= profiili.suosikit.size() - 1) {
+                    hylatyt_suosikit = profiili.suosikit.subList(i+1, profiili.suosikit.size());
                 }                          
-                kosittava.suosikit = kosittava.suosikit.subList(0, i+1); //säästetään vain kihlattu ja paremmat        
+                profiili.suosikit = profiili.suosikit.subList(0, i+1); //säästetään vain kihlattu ja paremmat        
                 break;
             }
         }
-        poistetaanTurhatToiveet(hylatyt_suosikit, kosittava);
-        //poistetaan hylättyjen kosijoiden suosikkilistoilta äsken kihlattu
-//        for (Profiili hylatty_hahmokandidaatti : hylatyt_suosikit) {
-//            for (int i = 0; i < hylatty_hahmokandidaatti.suosikit.size(); i++) {
-//                if (hylatty_hahmokandidaatti.suosikit.get(i).nimi.equals(kosittava.nimi)) {
-//                    hylatty_hahmokandidaatti.suosikit.remove(i);
-//                }
-//            }
-//        }
+        return hylatyt_suosikit;
     }
     
+    /**
+     * Poistetaan kunkin kyseisen pelaajan hylkäämän hahmon suosikkilistasta tuo hahmo,
+     * sillä algoritmin mukaan niistä ei voi tulla enää paria
+     * @param hylatyt_suosikit pelaajat, jotka ovat käsiteltävän hahmon 
+     * suosikkilistassa alempana kuin nykyinen kihlattu, eli eivät voi tulla valituksi
+     * @param hylkaaja hahmo jota käsitellään
+     */
     public static void poistetaanTurhatToiveet(List<Profiili> hylatyt_suosikit, Profiili hylkaaja) {
         for (Profiili hylatty : hylatyt_suosikit) {
             for (int i = 0; i < hylatty.suosikit.size(); i++) {
@@ -258,27 +262,13 @@ public class Kastaaja extends Application{
 
         //varsinainen algoritmi       
         vapaat.addAll(hahmot);
-
         while (vapaat.size() > 0) {
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.suosikit.get(0);
-            vaihda_kihlaus(kosija, kosittava);
-            tulosta_parit(hahmot);
+            vaihda_kihlaus(kosija, kosittava);     
         }
+        tulosta_parit(hahmot);
 
-        
-
-        /* Wikipediasta algon kuvaus muistiinpanoiksi:
-        
-        while (some man m is free) do
-	begin
-		w := first woman on m’s list;
-		m proposes, and becomes engaged, to w;
-		if (some man m' is engaged to w) then
-		    assign m' to be free;
-		for each (successor m'' of m on w’s list) do
-			delete the pair (m'', w)
-        */
     }
 }
