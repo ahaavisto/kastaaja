@@ -21,7 +21,7 @@ public class TestKastaaja {
     static Profiili hahmo1, hahmo2, pelaaja1, pelaaja2;
     static ArrayList<Profiili> hahmot, pelaajat;
             
-    static void luo_profiilit () {
+    static void luoProfiilit () {
         hahmot = new ArrayList<>();
         hahmo1 = new Profiili("bob");
         hahmot.add(hahmo1);
@@ -38,14 +38,27 @@ public class TestKastaaja {
         hahmo2.setSuosikit(pelaajat);
         pelaaja1.setSuosikit(hahmot);
         pelaaja2.setSuosikit(hahmot);
-        
-        /*Kastaaja.luo_lista_suosikeista(hahmo1, pelaajat);
-        Kastaaja.luo_lista_suosikeista(hahmo2, pelaajat);
-        Kastaaja.luo_lista_suosikeista(pelaaja1, pelaajat);
-        Kastaaja.luo_lista_suosikeista(pelaaja2, pelaajat);
-        */
+
     }
     
+
+    @Test
+    public void testKihlaus() {
+        luoProfiilit();
+        Kastaaja.Kihlaus(hahmo1, pelaaja1);
+        assertEquals("Kihloissa hahmon kanssa", pelaaja1, hahmo1.getKihlattu());
+        assertEquals("Kihloissa pelaajan kanssa", hahmo1, pelaaja1.getKihlattu());
+    }
+    
+    @Test
+    public void testKihlausEroToimii() {
+        luoProfiilit();
+        Kastaaja.Kihlaus(hahmo1, pelaaja1);
+        Kastaaja.Kihlaus(hahmo2, pelaaja1);
+        assertEquals("Kihloissa hahmon kanssa", pelaaja1, hahmo2.getKihlattu());
+        assertEquals("Kihloissa pelaajan kanssa", hahmo2, pelaaja1.getKihlattu());
+        assertEquals("aiempi kihlaus purkautunut", null, hahmo1.getKihlattu());
+    }
     
     @Test
     public void testOnko_isompi() {
@@ -57,7 +70,7 @@ public class TestKastaaja {
     
     @Test
     public void testKuplajarjestaminen() {
-        luo_profiilit();
+        luoProfiilit();
         HashMap<Profiili, Integer> preferenssit = new HashMap<>();
         preferenssit.put(hahmo1, 1);
         preferenssit.put(hahmo2, 2);
@@ -70,7 +83,7 @@ public class TestKastaaja {
     
     @Test
     public void testPoistetaanTurhatToiveet() {
-        luo_profiilit();
+        luoProfiilit();
         ArrayList<Profiili> hylatyt = new ArrayList<>();
         hylatyt.add(pelaaja1);        
         Kastaaja.poistetaanTurhatToiveet(hylatyt, hahmo1);
@@ -80,16 +93,10 @@ public class TestKastaaja {
     
     @Test
     public void testPoistetaanHuonommatKuinNykyinen() {
-        luo_profiilit();
+        luoProfiilit();
         Kastaaja.poistetaanHuonommatKuinNykyinen(hahmo1, pelaaja1);
         assertTrue("Poistamaton yhä listalla", hahmo1.getSuosikit().contains(pelaaja1));
         assertFalse("Poistettu ei ole enää listalla", hahmo1.getSuosikit().contains(pelaaja2));
     }
     
-    
-//    
-//    int[] arr = {4, 3, 2, 1};
-//        StaticRMQ rmq = new StaticRMQ(arr);
-//        assertEquals("Wrong minimum for whole array", 1, rmq.query(0, 3));
-//assertEquals("Wrong minimum for first element", 4, rmq.query(0, 0));
 }

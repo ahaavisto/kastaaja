@@ -31,6 +31,18 @@ public class Kastaaja extends Application{
     static File hahmotiedosto;
     static File pelaajatiedosto;
     
+    public static Integer getVapaidenMaara() {
+        return vapaat.size();
+    }
+    
+    /**
+     * Tämä funktio on olemassa vain testaamista varten
+     * @param listaVapaista ne hahmot, jotka ovat vapaana (aluksi)
+     */
+    public static void setVapaat(ArrayList<Profiili> listaVapaista) {
+        vapaat = listaVapaista;
+    }
+    
     /**
      * Tiedostonvalitsin ja sen simppeli käyttöliittymä
      * @param ikkuna 
@@ -154,14 +166,14 @@ public class Kastaaja extends Application{
      * @param kosija profiili joka yhdistetään kosittavaan profiiliin
      * @param kosittava
      */
-    public static void vaihda_kihlaus(Profiili kosija, Profiili kosittava) {
-        if (kosittava.kihlattu != null) { //puretaan vanha kihlaus
-            Profiili ex = kosittava.kihlattu;
-            ex.kihlattu = null;
+    public static void Kihlaus(Profiili kosija, Profiili kosittava) {
+        if (kosittava.getKihlattu() != null) { //puretaan vanha kihlaus
+            Profiili ex = kosittava.getKihlattu();
+            ex.setKihlattu(null);
             vapaat.add(ex);
         }
-        kosittava.kihlattu = kosija;
-        kosija.kihlattu = kosittava;
+        kosittava.setKihlattu(kosija);
+        kosija.setKihlattu(kosittava);
         
         List<Profiili> hylatyt = poistetaanHuonommatKuinNykyinen(kosittava, kosija);
 
@@ -211,7 +223,7 @@ public class Kastaaja extends Application{
      * sen kanssa tulostuu 4everalone-teksti
      * @param hahmot käsiteltävät hahmot
      */
-    public static void tulosta_parit (List<Profiili> hahmot) {
+    public static void tulostaParit (List<Profiili> hahmot) {
         System.out.println("PARISKUNNAT ATM:");
         for (Profiili hahmo: hahmot) {
             if (hahmo.kihlattu != null) {
@@ -250,6 +262,21 @@ public class Kastaaja extends Application{
         }
         return profiilit;
     }
+    
+    /**
+     * Varsinainen hahmojen ja pelaajien mätsäys. Käydään läpi niin kauan, kunnes kaikilla
+     * hahmoilla on pelaaja.
+     * @param hahmot 
+     */
+    public static void algoritminYdin(ArrayList<Profiili> hahmot) {
+        vapaat.addAll(hahmot);
+        while (vapaat.size() > 0) {
+            Profiili kosija = vapaat.get(0);
+            vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
+            Profiili kosittava = kosija.suosikit.get(0);
+            Kihlaus(kosija, kosittava);           
+        }
+    }
 
     public static void main(String[] args) {
         launch(); //tiedostonvalitsin
@@ -264,15 +291,9 @@ public class Kastaaja extends Application{
             luo_lista_suosikeista(pelaaja, hahmot);
         }
 
-        //varsinainen algoritmi       
-        vapaat.addAll(hahmot);
-        while (vapaat.size() > 0) {
-            Profiili kosija = vapaat.get(0);
-            vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
-            Profiili kosittava = kosija.suosikit.get(0);
-            vaihda_kihlaus(kosija, kosittava);     
-        }
-        tulosta_parit(hahmot);
+        algoritminYdin(hahmot);
+        
+        tulostaParit(hahmot);
 
     }
 }

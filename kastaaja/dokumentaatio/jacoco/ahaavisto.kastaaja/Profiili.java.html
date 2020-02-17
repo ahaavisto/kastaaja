@@ -27,41 +27,49 @@ public class Profiili {
 <span class="fc" id="L27">        return suosikit;</span>
     }
     
+    public Profiili getKihlattu() {
+<span class="fc" id="L31">        return kihlattu;</span>
+    }
+    
+    public void setKihlattu(Profiili kihlattu) {
+<span class="fc" id="L35">        this.kihlattu = kihlattu;</span>
+<span class="fc" id="L36">    }</span>
+    
     public String getNimi () {
-<span class="nc" id="L31">        return nimi;</span>
+<span class="nc" id="L39">        return nimi;</span>
     }
     
     public void setSuosikit(List&lt;Profiili&gt; suosikit) {
-<span class="fc" id="L35">        this.suosikit = suosikit;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L43">        this.suosikit = suosikit;</span>
+<span class="fc" id="L44">    }</span>
     
     public void setStatsit(int[] statsit) {
-<span class="nc" id="L39">        this.statsit = statsit;</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L47">        this.statsit = statsit;</span>
+<span class="nc" id="L48">    }</span>
 
     @Override
     public int hashCode() {
-<span class="fc" id="L44">        int hash = 3;</span>
-<span class="fc" id="L45">        hash = 67 * hash + Objects.hashCode(this.nimi);</span>
-<span class="fc" id="L46">        return hash;</span>
+<span class="fc" id="L52">        int hash = 3;</span>
+<span class="fc" id="L53">        hash = 67 * hash + Objects.hashCode(this.nimi);</span>
+<span class="fc" id="L54">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object obj) {
-<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L52">            return true;</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L60">            return true;</span>
         }
-<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (obj == null) {</span>
-<span class="nc" id="L55">            return false;</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L63">            return false;</span>
         }
-<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
-<span class="nc" id="L58">            return false;</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L66">            return false;</span>
         }
-<span class="fc" id="L60">        final Profiili other = (Profiili) obj;</span>
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (!Objects.equals(this.nimi, other.nimi)) {</span>
-<span class="fc" id="L62">            return false;</span>
+<span class="fc" id="L68">        final Profiili other = (Profiili) obj;</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (!Objects.equals(this.nimi, other.nimi)) {</span>
+<span class="fc" id="L70">            return false;</span>
         }
-<span class="nc" id="L64">        return true;</span>
+<span class="nc" id="L72">        return true;</span>
     }
     
     

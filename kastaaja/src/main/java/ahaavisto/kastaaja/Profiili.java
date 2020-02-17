@@ -27,6 +27,14 @@ public class Profiili {
         return suosikit;
     }
     
+    public Profiili getKihlattu() {
+        return kihlattu;
+    }
+    
+    public void setKihlattu(Profiili kihlattu) {
+        this.kihlattu = kihlattu;
+    }
+    
     public String getNimi () {
         return nimi;
     }
