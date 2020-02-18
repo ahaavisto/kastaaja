@@ -16,6 +16,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -44,7 +45,7 @@ public class Kastaaja extends Application{
     }
     
     /**
-     * Tiedostonvalitsin ja sen simppeli käyttöliittymä
+     * Ohjelman koko käyttöliittymä on atm tässä
      * @param ikkuna 
      */
     @Override
@@ -53,32 +54,36 @@ public class Kastaaja extends Application{
 
         FileChooser valitsin = new FileChooser();
 
-        Label opaste = new Label("Valitse lähdetiedostot (.csv). Kun olet valinnut molemmat, ohjelma käynnistyy.");
+        Label opaste = new Label("Valitse lähdetiedostot (.csv)");
         Button hahmonappi = new Button("Valitse hahmolista-tiedosto");
-        Button pelaajanappi = new Button("Valitse pelaajalista-tiedosto");       
+        Button pelaajanappi = new Button("Valitse pelaajalista-tiedosto");
+        Button aloitusnappi = new Button("Aja algoritmi");
+        TextArea tulos = new TextArea("Algoritmin tulos tulee tähän");
         
         hahmonappi.setOnAction(e -> {
             hahmotiedosto = valitsin.showOpenDialog(ikkuna);
-            hahmonappi.setText("Hahmolista valittu");
-            hahmonappi.setDisable(true);
-            if (onkoTiedostotValittu()) {
-                ikkuna.close();
-            }
+            hahmonappi.setText("Hahmolistaksi valittu " + hahmotiedosto.getName());
         });
         
         pelaajanappi.setOnAction(e -> {
             pelaajatiedosto = valitsin.showOpenDialog(ikkuna);
-            pelaajanappi.setText("Pelaajalista valittu");
-            pelaajanappi.setDisable(true);
-            if (onkoTiedostotValittu()) {
-                ikkuna.close();
-            }
-        });      
+            pelaajanappi.setText("Pelaajalistaksi valittu" + pelaajatiedosto.getName());
+        });
         
-        FlowPane komponenttiryhma = new FlowPane();
+        aloitusnappi.setOnAction(e -> {     
+            if (onkoTiedostotValittu()) {
+                ArrayList<Profiili> hahmot = luoHahmotJaPelaajat();
+                algoritminYdin(hahmot);        
+                tulos.setText(tulostaParit(hahmot));
+            }
+        }); 
+        
+        VBox komponenttiryhma = new VBox();
         komponenttiryhma.getChildren().add(opaste);
         komponenttiryhma.getChildren().add(hahmonappi);
         komponenttiryhma.getChildren().add(pelaajanappi);
+        komponenttiryhma.getChildren().add(aloitusnappi);
+        komponenttiryhma.getChildren().add(tulos);
 
         Scene nakyma = new Scene(komponenttiryhma);
 
@@ -223,15 +228,17 @@ public class Kastaaja extends Application{
      * sen kanssa tulostuu 4everalone-teksti
      * @param hahmot käsiteltävät hahmot
      */
-    public static void tulostaParit (List<Profiili> hahmot) {
-        System.out.println("PARISKUNNAT ATM:");
+    public static String tulostaParit (List<Profiili> hahmot) {
+        String tulostettava = "";
+        tulostettava += "Hahmo-pelaaja -parit:\n";
         for (Profiili hahmo: hahmot) {
-            if (hahmo.kihlattu != null) {
-            System.out.println(hahmo.nimi + " + " + hahmo.kihlattu.nimi);
+            if (hahmo.getKihlattu() != null) {
+            tulostettava += hahmo.getNimi() + " + " + hahmo.getKihlattu().getNimi() + "\n";
             } else {
-                System.out.println(hahmo.nimi + " 4everalone");
+                tulostettava += hahmo.getNimi() + " 4everalone\n";
             }
         }
+        return tulostettava;
     }
     
     /**
@@ -277,12 +284,14 @@ public class Kastaaja extends Application{
             Kihlaus(kosija, kosittava);           
         }
     }
-
-    public static void main(String[] args) {
-        launch(); //tiedostonvalitsin
-
-        ArrayList<Profiili> hahmot = lueData(new ArrayList<Profiili>(), hahmotiedosto);
-        ArrayList<Profiili> pelaajat = lueData(new ArrayList<Profiili>(), pelaajatiedosto);
+    
+    /**
+     * Luodaan hahmot, pelaajat ja niille kullekin suosikkilistat
+     * @return luodut hahmot eli algoritmin ytimen tarvitsema lähtödata
+     */
+    public static ArrayList<Profiili> luoHahmotJaPelaajat() {
+        ArrayList<Profiili> hahmot = lueData(new ArrayList<>(), hahmotiedosto);
+        ArrayList<Profiili> pelaajat = lueData(new ArrayList<>(), pelaajatiedosto);
         
         for (Profiili hahmo : hahmot) {
             luo_lista_suosikeista(hahmo, pelaajat);
@@ -290,10 +299,16 @@ public class Kastaaja extends Application{
         for (Profiili pelaaja : pelaajat) {
             luo_lista_suosikeista(pelaaja, hahmot);
         }
+        return hahmot;
+    }
 
+    public static void main(String[] args) {
+        launch(); //tiedostonvalitsin
+        /*
+        ArrayList<Profiili> hahmot = luoHahmotJaPelaajat();
         algoritminYdin(hahmot);
         
         tulostaParit(hahmot);
-
+        */
     }
 }
