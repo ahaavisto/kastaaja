@@ -5,7 +5,12 @@ Larpin pelaajavalinnan (kastaamisen) automatisointia eli hahmojen ja pelaajien y
 
 [**Testikattavuusraportti**](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/jacoco/index.html)
 
+(En osaa linkittää suoraa netissä luettavaan versioon. Kattavuus 19.2. oli 38 %)
+
 ## Viikkoraportit
+
+[Viikko 6](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%206.md)
+
 [Viikko 5](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%205.md)
 
 [Viikko 4](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/viikkoraportti%204.md)
