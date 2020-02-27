@@ -11,24 +11,23 @@
 
 import ahaavisto.kastaaja.Kastaaja;
 import ahaavisto.kastaaja.Profiili;
-import java.util.ArrayList;
+import ahaavisto.kastaaja.Lista;
 import java.util.HashMap;
-import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TestKastaaja {
     static Profiili hahmo1, hahmo2, pelaaja1, pelaaja2;
-    static ArrayList<Profiili> hahmot, pelaajat;
+    static Lista<Profiili> hahmot, pelaajat;
             
     static void luoProfiilit () {
-        hahmot = new ArrayList<>();
+        hahmot = new Lista<>();
         hahmo1 = new Profiili("bob");
         hahmot.add(hahmo1);
         hahmo2 = new Profiili("bill");
         hahmot.add(hahmo2);
         
-        pelaajat = new ArrayList<>();
+        pelaajat = new Lista<>();
         pelaaja1 = new Profiili("alice");
         pelaajat.add(pelaaja1);
         pelaaja2 = new Profiili("eve");
@@ -75,7 +74,7 @@ public class TestKastaaja {
         preferenssit.put(hahmo1, 1);
         preferenssit.put(hahmo2, 2);
         Kastaaja.kuplajarjestaminen(pelaaja1, hahmot, preferenssit);
-        List<Profiili> testilista = new ArrayList<>();
+        Lista<Profiili> testilista = new Lista<>();
         testilista.add(hahmo1);
         testilista.add(hahmo2);
         assertEquals("hahmojen järjestys on", testilista, pelaaja1.getSuosikit());
@@ -84,7 +83,7 @@ public class TestKastaaja {
     @Test
     public void testPoistetaanTurhatToiveet() {
         luoProfiilit();
-        ArrayList<Profiili> hylatyt = new ArrayList<>();
+        Lista<Profiili> hylatyt = new Lista<>();
         hylatyt.add(pelaaja1);        
         Kastaaja.poistetaanTurhatToiveet(hylatyt, hahmo1);
         assertTrue("Poistamaton yhä listalla", pelaaja1.getSuosikit().contains(hahmo2));

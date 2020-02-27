@@ -7,10 +7,9 @@ package ahaavisto.kastaaja;
 
 import java.io.File;
 import static java.lang.Integer.parseInt;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,7 +25,7 @@ import javafx.stage.Stage;
  */
 public class Kastaaja extends Application{
 
-    static ArrayList<Profiili> vapaat = new ArrayList<>();
+    static Lista<Profiili> vapaat = new Lista<>();
     static File hahmotiedosto;
     static File pelaajatiedosto;
     
@@ -38,7 +37,7 @@ public class Kastaaja extends Application{
      * Tämä funktio on olemassa vain testaamista varten
      * @param listaVapaista ne hahmot, jotka ovat vapaana (aluksi)
      */
-    public static void setVapaat(ArrayList<Profiili> listaVapaista) {
+    public static void setVapaat(Lista<Profiili> listaVapaista) {
         vapaat = listaVapaista;
     }
     
@@ -65,12 +64,13 @@ public class Kastaaja extends Application{
         
         pelaajanappi.setOnAction(e -> {
             pelaajatiedosto = valitsin.showOpenDialog(ikkuna);
-            pelaajanappi.setText("Pelaajalistaksi valittu" + pelaajatiedosto.getName());
+            pelaajanappi.setText("Pelaajalistaksi valittu " + pelaajatiedosto.getName());
+            System.out.println("testi");
         });
         
         aloitusnappi.setOnAction(e -> {     
             if (onkoTiedostotValittu()) {
-                ArrayList<Profiili> hahmot = luoHahmotJaPelaajat();
+                Lista<Profiili> hahmot = luoHahmotJaPelaajat();
                 algoritminYdin(hahmot);        
                 tulos.setText(tulostaParit(hahmot));
             }
@@ -120,16 +120,18 @@ public class Kastaaja extends Application{
      * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
      * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
      */
-    public static void luo_lista_suosikeista(Profiili profiili, ArrayList<Profiili> verrattavat) {
+    public static void luo_lista_suosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
         HashMap<Profiili, Integer> preferenssit = new HashMap<>();
-        for (Profiili verrattava : verrattavat) {
+        for (int i = 0; i < verrattavat.size(); i++) {
+            Profiili verrattava = verrattavat.get(i);
             int erotus = 0;
-            for (int i = 0; i < profiili.getStatsit().length; i++) {
-                erotus += Math.abs(profiili.getStatsit()[i] - verrattava.getStatsit()[i]);
+            for (int j = 0; j < profiili.getStatsit().length; j++) {
+                erotus += Math.abs(profiili.getStatsit()[j] - verrattava.getStatsit()[j]);
             }
             preferenssit.put(verrattava, erotus);
         }
-        ArrayList<Profiili> tulevat_suosikit = new ArrayList(verrattavat);//verrattavat
+
+        Lista<Profiili> tulevat_suosikit = new Lista(verrattavat);//verrattavat
         kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);
     }
 
@@ -144,7 +146,7 @@ public class Kastaaja extends Application{
      * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin
      * preferensseista toisen profiililuokan profiileihin
      */
-    public static void kuplajarjestaminen(Profiili profiili, ArrayList<Profiili> suosikit, HashMap<Profiili, Integer> preferenssit) {
+    public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, HashMap<Profiili, Integer> preferenssit) {
         boolean eiValmis = true;
         while (eiValmis) {
             eiValmis = false;
@@ -178,7 +180,7 @@ public class Kastaaja extends Application{
         kosittava.setKihlattu(kosija);
         kosija.setKihlattu(kosittava);
         
-        List<Profiili> hylatyt = poistetaanHuonommatKuinNykyinen(kosittava, kosija);
+        Lista<Profiili> hylatyt = poistetaanHuonommatKuinNykyinen(kosittava, kosija);
 
         poistetaanTurhatToiveet(hylatyt, kosittava);
     }
@@ -190,9 +192,9 @@ public class Kastaaja extends Application{
      * @param kosija pelaaja, jonka kanssa ollaan nyt "kihloissa"
      * @return lista hylätyistä pelaajista; näitä käsitellään seuraavaksi poistetaanTurhatToiveet-funktiossa
      */
-    public static List<Profiili> poistetaanHuonommatKuinNykyinen(Profiili profiili, Profiili kosija) {
-        List<Profiili> hylatyt_suosikit = new ArrayList<>();
-        List<Profiili> suosikit = profiili.getSuosikit();
+    public static Lista<Profiili> poistetaanHuonommatKuinNykyinen(Profiili profiili, Profiili kosija) {
+        Lista<Profiili> hylatyt_suosikit = new Lista<>();
+        Lista<Profiili> suosikit = profiili.getSuosikit();
         for (int i = 0; i < suosikit.size(); i++) {
             if (suosikit.get(i) == kosija) {
                 if (i + 1 <= suosikit.size() - 1) {
@@ -212,11 +214,13 @@ public class Kastaaja extends Application{
      * suosikkilistassa alempana kuin nykyinen kihlattu, eli eivät voi tulla valituksi
      * @param hylkaajaHahmo hahmo jota käsitellään
      */
-    public static void poistetaanTurhatToiveet(List<Profiili> hylatyt_suosikit, Profiili hylkaajaHahmo) {
-        for (Profiili hylatty : hylatyt_suosikit) {
-            for (int i = 0; i < hylatty.getSuosikit().size(); i++) {
-                if (hylatty.getSuosikit().get(i).equals(hylkaajaHahmo)) {
-                    hylatty.getSuosikit().remove(i);
+    public static void poistetaanTurhatToiveet(Lista<Profiili> hylatyt_suosikit, Profiili hylkaajaHahmo) {
+        for (int i = 0; i < hylatyt_suosikit.size(); i++) {
+            Profiili hylatty = hylatyt_suosikit.get(i);
+            System.out.println("hello");
+            for (int j = 0; j < hylatty.getSuosikit().size(); j++) {
+                if (hylatty.getSuosikit().get(j).equals(hylkaajaHahmo)) {
+                    hylatty.getSuosikit().remove(j);
                 }
             }
         }
@@ -227,10 +231,11 @@ public class Kastaaja extends Application{
      * sen kanssa tulostuu 4everalone-teksti
      * @param hahmot käsiteltävät hahmot
      */
-    public static String tulostaParit (List<Profiili> hahmot) {
+    public static String tulostaParit (Lista<Profiili> hahmot) {
         String tulostettava = "";
         tulostettava += "Hahmo-pelaaja -parit:\n";
-        for (Profiili hahmo: hahmot) {
+        for (int i = 0; i < hahmot.size(); i++) {
+            Profiili hahmo = hahmot.get(i);
             if (hahmo.getKihlattu() != null) {
             tulostettava += hahmo.getNimi() + " + " + hahmo.getKihlattu().getNimi() + "\n";
             } else {
@@ -246,7 +251,7 @@ public class Kastaaja extends Application{
      * @param tiedosto hahmo/pelaajalista tiedostomuodossa
      * @return valmis hahmo/pelaajalista
      */
-    public static ArrayList<Profiili> lueData(ArrayList<Profiili> profiilit, File tiedosto) {       
+    public static Lista<Profiili> lueData(Lista<Profiili> profiilit, File tiedosto) {       
         try
         {          
             for(Scanner sc = new Scanner(tiedosto); sc.hasNext(); ) {
@@ -274,13 +279,16 @@ public class Kastaaja extends Application{
      * hahmoilla on pelaaja.
      * @param hahmot 
      */
-    public static void algoritminYdin(ArrayList<Profiili> hahmot) {
+    public static void algoritminYdin(Lista<Profiili> hahmot) {
+        System.out.println(hahmot.size());
         vapaat.addAll(hahmot);
+        System.out.println("vapaita " + vapaat.size());
         while (vapaat.size() > 0) {
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.getSuosikit().get(0);
-            Kihlaus(kosija, kosittava);           
+            Kihlaus(kosija, kosittava);  
+            System.out.println(tulostaParit(hahmot));
         }
     }
     
@@ -288,23 +296,24 @@ public class Kastaaja extends Application{
      * Luodaan hahmot, pelaajat ja niille kullekin suosikkilistat
      * @return luodut hahmot eli algoritmin ytimen tarvitsema lähtödata
      */
-    public static ArrayList<Profiili> luoHahmotJaPelaajat() {
-        ArrayList<Profiili> hahmot = lueData(new ArrayList<>(), hahmotiedosto);
-        ArrayList<Profiili> pelaajat = lueData(new ArrayList<>(), pelaajatiedosto);
+    public static Lista<Profiili> luoHahmotJaPelaajat() {
+        Lista<Profiili> hahmot = lueData(new Lista<>(), hahmotiedosto);
+        Lista<Profiili> pelaajat = lueData(new Lista<>(), pelaajatiedosto);
         
-        for (Profiili hahmo : hahmot) {
-            luo_lista_suosikeista(hahmo, pelaajat);
+        for (int i = 0; i < hahmot.size(); i++) {
+            luo_lista_suosikeista(hahmot.get(i), pelaajat);
         }
-        for (Profiili pelaaja : pelaajat) {
-            luo_lista_suosikeista(pelaaja, hahmot);
+        for (int i = 0; i < pelaajat.size(); i++) {
+            luo_lista_suosikeista(pelaajat.get(i), hahmot);
         }
+        System.out.println(hahmot.size());
         return hahmot;
     }
 
     public static void main(String[] args) {
-        launch(); //tiedostonvalitsin
+        launch();        
         /*
-        ArrayList<Profiili> hahmot = luoHahmotJaPelaajat();
+        Lista<Profiili> hahmot = luoHahmotJaPelaajat();
         algoritminYdin(hahmot);
         
         tulostaParit(hahmot);

@@ -12,14 +12,14 @@ import java.util.Objects;
 public class Profiili {
     private int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
     private Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)
-    private List<Profiili> suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
+    private Lista<Profiili> suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
     private String nimi; //"id"
 
     public Profiili(String nimi) {
         this.statsit = new int[10];
         this.nimi = nimi;
     }  
-    public List<Profiili> getSuosikit() {
+    public Lista<Profiili> getSuosikit() {
         return suosikit;
     }
     
@@ -35,7 +35,7 @@ public class Profiili {
         return nimi;
     }
     
-    public void setSuosikit(List<Profiili> suosikit) {
+    public void setSuosikit(Lista<Profiili> suosikit) {
         this.suosikit = suosikit;
     }
     
