@@ -10,18 +10,14 @@ import java.util.Objects;
  * @author arkkis
  */
 public class Profiili {
-    int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
-    Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)
-    List<Profiili> suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
-    String nimi; //"id"
+    private int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
+    private Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)
+    private List<Profiili> suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
+    private String nimi; //"id"
 
     public Profiili(String nimi) {
         this.statsit = new int[10];
         this.nimi = nimi;
-        /*Random rand = new Random(); 
-        for (int i=0; i < 10; i++) {
-            statsit[i] = rand.nextInt(5); 
-        }*/
     }  
     public List<Profiili> getSuosikit() {
         return suosikit;
@@ -45,6 +41,10 @@ public class Profiili {
     
     public void setStatsit(int[] statsit) {
         this.statsit = statsit;
+    }
+    
+    public int[] getStatsit() {
+        return this.statsit;
     }
 
     @Override

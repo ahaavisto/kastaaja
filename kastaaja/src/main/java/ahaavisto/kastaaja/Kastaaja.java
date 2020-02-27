@@ -8,7 +8,6 @@ package ahaavisto.kastaaja;
 import java.io.File;
 import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -17,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -126,8 +124,8 @@ public class Kastaaja extends Application{
         HashMap<Profiili, Integer> preferenssit = new HashMap<>();
         for (Profiili verrattava : verrattavat) {
             int erotus = 0;
-            for (int i = 0; i < verrattavat.size(); i++) {
-                erotus += Math.abs(profiili.statsit[i] - verrattava.statsit[i]);
+            for (int i = 0; i < profiili.getStatsit().length; i++) {
+                erotus += Math.abs(profiili.getStatsit()[i] - verrattava.getStatsit()[i]);
             }
             preferenssit.put(verrattava, erotus);
         }
@@ -194,12 +192,13 @@ public class Kastaaja extends Application{
      */
     public static List<Profiili> poistetaanHuonommatKuinNykyinen(Profiili profiili, Profiili kosija) {
         List<Profiili> hylatyt_suosikit = new ArrayList<>();
-        for (int i = 0; i < profiili.suosikit.size(); i++) {
-            if (profiili.suosikit.get(i) == kosija) {
-                if (i + 1 <= profiili.suosikit.size() - 1) {
-                    hylatyt_suosikit = profiili.suosikit.subList(i+1, profiili.suosikit.size());
+        List<Profiili> suosikit = profiili.getSuosikit();
+        for (int i = 0; i < suosikit.size(); i++) {
+            if (suosikit.get(i) == kosija) {
+                if (i + 1 <= suosikit.size() - 1) {
+                    hylatyt_suosikit = suosikit.subList(i+1, suosikit.size());
                 }    
-                profiili.setSuosikit(profiili.suosikit.subList(0, i+1));   
+                profiili.setSuosikit(suosikit.subList(0, i+1));   
                 break;
             }
         }
@@ -215,9 +214,9 @@ public class Kastaaja extends Application{
      */
     public static void poistetaanTurhatToiveet(List<Profiili> hylatyt_suosikit, Profiili hylkaajaHahmo) {
         for (Profiili hylatty : hylatyt_suosikit) {
-            for (int i = 0; i < hylatty.suosikit.size(); i++) {
-                if (hylatty.suosikit.get(i).equals(hylkaajaHahmo)) {
-                    hylatty.suosikit.remove(i);
+            for (int i = 0; i < hylatty.getSuosikit().size(); i++) {
+                if (hylatty.getSuosikit().get(i).equals(hylkaajaHahmo)) {
+                    hylatty.getSuosikit().remove(i);
                 }
             }
         }
@@ -280,7 +279,7 @@ public class Kastaaja extends Application{
         while (vapaat.size() > 0) {
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
-            Profiili kosittava = kosija.suosikit.get(0);
+            Profiili kosittava = kosija.getSuosikit().get(0);
             Kihlaus(kosija, kosittava);           
         }
     }
