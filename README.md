@@ -26,3 +26,18 @@ Larpin pelaajavalinnan (kastaamisen) automatisointia eli hahmojen ja pelaajien y
 [Käyttöohje](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/käyttöohje.md)
 
 [Määrittelydokumentti](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/määrittelydokumentti.md)
+
+[Testausdokumentti](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/testaus.md) (WIP)
+
+[Toteutusdokumentti](https://github.com/ahaavisto/kastaaja/blob/master/kastaaja/dokumentaatio/toteutus.md) (WIP)
+
+## Lähteet
+
+Algoritmi perustuu [Stable marriage with indifference](https://en.wikipedia.org/wiki/Stable_marriage_with_indifference) -algoritmiin.
+
+Hahmo- ja pelaajalistat generoitu Python3-ohjelmanpätkällä käyttäen Pythonin standardikirjaston Random-kirjastoa parametrien luomiseen.
+
+Hahmojen nimet (100 nimen lista):
+[Odysseus-pelin](https://drive.google.com/drive/folders/1niTz3oFzJ1N5eJWz9Jh6Y2gDT2SMjTrI) hahmojen nimet kopioituna [tästä listasta](https://docs.google.com/spreadsheets/d/1NGnezEMCPD4EtBjMlA4Tg0ZSKoH4Fuo7F0Kfos_WwIo/edit?usp=drive_web&ouid=103489600517709596079) (Huom, kyseinen Excel on varsin raskas)
+Pelaajien nimet (100 nimen lista):
+[Wiktionaryn lista ruotsinkielisistä etunimistä (lyhennettynä mielivaltaisesti)](https://en.wiktionary.org/wiki/Appendix:Swedish_given_names)

@@ -1,6 +1,15 @@
 # Käyttöohje
 
+
+## Ohjelman tarkoitus
+
+Kastaaja-sovellus yhdistää larppihahmot hahmojen ominaisuuksien perusteella pelaajiin siten, että lopputulos on optimaalinen siten, ettei kukaan pelaaja haluaisi vaihtaa saamaansa hahmoa päittäin toisen pelaajan kanssa, eikä myöskään mikään hahmo voisi saada sopivampaa pelaajaa vaihtamalla päittäin pelaajaa toisen hahmon kanssa ("Stable marriage").
+
+Hahmot ja pelaajat on pelkistetty listaksi numeerisia parametreja, jotka käytännössä olisivat hahmon ominaisuuksia / pelaajan toiveita, jotka on muutettu numeerisiksi esimerkiksi tyyliin "Hahmo, jolla on paljon vaikutusvaltaa? 0 = ei juuri yhtään; 1 = vain vähän; 2 = ei paljon eikä vähän; 3 = aika paljon; 4 = hyvin paljon".
+
+## Ohjelman käyttö
+
 Sovelluksen käynnistyessä näkyviin tulee graafinen käyttöliittymä, jossa voit valita lähdetiedostot. Käytä assets-kansion hahmot.csv ja pelaajat.csv tiedostoja tai muita tiedostoja, joiden datarivit ovat muotoa:
 nimi,1,2,0,1,2
 
-Kun olet valinnut tiedostot, varsinainen ohjelma käynnistyy automaattisesti ja tulostaa komentoriville tietoja algoritmin etenemisestä. 11. helmikuuta versiossa varsinainen algoritmi on yhä rikki ja jää ikuiseen silmukkaan. Siksi suoritus on laitettu pysähtymään 100 silmukan jälkeen, vaikka kaikki eivät olisikaan "naimisissa" (terminologia lainattu suoraa stable marriage -algoritmilta).
+Kun olet valinnut tiedostot, voit "aja algoritmi"-nappia painamalla käynnistää varsinaisen algoritmin suorituksen. Algoritmin tulos eli hahmo-pelaaja-parit tulostuvat näkyviin käyttöliittymän tekstikenttään, josta ne voi kopioida talteen muualle talteen.
