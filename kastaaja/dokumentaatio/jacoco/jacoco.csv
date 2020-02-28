@@ -1,3 +1,4 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-kastaaja,ahaavisto.kastaaja,Profiili,13,62,3,5,6,21,5,8,2,7
-kastaaja,ahaavisto.kastaaja,Kastaaja,364,167,30,18,91,35,29,13,12,6
+kastaaja,ahaavisto.kastaaja,Profiili,12,69,3,5,5,24,5,10,2,9
+kastaaja,ahaavisto.kastaaja,Lista,51,225,9,23,3,46,9,19,0,12
+kastaaja,ahaavisto.kastaaja,Kastaaja,339,232,22,24,78,49,25,18,13,7

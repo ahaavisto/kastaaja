@@ -10,42 +10,42 @@ import java.util.Objects;
  * @author arkkis
  */
 public class Profiili {
-    int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
-<span class="fc" id="L14">    Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)</span>
-    List&lt;Profiili&gt; suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
-    String nimi; //&quot;id&quot;
+    private int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
+<span class="fc" id="L14">    private Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)</span>
+    private Lista&lt;Profiili&gt; suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
+    private String nimi; //&quot;id&quot;
 
 <span class="fc" id="L18">    public Profiili(String nimi) {</span>
 <span class="fc" id="L19">        this.statsit = new int[10];</span>
 <span class="fc" id="L20">        this.nimi = nimi;</span>
-        /*Random rand = new Random(); 
-        for (int i=0; i &lt; 10; i++) {
-            statsit[i] = rand.nextInt(5); 
-        }*/
-<span class="fc" id="L25">    }  </span>
-    public List&lt;Profiili&gt; getSuosikit() {
-<span class="fc" id="L27">        return suosikit;</span>
+<span class="fc" id="L21">    }  </span>
+    public Lista&lt;Profiili&gt; getSuosikit() {
+<span class="fc" id="L23">        return suosikit;</span>
     }
     
     public Profiili getKihlattu() {
-<span class="fc" id="L31">        return kihlattu;</span>
+<span class="fc" id="L27">        return kihlattu;</span>
     }
     
     public void setKihlattu(Profiili kihlattu) {
-<span class="fc" id="L35">        this.kihlattu = kihlattu;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L31">        this.kihlattu = kihlattu;</span>
+<span class="fc" id="L32">    }</span>
     
     public String getNimi () {
-<span class="nc" id="L39">        return nimi;</span>
+<span class="nc" id="L35">        return nimi;</span>
     }
     
-    public void setSuosikit(List&lt;Profiili&gt; suosikit) {
-<span class="fc" id="L43">        this.suosikit = suosikit;</span>
-<span class="fc" id="L44">    }</span>
+    public void setSuosikit(Lista&lt;Profiili&gt; suosikit) {
+<span class="fc" id="L39">        this.suosikit = suosikit;</span>
+<span class="fc" id="L40">    }</span>
     
     public void setStatsit(int[] statsit) {
-<span class="nc" id="L47">        this.statsit = statsit;</span>
-<span class="nc" id="L48">    }</span>
+<span class="fc" id="L43">        this.statsit = statsit;</span>
+<span class="fc" id="L44">    }</span>
+    
+    public int[] getStatsit() {
+<span class="fc" id="L47">        return this.statsit;</span>
+    }
 
     @Override
     public int hashCode() {
@@ -70,6 +70,11 @@ public class Profiili {
 <span class="fc" id="L70">            return false;</span>
         }
 <span class="nc" id="L72">        return true;</span>
+    }
+    
+    @Override
+    public String toString() {
+<span class="nc" id="L77">        return this.nimi;</span>
     }
     
     

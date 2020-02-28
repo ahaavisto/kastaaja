@@ -2,9 +2,9 @@
 
 ## Ohjelman yleisrakenne
 
-Ohjelma koostuu pääluokasta ja Profiili-luokasta, joka kuvaa yksittäistä hahmoa/pelaajaa. Hahmo ja pelaaja ovat ohjelman kannalta identtiset: niillä on id:nä toimiva nimi, statsit-taulukko joka kuvaa niiden kastaamisessa käytettävät ominaisuudet, sekä kastauksessa käytettävät suosikkilista ja "kihlattu" eli mahdollinen mätsätty hahmo/pelaaja.
+Ohjelma koostuu pääluokasta, Profiili-luokasta, joka kuvaa yksittäistä hahmoa/pelaajaa ja Lista-luokasta joka on Javan valmista ArrayListia muistuttava tietorakenne. Hahmo ja pelaaja ovat ohjelman kannalta identtiset: niillä on id:nä toimiva nimi, statsit-taulukko joka kuvaa niiden kastaamisessa käytettävät ominaisuudet, sekä kastauksessa käytettävät suosikkilista ja "kihlattu" eli mahdollinen mätsätty hahmo/pelaaja.
 
-Käyttöliittymän eriyttäminen on vaiheessa (tilanne 27.2.)
+Käyttöliittymän eriyttäminen on vaiheessa (tilanne 27.2.).
 
 ## Aika- ja tilavaativuudet
 
