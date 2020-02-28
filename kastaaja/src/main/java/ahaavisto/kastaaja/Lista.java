@@ -84,8 +84,25 @@ public class Lista<E> {
         sisalto = Arrays.copyOf(sisalto, uusiKoko);
     }
     
-    public Lista<E> subList(int i, int j) {
-        sisalto = Arrays.copyOfRange(sisalto, i, j); //TODO tarkista että toimii halutusti
+    /**
+     * Testaamista varten
+     */
+    public int getKapasiteetti() {
+        return sisalto.length;
+    }
+    
+    /**
+     * Luo uuden listan joka sisältää aiemman listan annettujen indeksien väliltä
+     * @param fromIndex mistä alkaen; tämä raja mukana
+     * @param toIndex minne asti; tämä raja ei mukana
+     * @return muokattu lista
+     */
+    public Lista<E> subList(int fromIndex, int toIndex) {
+        // todo tarkista että j > i
+        Object[] uusi = Arrays.copyOfRange(sisalto, fromIndex, toIndex); //TODO tarkista että toimii halutusti
+        sisalto = null;
+        sisalto = uusi;
+        koko = toIndex - fromIndex + 1;
         return this;
     }
     

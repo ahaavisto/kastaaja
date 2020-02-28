@@ -67,4 +67,57 @@ public class TestLista {
         assertEquals("listalta ei löydy olemattomia", false, lista.contains(22));
     }
     
+    @Test
+    public void testRemovePoistaa() {
+        Lista<String> lista = new Lista<String>();
+        lista.add("41");
+        lista.add("42");
+        lista.remove(0);
+        assertEquals("Listan pituus on ", 1, lista.size());
+        assertEquals("Poistettu poistunut listalta", false, lista.contains("41"));
+    }
+    
+    @Test
+    public void testRemoveMuuttaaIndeksit() {
+        Lista<String> lista = new Lista<String>();
+        lista.add("40");
+        lista.add("41");
+        lista.add("42");
+        lista.remove(1);
+        assertEquals("Eka alkio ennallaan ", "40", lista.get(0));
+        assertEquals("Indeksi muuttunut oikein", "42", lista.get(1));
+    }
+    
+    @Test
+    public void testKasvataKapasiteettia() {
+        Lista<String> lista = new Lista<String>();
+        int kokoAluksi = lista.getKapasiteetti();
+        for (int i = 0; i < kokoAluksi+1; i++) {
+            lista.add("asdf");
+        }
+        assertEquals("Listan kapasiteetti kasvanut", 20, lista.getKapasiteetti());
+    }
+    
+    @Test
+    public void testKonstruktorinKuormitus() {
+        Lista<String> lista = new Lista<String>();
+        lista.add("asdf");
+        Lista<String> lista2 = new Lista<String>(lista);
+        assertEquals("Listan pituus on ", 1, lista2.size());
+        assertEquals("Lista sisältää ", true, lista2.contains("asdf"));
+    }
+    
+    @Test
+    public void testSubList() {
+        Lista<String> lista = new Lista<String>();
+        for (int i = 0; i < 8; i++) {
+            lista.add("" + i);
+        }
+        lista = lista.subList(1, 3);
+        assertEquals("Listan pituus on ", 3, lista.size());
+        assertEquals("Listalla ekana oikea alkio", "1", lista.get(0));
+        assertEquals("Listalla vikana oikea alkio", "2", lista.get(1));
+    }
+  
+    
 }
