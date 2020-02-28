@@ -114,7 +114,7 @@ public class TestLista {
             lista.add("" + i);
         }
         lista = lista.subList(1, 3);
-        assertEquals("Listan pituus on ", 3, lista.size());
+        assertEquals("Listan pituus on ", 2, lista.size());
         assertEquals("Listalla ekana oikea alkio", "1", lista.get(0));
         assertEquals("Listalla vikana oikea alkio", "2", lista.get(1));
     }

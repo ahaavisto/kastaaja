@@ -40,6 +40,37 @@ public class TestKastaaja {
 
     }
     
+    static void luoProfiilitIlmanSuosikkeja () {
+        hahmot = new Lista<>();
+        hahmo1 = new Profiili("bob");
+        hahmot.add(hahmo1);
+        hahmo2 = new Profiili("bill");
+        hahmot.add(hahmo2);
+        
+        pelaajat = new Lista<>();
+        pelaaja1 = new Profiili("alice");
+        pelaajat.add(pelaaja1);
+        pelaaja2 = new Profiili("eve");
+        pelaajat.add(pelaaja2);
+        
+        int[] stats1 = {1, 1};
+        hahmo1.setStatsit(stats1);
+        int[] stats2 = {0, 0};
+        hahmo2.setStatsit(stats2);
+        int[] stats3 = {0, 0};
+        pelaaja1.setStatsit(stats3);
+
+    }
+    
+    @Test
+    public void testLuoListaSuosikeista() {
+        luoProfiilitIlmanSuosikkeja();
+        Kastaaja.luo_lista_suosikeista(pelaaja1, hahmot);
+        Lista<Profiili> suosikit = pelaaja1.getSuosikit();
+        assertEquals("suosikkien pituus on", 2, suosikit.size());
+        assertEquals("ekana suosikkina on", hahmo2, suosikit.get(0));
+        assertEquals("tokana suosikkina on", hahmo1, suosikit.get(1));
+    }
 
     @Test
     public void testKihlaus() {
@@ -77,7 +108,8 @@ public class TestKastaaja {
         Lista<Profiili> testilista = new Lista<>();
         testilista.add(hahmo1);
         testilista.add(hahmo2);
-        assertEquals("hahmojen järjestys on", testilista, pelaaja1.getSuosikit());
+        assertEquals("hahmoista ekana on", testilista.get(0), pelaaja1.getSuosikit().get(0));
+        assertEquals("hahmoista tokana on", testilista.get(1), pelaaja1.getSuosikit().get(1));
     }
     
     @Test

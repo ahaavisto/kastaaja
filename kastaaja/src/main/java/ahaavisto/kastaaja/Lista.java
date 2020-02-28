@@ -27,12 +27,17 @@ public class Lista<E> {
         koko++;
     }
     
-    public void add(int index, E e) {
-        if (koko == sisalto.length) {
-            kasvataKapasiteettia();
+    /**
+     * Vaihtaa annetuissa indekseissä olevat oliot keskenään
+     */
+    public void swap(int ekaIndex, int tokaIndex) {
+        if (ekaIndex >= koko || ekaIndex < 0 || tokaIndex >= koko || tokaIndex < 0 || ekaIndex > tokaIndex) {
+            throw new IndexOutOfBoundsException("Index: " + ekaIndex + ", Size " + koko);
         }
-        sisalto[index] = e;
-        //TO DO tarkistus, milloin koko muuttuu tällä add-versiolla
+        Object eka = sisalto[ekaIndex];
+        Object toka = sisalto[tokaIndex];
+        sisalto[ekaIndex] = toka;
+        sisalto[tokaIndex] = eka;
     }
 
     @SuppressWarnings("unchecked")
@@ -100,10 +105,11 @@ public class Lista<E> {
     public Lista<E> subList(int fromIndex, int toIndex) {
         // todo tarkista että j > i
         Object[] uusi = Arrays.copyOfRange(sisalto, fromIndex, toIndex); //TODO tarkista että toimii halutusti
-        sisalto = null;
-        sisalto = uusi;
-        koko = toIndex - fromIndex + 1;
-        return this;
+        Lista<E> uusiLista = new Lista<>();
+        for (int i = 0; i < uusi.length; i++) {
+            uusiLista.add((E) uusi[i]);
+        }
+        return uusiLista;
     }
     
     public void addAll(Lista lista) {

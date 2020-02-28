@@ -65,7 +65,6 @@ public class Kastaaja extends Application{
         pelaajanappi.setOnAction(e -> {
             pelaajatiedosto = valitsin.showOpenDialog(ikkuna);
             pelaajanappi.setText("Pelaajalistaksi valittu " + pelaajatiedosto.getName());
-            System.out.println("testi");
         });
         
         aloitusnappi.setOnAction(e -> {     
@@ -130,9 +129,10 @@ public class Kastaaja extends Application{
             }
             preferenssit.put(verrattava, erotus);
         }
-
         Lista<Profiili> tulevat_suosikit = new Lista(verrattavat);//verrattavat
         kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);
+            
+        
     }
 
     /**
@@ -152,9 +152,7 @@ public class Kastaaja extends Application{
             eiValmis = false;
             for (int i = 0; i < suosikit.size() - 1; i++) {
                 if (onko_isompi(suosikit.get(i), suosikit.get(i + 1), preferenssit)) {
-                    Profiili vaihto = suosikit.get(i);
-                    suosikit.remove(i);
-                    suosikit.add(i+1, vaihto); // laitetaan indeksistä i tallennettu seuraavaan indeksiin
+                    suosikit.swap(i, i+1);
                     eiValmis = true;
                 }
             }
@@ -216,8 +214,7 @@ public class Kastaaja extends Application{
      */
     public static void poistetaanTurhatToiveet(Lista<Profiili> hylatyt_suosikit, Profiili hylkaajaHahmo) {
         for (int i = 0; i < hylatyt_suosikit.size(); i++) {
-            Profiili hylatty = hylatyt_suosikit.get(i);
-            System.out.println("hello");
+            Profiili hylatty = hylatyt_suosikit.get(i);            
             for (int j = 0; j < hylatty.getSuosikit().size(); j++) {
                 if (hylatty.getSuosikit().get(j).equals(hylkaajaHahmo)) {
                     hylatty.getSuosikit().remove(j);
@@ -280,15 +277,12 @@ public class Kastaaja extends Application{
      * @param hahmot 
      */
     public static void algoritminYdin(Lista<Profiili> hahmot) {
-        System.out.println(hahmot.size());
         vapaat.addAll(hahmot);
-        System.out.println("vapaita " + vapaat.size());
         while (vapaat.size() > 0) {
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.getSuosikit().get(0);
-            Kihlaus(kosija, kosittava);  
-            System.out.println(tulostaParit(hahmot));
+            Kihlaus(kosija, kosittava);
         }
     }
     
@@ -306,7 +300,6 @@ public class Kastaaja extends Application{
         for (int i = 0; i < pelaajat.size(); i++) {
             luo_lista_suosikeista(pelaajat.get(i), hahmot);
         }
-        System.out.println(hahmot.size());
         return hahmot;
     }
 

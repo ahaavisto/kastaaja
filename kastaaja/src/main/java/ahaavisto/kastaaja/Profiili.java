@@ -72,6 +72,11 @@ public class Profiili {
         return true;
     }
     
+    @Override
+    public String toString() {
+        return this.nimi;
+    }
+    
     
     
 }
