@@ -20,18 +20,31 @@ public class Lista<E> {
     }
 
     public void add(E e) {
+        add(koko, e);
+    }
+    
+    /**
+     * Lisätään alkio tiettyyn indeksiin (kunhan indeksi on listan sisällä tai tulossa suoraa sen perään)
+     */
+    public void add(int index, E e) {
         if (koko == sisalto.length) {
             kasvataKapasiteettia();
-        }
-        sisalto[koko] = e;
-        koko++;
+        }        
+        if (index < 0 || index > koko) { //ei voi lisätä niin, että listaan jäisi tyhjää
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size " + koko);
+        } else if (index < koko) {
+            sisalto[index] = e;
+        } else { //kun lisätään listan viimeiseksi, koko kasvaa
+            sisalto[index] = e;
+            koko++;
+        }   
     }
     
     /**
      * Vaihtaa annetuissa indekseissä olevat oliot keskenään
      */
     public void swap(int ekaIndex, int tokaIndex) {
-        if (ekaIndex >= koko || ekaIndex < 0 || tokaIndex >= koko || tokaIndex < 0 || ekaIndex > tokaIndex) {
+        if (ekaIndex >= koko || ekaIndex < 0 || tokaIndex >= koko || tokaIndex < 0) {
             throw new IndexOutOfBoundsException("Index: " + ekaIndex + ", Size " + koko);
         }
         Object eka = sisalto[ekaIndex];
@@ -66,23 +79,6 @@ public class Lista<E> {
     public int size() {
         return koko;
     }
-    /** 
-    //Print method
-    @Override
-    public String toString() 
-    {
-         StringBuilder sb = new StringBuilder();
-         sb.append('[');
-         for(int i = 0; i < koko ;i++) {
-             sb.append(sisalto[i].toString());
-             if(i<koko-1){
-                 sb.append(",");
-             }
-         }
-         sb.append(']');
-         return sb.toString();
-    }*
-    */
      
     private void kasvataKapasiteettia() {
         int uusiKoko = sisalto.length * 2;

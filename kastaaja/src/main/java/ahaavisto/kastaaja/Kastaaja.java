@@ -96,23 +96,6 @@ public class Kastaaja extends Application{
     }
 
     /**
-     *
-     * @param eka profiili jonka sopivuutta verrataan tokaan
-     * @param toka profiili johon ekan sopivuutta verrataan
-     * @param suosikit map joka mäppää ekan profiilin mätsäävyysarvon kuhunkin
-     * profiiliin
-     * @return vastaus metodin nimen esittämään kysymykseen
-     */
-    public static boolean onko_isompi(Profiili eka, Profiili toka, HashMap<Profiili, Integer> suosikit) {
-        int ekan_arvo = suosikit.get(eka);
-        int tokan_arvo = suosikit.get(toka);
-        if (ekan_arvo > tokan_arvo) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Luodaan kyseiselle profiilille (eli hahmolle/pelaajalle) lista, missä
      * järjestyksessä se preferoi toisen profiililuokan profiileita
      *
@@ -120,18 +103,17 @@ public class Kastaaja extends Application{
      * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
      */
     public static void luo_lista_suosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
-        HashMap<Profiili, Integer> preferenssit = new HashMap<>();
+        Lista<Integer> preferenssit = new Lista<>(); // profiilin preferenssit(i) on statsien erotus profiiliin verrattavat(i)
         for (int i = 0; i < verrattavat.size(); i++) {
             Profiili verrattava = verrattavat.get(i);
             int erotus = 0;
             for (int j = 0; j < profiili.getStatsit().length; j++) {
                 erotus += Math.abs(profiili.getStatsit()[j] - verrattava.getStatsit()[j]);
             }
-            preferenssit.put(verrattava, erotus);
+            preferenssit.add(i, erotus);
         }
-        Lista<Profiili> tulevat_suosikit = new Lista(verrattavat);//verrattavat
+        Lista<Profiili> tulevat_suosikit = new Lista(verrattavat);
         kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);
-            
         
     }
 
@@ -146,13 +128,15 @@ public class Kastaaja extends Application{
      * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin
      * preferensseista toisen profiililuokan profiileihin
      */
-    public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, HashMap<Profiili, Integer> preferenssit) {
+    public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, Lista<Integer> preferenssit) {
+    //public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, HashMap<Profiili, Integer> preferenssit) {
         boolean eiValmis = true;
         while (eiValmis) {
-            eiValmis = false;
+            eiValmis = false;           
             for (int i = 0; i < suosikit.size() - 1; i++) {
-                if (onko_isompi(suosikit.get(i), suosikit.get(i + 1), preferenssit)) {
+                if (preferenssit.get(i) > preferenssit.get(i+1)) {
                     suosikit.swap(i, i+1);
+                    preferenssit.swap(i, i+1);
                     eiValmis = true;
                 }
             }

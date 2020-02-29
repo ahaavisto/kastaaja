@@ -91,19 +91,11 @@ public class TestKastaaja {
     }
     
     @Test
-    public void testOnko_isompi() {
-        HashMap<Profiili, Integer> suosikit = new HashMap<>();
-        suosikit.put(hahmo1, 1);
-        suosikit.put(hahmo2, 2);        
-        assertEquals("Hahmojen järjestys", Kastaaja.onko_isompi(hahmo1, hahmo2, suosikit), false);
-    }
-    
-    @Test
     public void testKuplajarjestaminen() {
         luoProfiilit();
-        HashMap<Profiili, Integer> preferenssit = new HashMap<>();
-        preferenssit.put(hahmo1, 1);
-        preferenssit.put(hahmo2, 2);
+        Lista<Integer> preferenssit = new Lista<>();
+        preferenssit.add(1);
+        preferenssit.add(2);
         Kastaaja.kuplajarjestaminen(pelaaja1, hahmot, preferenssit);
         Lista<Profiili> testilista = new Lista<>();
         testilista.add(hahmo1);

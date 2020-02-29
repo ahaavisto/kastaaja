@@ -7,8 +7,22 @@
 import static org.junit.Assert.*;
 import org.junit.Test;
 import ahaavisto.kastaaja.Lista;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 
 public class TestLista {
+    @Rule
+  public final ExpectedException exception = ExpectedException.none();
+    
+    static Lista<Integer> nrolista;
+    
+    public void addSeveral() {
+        nrolista = new Lista<>();
+        nrolista.add(39);
+        nrolista.add(40);
+        nrolista.add(41);
+        nrolista.add(42);
+    }
 
     @Test
     public void testAdd() {
@@ -19,13 +33,42 @@ public class TestLista {
     
     @Test
     public void testAddSeveral() {
-        Lista<Integer> lista = new Lista<>();
-        lista.add(39);
-        lista.add(40);
-        lista.add(41);
-        lista.add(42);
-        assertEquals("listan pituus ", 4, lista.size());
+        addSeveral();
+        assertEquals("listan pituus ", 4, nrolista.size());
     }
+    
+    @Test
+    public void testAddToIndexInsideList() {
+        addSeveral();
+        nrolista.add(1, 100);
+        assertEquals("listan pituus ", 4, nrolista.size());
+        assertEquals("lista sisältää ", true, nrolista.contains(100));
+        assertEquals("lista ei sisällä poistettua ", false, nrolista.contains(40));
+    }
+    
+    @Test
+    public void testAddToIndexInTheEnd() {
+        addSeveral();
+        nrolista.add(4, 100);
+        assertEquals("listan pituus ", 5, nrolista.size());
+        assertEquals("lista sisältää ", true, nrolista.contains(100));
+    }
+
+    @Test
+    public void testAddTooBigIndex() {
+        addSeveral();
+        exception.expect(IndexOutOfBoundsException.class);
+        nrolista.add(100, 100);
+    }
+    
+    @Test
+    public void testAddTooSmallIndex() {
+        addSeveral();
+        exception.expect(IndexOutOfBoundsException.class);
+        nrolista.add(-1, 100);
+    }
+    
+    
     
     @Test
     public void testAddAll() {
@@ -48,15 +91,18 @@ public class TestLista {
     
     @Test
     public void testGetSeveral() {
-        Lista<String> lista = new Lista<String>();
-        lista.add("39");
-        lista.add("40");
-        lista.add("41");
-        lista.add("42");
-        assertEquals("listalla on ekana", "39", lista.get(0));
-        assertEquals("listalla on tokana", "40", lista.get(1));
-        assertEquals("listalla on 3.", "41", lista.get(2));
-        assertEquals("listalla on 4.", "42", lista.get(3));
+        addSeveral();
+        assertEquals("listalla on ekana", (Integer)39, nrolista.get(0));
+        assertEquals("listalla on tokana", (Integer)40, nrolista.get(1));
+        assertEquals("listalla on 3.", (Integer)41, nrolista.get(2));
+        assertEquals("listalla on 4.", (Integer)42, nrolista.get(3));
+    }
+    
+    @Test
+    public void testGetTooBigIndex() {
+        addSeveral();
+        exception.expect(IndexOutOfBoundsException.class);
+        nrolista.add(100, 100);
     }
     
     @Test
@@ -86,6 +132,22 @@ public class TestLista {
         lista.remove(1);
         assertEquals("Eka alkio ennallaan ", "40", lista.get(0));
         assertEquals("Indeksi muuttunut oikein", "42", lista.get(1));
+    }
+    
+    @Test
+    public void testSwap() {
+        addSeveral();
+        nrolista.swap(1, 2);
+        assertEquals("Listan pituus on ", (Integer)4, (Integer)nrolista.size());
+        assertEquals("sijainti vaihtunut ", (Integer)40, nrolista.get(2));
+        assertEquals("sijainti vaihtunut ", (Integer)41, nrolista.get(1));
+    }
+    
+    @Test
+    public void testSwapForIllegalIndex() {
+        addSeveral();
+        exception.expect(IndexOutOfBoundsException.class);
+        nrolista.swap(1,100);
     }
     
     @Test
