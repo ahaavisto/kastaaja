@@ -7,7 +7,6 @@ package ahaavisto.kastaaja;
 
 import java.io.File;
 import static java.lang.Integer.parseInt;
-import java.util.HashMap;
 import java.util.Scanner;
 
 import javafx.application.Application;
@@ -102,7 +101,7 @@ public class Kastaaja extends Application{
      * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
      * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
      */
-    public static void luo_lista_suosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
+    public static void luoListaSuosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
         Lista<Integer> preferenssit = new Lista<>(); // profiilin preferenssit(i) on statsien erotus profiiliin verrattavat(i)
         for (int i = 0; i < verrattavat.size(); i++) {
             Profiili verrattava = verrattavat.get(i);
@@ -112,8 +111,8 @@ public class Kastaaja extends Application{
             }
             preferenssit.add(i, erotus);
         }
-        Lista<Profiili> tulevat_suosikit = new Lista(verrattavat);
-        kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);
+        Lista<Profiili> tulevatSuosikit = new Lista(verrattavat);
+        kuplajarjestaminen(profiili, tulevatSuosikit, preferenssit);
         
     }
 
@@ -153,7 +152,7 @@ public class Kastaaja extends Application{
      * @param kosija profiili joka yhdistetään kosittavaan profiiliin
      * @param kosittava
      */
-    public static void Kihlaus(Profiili kosija, Profiili kosittava) {
+    public static void kihlaus(Profiili kosija, Profiili kosittava) {
         if (kosittava.getKihlattu() != null) { //puretaan vanha kihlaus
             Profiili ex = kosittava.getKihlattu();
             ex.setKihlattu(null);
@@ -266,7 +265,7 @@ public class Kastaaja extends Application{
             Profiili kosija = vapaat.get(0);
             vapaat.remove(0); //poistetaan kosiomatkalle lähtijä
             Profiili kosittava = kosija.getSuosikit().get(0);
-            Kihlaus(kosija, kosittava);
+            kihlaus(kosija, kosittava);
         }
     }
     
@@ -279,10 +278,10 @@ public class Kastaaja extends Application{
         Lista<Profiili> pelaajat = lueData(new Lista<>(), pelaajatiedosto);
         
         for (int i = 0; i < hahmot.size(); i++) {
-            luo_lista_suosikeista(hahmot.get(i), pelaajat);
+            luoListaSuosikeista(hahmot.get(i), pelaajat);
         }
         for (int i = 0; i < pelaajat.size(); i++) {
-            luo_lista_suosikeista(pelaajat.get(i), hahmot);
+            luoListaSuosikeista(pelaajat.get(i), hahmot);
         }
         return hahmot;
     }

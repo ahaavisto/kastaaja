@@ -12,7 +12,6 @@
 import ahaavisto.kastaaja.Kastaaja;
 import ahaavisto.kastaaja.Profiili;
 import ahaavisto.kastaaja.Lista;
-import java.util.HashMap;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -65,7 +64,7 @@ public class TestKastaaja {
     @Test
     public void testLuoListaSuosikeista() {
         luoProfiilitIlmanSuosikkeja();
-        Kastaaja.luo_lista_suosikeista(pelaaja1, hahmot);
+        Kastaaja.luoListaSuosikeista(pelaaja1, hahmot);
         Lista<Profiili> suosikit = pelaaja1.getSuosikit();
         assertEquals("suosikkien pituus on", 2, suosikit.size());
         assertEquals("ekana suosikkina on", hahmo2, suosikit.get(0));
@@ -75,7 +74,7 @@ public class TestKastaaja {
     @Test
     public void testKihlaus() {
         luoProfiilit();
-        Kastaaja.Kihlaus(hahmo1, pelaaja1);
+        Kastaaja.kihlaus(hahmo1, pelaaja1);
         assertEquals("Kihloissa hahmon kanssa", pelaaja1, hahmo1.getKihlattu());
         assertEquals("Kihloissa pelaajan kanssa", hahmo1, pelaaja1.getKihlattu());
     }
@@ -83,8 +82,8 @@ public class TestKastaaja {
     @Test
     public void testKihlausEroToimii() {
         luoProfiilit();
-        Kastaaja.Kihlaus(hahmo1, pelaaja1);
-        Kastaaja.Kihlaus(hahmo2, pelaaja1);
+        Kastaaja.kihlaus(hahmo1, pelaaja1);
+        Kastaaja.kihlaus(hahmo2, pelaaja1);
         assertEquals("Kihloissa hahmon kanssa", pelaaja1, hahmo2.getKihlattu());
         assertEquals("Kihloissa pelaajan kanssa", hahmo2, pelaaja1.getKihlattu());
         assertEquals("aiempi kihlaus purkautunut", null, hahmo1.getKihlattu());
