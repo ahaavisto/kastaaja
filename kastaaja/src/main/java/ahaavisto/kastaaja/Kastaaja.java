@@ -327,8 +327,8 @@ public class Kastaaja extends Application{
     }
 
     public static void main(String[] args) {
-        hahmotiedosto = new File("assets/hahmot_test.csv"); //oletus jos ei valita muuta
-        pelaajatiedosto = new File("assets/pelaajat_test.csv"); //oletus jos ei valita muuta
+        hahmotiedosto = new File("assets/hahmot.csv"); //oletus jos ei valita muuta
+        pelaajatiedosto = new File("assets/pelaajat.csv"); //oletus jos ei valita muuta
         Testausta t = new Testausta();
         t.testaaProfiilienEriJarjestyksilla();
         

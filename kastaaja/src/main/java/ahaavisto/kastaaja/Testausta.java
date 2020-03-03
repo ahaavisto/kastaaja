@@ -5,6 +5,7 @@
  */
 package ahaavisto.kastaaja;
 
+import java.io.File;
 import java.util.Random;
 
 /**
@@ -13,17 +14,21 @@ import java.util.Random;
  */
 public class Testausta {
     
-    String[] test1 = {"a", "s", "d", "f"};
-    String[] test2 = {"ö", "a", "f", "ä"}; //kaksi yhteistä alkiota
-    
     public int vertaa(Object[] eka, Object[] toka) {
         int samoja = 0;
+        boolean onkoVastaavaa = false;
         for(Object o: eka) {
             for(Object verrattava: toka) {
                 if (o.equals(verrattava)) {
                     samoja++;
+                    onkoVastaavaa = true;
+                    break;
                 }
             }
+            if (!onkoVastaavaa) {
+                System.out.println(o);
+            }
+            onkoVastaavaa = false;
         }
         return samoja;
     }
@@ -48,37 +53,41 @@ public class Testausta {
         //ekana tiedostossa oleva oletusjärjestys
         Lista<Profiili> hahmot = Kastaaja.luoHahmotJaPelaajat();
         Kastaaja.algoritminYdin(hahmot);
-        System.out.println(Kastaaja.tulostaParit(hahmot));
+        //System.out.println(Kastaaja.tulostaParit(hahmot));
         
         
         //satunnainen järjestys; ei vielä toimi, koska sekoitus tapahtuu vasta ennen tulostusta oleellisesti
-        Lista<Profiili> hahmot2 = Kastaaja.luoHahmotJaPelaajat();
+        Lista<Profiili> hahmot2 = Kastaaja.lueData(new Lista<>(), new File("assets/hahmot.csv"));
+        Lista<Profiili> pelaajat2 = Kastaaja.lueData(new Lista<>(), new File("assets/pelaajat.csv"));       
+        
         hahmot2 = sekoitaProfiilienJarjestys(hahmot2);
-        
-//        for (int i = 0; i < hahmot.size(); i++) {
-//            luoListaSuosikeista(hahmot.get(i), pelaajat);
-//        }
-        
+        pelaajat2 = sekoitaProfiilienJarjestys(pelaajat2);
+
+        for (int i = 0; i < hahmot2.size(); i++) {
+            Kastaaja.luoListaSuosikeista(hahmot2.get(i), pelaajat2);
+        }
+        for (int i = 0; i < pelaajat2.size(); i++) {
+            Kastaaja.luoListaSuosikeista(pelaajat2.get(i), hahmot2);
+        }
+
         Kastaaja.algoritminYdin(hahmot2);
-        System.out.println(Kastaaja.tulostaParit(hahmot2));
-        
+        //System.out.println(Kastaaja.tulostaParit(hahmot2));
+
         String[] eka = new String[hahmot.size()];
         for (int i = 0; i < hahmot.size(); i++) {
             Profiili hahmo = hahmot.get(i);
             eka[i] = hahmo + "+" + hahmo.getKihlattu();
         }
-        
+
         String[] toka = new String[hahmot2.size()];
         for (int i = 0; i < hahmot2.size(); i++) {
             Profiili hahmo = hahmot2.get(i);
             toka[i] = hahmo + "+" + hahmo.getKihlattu();
         }       
+
+        System.out.println("samoja pareja oli: " + vertaa(toka, eka));
         
-        System.out.println("samoja pareja oli: " + vertaa(eka, toka));
-    }
-    
-    public void test() {
-        System.out.println("samoja oli: " + vertaa(test1, test2));
+        
     }
     
 }

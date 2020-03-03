@@ -2,13 +2,19 @@
 
 ## Ohjelman yleisrakenne
 
-Ohjelma koostuu pääluokasta, Profiili-luokasta, joka kuvaa yksittäistä hahmoa/pelaajaa ja Lista-luokasta joka on Javan valmista ArrayListia muistuttava tietorakenne. Hahmo ja pelaaja ovat ohjelman kannalta identtiset: niillä on id:nä toimiva nimi, statsit-taulukko joka kuvaa niiden kastaamisessa käytettävät ominaisuudet, sekä kastauksessa käytettävät suosikkilista ja "kihlattu" eli mahdollinen mätsätty hahmo/pelaaja.
+Ohjelma koostuu pääluokasta, Profiili-luokasta, joka kuvaa yksittäistä hahmoa/pelaajaa ja Lista-luokasta joka on Javan valmista ArrayListia muistuttava tietorakenne. Hahmot ja pelaajat ovat ohjelman kannalta identtisiä Profiili-olioita: niillä on id:nä toimiva nimi, statsit-taulukko joka kuvaa niiden kastaamisessa käytettävät ominaisuudet, sekä kastauksessa käytettävät suosikkilista ja "kihlattu" eli mahdollinen mätsätty hahmo/pelaaja.
 
 Käyttöliittymän eriyttäminen on vaiheessa (tilanne 27.2.).
 
 ## Aika- ja tilavaativuudet
 
+Käyttämäni Stable marriage -algoritmin variaation aikavaatimus on O(n²) [Wikipedia:Stable_marriage_with_indifference](https://en.wikipedia.org/wiki/Stable_marriage_with_indifference). Tämä on helppo nähdä todeksi siksi, että pahimmassa tapauksessa algoritmi käy läpi kaikki n hahmon ja n pelaajan muodostamat parit, joita on n².
+
+Tilavaativuus samoin O(n²).
+
 ## Puutteet ja parannusehdotukset
+
+Testatessa sitä, kuinka paljon vaihdannaisuutta algoritmin tuottama kastaus testidatalla todellisuudessa sisältää (ks. testausdokumentti), ilmeni että käytännön sovelluksia varten olisi tärkeää saada ohjelma näyttämään jossakin muodossa eri vaihtoehtoisia, algoritmisesti yhtä hyviä kastaustuloksia. Näin ihminen voisi suorittaa valinnan loppuun päättäen muiden kuin numerosoitavien parametrien osalta, mitkä hahmo+pelaaja-parit kannattaa yhdistää.
 
 ## Lähteet
 
