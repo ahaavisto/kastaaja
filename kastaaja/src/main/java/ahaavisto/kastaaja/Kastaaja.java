@@ -7,6 +7,8 @@ package ahaavisto.kastaaja;
 
 import java.io.File;
 import static java.lang.Integer.parseInt;
+import java.sql.Timestamp;
+import java.util.Random;
 import java.util.Scanner;
 
 import javafx.application.Application;
@@ -285,14 +287,54 @@ public class Kastaaja extends Application{
         }
         return hahmot;
     }
+    
+    public static void testaaSuorituskykya() {
+        
+        hahmotiedosto = new File("/home/fuksi/Documents/kastaaja/kastaaja/assets/hahmot.csv");
+        pelaajatiedosto = new File("/home/fuksi/Documents/kastaaja/kastaaja/assets/pelaajat.csv");
+        for (int i = 0; i < 10; i++) {
+            if (onkoTiedostotValittu()) {
+                testaaAika("10+10");
+            }
+        }
+        
+        hahmotiedosto = new File("/home/fuksi/Documents/kastaaja/kastaaja/assets/hahmot100.csv");
+        pelaajatiedosto = new File("/home/fuksi/Documents/kastaaja/kastaaja/assets/pelaajat100.csv");
+        for (int i = 0; i < 10; i++) {
+            if (onkoTiedostotValittu()) {
+                testaaAika("100+100");
+            }
+        } 
+        
+        hahmotiedosto = new File("/home/fuksi/Documents/kastaaja/kastaaja/assets/hahmot1000.csv");
+        pelaajatiedosto = new File("/home/fuksi/Documents/kastaaja/kastaaja/assets/pelaajat1000.csv");
+        for (int i = 0; i < 10; i++) {
+            if (onkoTiedostotValittu()) {
+                testaaAika("1000+1000");
+            }
+        } 
+        
+    }
+    
+    public static void testaaAika(String syotteenKoko) {
+        Lista<Profiili> hahmot = luoHahmotJaPelaajat();
+        long alku = System.nanoTime();
+        algoritminYdin(hahmot);
+        long loppu = System.nanoTime();
+        long erotus = (loppu-alku);
+        double erotusMillisekunteina = (double)erotus/1000000;
+        System.out.println("aikaa kului, kun syötteen koko oli "+ syotteenKoko + ": " + erotusMillisekunteina + " ms");
+    }
 
     public static void main(String[] args) {
-        launch();        
-        /*
-        Lista<Profiili> hahmot = luoHahmotJaPelaajat();
-        algoritminYdin(hahmot);
+        hahmotiedosto = new File("assets/hahmot_test.csv"); //oletus jos ei valita muuta
+        pelaajatiedosto = new File("assets/pelaajat_test.csv"); //oletus jos ei valita muuta
+        Testausta t = new Testausta();
+        t.testaaProfiilienEriJarjestyksilla();
         
-        tulostaParit(hahmot);
-        */
+        
+        //launch();        
+        
+        //testaaSuorituskykya();
     }
 }
