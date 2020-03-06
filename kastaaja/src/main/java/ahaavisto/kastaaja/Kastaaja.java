@@ -66,7 +66,7 @@ public class Kastaaja extends Application{
         
         aloitusnappi.setOnAction(e -> {     
             if (onkoTiedostotValittu()) {
-                Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat();
+                Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
                 Algoritmi.algoritminYdin(hahmot);        
                 tulos.setText(Algoritmi.tulostaParit(hahmot));
             }
@@ -95,16 +95,18 @@ public class Kastaaja extends Application{
     
 
     public static void main(String[] args) {
-        hahmotiedosto = new File("assets/hahmot.csv"); //oletus jos ei valita muuta
-        pelaajatiedosto = new File("assets/pelaajat.csv"); //oletus jos ei valita muuta
+        hahmotiedosto = new File("assets/hahmot100.csv"); //oletus jos ei valita muuta
+        pelaajatiedosto = new File("assets/pelaajat100.csv"); //oletus jos ei valita muuta
 
         //Aja varsinainen ohjelma:
         launch();
         
         //Aja suorituskyky- ja indifference-testaus:
         
-        //Testausta t = new Testausta();
-        //t.testaaProfiilienEriJarjestyksilla();
+        Arviointi t = new Arviointi();
+        t.testaaKuinkaMoniSaaSuosikkinsa(hahmotiedosto, pelaajatiedosto);
+        //t.testaaProfiilienEriJarjestyksilla(hahmotiedosto, pelaajatiedosto);
+        //t.testaaEriEtusijaisuudella(hahmotiedosto, pelaajatiedosto);
         //t.testaaSuorituskykya();
         
     }

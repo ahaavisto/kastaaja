@@ -24,7 +24,7 @@ public class Algoritmi {
      * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
      * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
      */
-    public static void luoListaSuosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
+    public static Lista<Profiili> luoListaSuosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
         Lista<Integer> preferenssit = new Lista<>(); // profiilin preferenssit(i) on statsien erotus profiiliin verrattavat(i)
         for (int i = 0; i < verrattavat.size(); i++) {
             Profiili verrattava = verrattavat.get(i);
@@ -35,8 +35,8 @@ public class Algoritmi {
             preferenssit.add(i, erotus);
         }
         Lista<Profiili> tulevatSuosikit = new Lista(verrattavat);
-        kuplajarjestaminen(profiili, tulevatSuosikit, preferenssit);
-        
+        Lista<Profiili> suosikitJarjestyksessa = kuplajarjestaminen(profiili, tulevatSuosikit, preferenssit);
+        return suosikitJarjestyksessa;
     }
 
     /**
@@ -50,7 +50,7 @@ public class Algoritmi {
      * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin
      * preferensseista toisen profiililuokan profiileihin
      */
-    public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, Lista<Integer> preferenssit) {
+    public static Lista<Profiili> kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, Lista<Integer> preferenssit) {
     //public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, HashMap<Profiili, Integer> preferenssit) {
         boolean eiValmis = true;
         while (eiValmis) {
@@ -64,6 +64,7 @@ public class Algoritmi {
             }
         }
         profiili.setSuosikit(suosikit);
+        return suosikit;
     }
 
     /**
@@ -196,9 +197,9 @@ public class Algoritmi {
      * Luodaan hahmot, pelaajat ja niille kullekin suosikkilistat
      * @return luodut hahmot eli algoritmin ytimen tarvitsema lähtödata
      */
-    public static Lista<Profiili> luoHahmotJaPelaajat() {
-        Lista<Profiili> hahmot = lueData(new Lista<>(), hahmotiedosto);
-        Lista<Profiili> pelaajat = lueData(new Lista<>(), pelaajatiedosto);
+    public static Lista<Profiili> luoHahmotJaPelaajat(File hahmotied, File pelaajatied) {
+        Lista<Profiili> hahmot = lueData(new Lista<>(), hahmotied);
+        Lista<Profiili> pelaajat = lueData(new Lista<>(), pelaajatied);
         
         for (int i = 0; i < hahmot.size(); i++) {
             luoListaSuosikeista(hahmot.get(i), pelaajat);
