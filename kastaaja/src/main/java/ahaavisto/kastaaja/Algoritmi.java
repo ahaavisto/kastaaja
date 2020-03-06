@@ -5,8 +5,6 @@
  */
 package ahaavisto.kastaaja;
 
-import static ahaavisto.kastaaja.Kastaaja.hahmotiedosto;
-import static ahaavisto.kastaaja.Kastaaja.pelaajatiedosto;
 import static ahaavisto.kastaaja.Kastaaja.vapaat;
 import java.io.File;
 import static java.lang.Integer.parseInt;
@@ -23,6 +21,7 @@ public class Algoritmi {
      *
      * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
      * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
+     * @return
      */
     public static Lista<Profiili> luoListaSuosikeista(Profiili profiili, Lista<Profiili> verrattavat) {
         Lista<Integer> preferenssit = new Lista<>(); // profiilin preferenssit(i) on statsien erotus profiiliin verrattavat(i)
@@ -49,6 +48,7 @@ public class Algoritmi {
      * profiileista
      * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin
      * preferensseista toisen profiililuokan profiileihin
+     * @return
      */
     public static Lista<Profiili> kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, Lista<Integer> preferenssit) {
     //public static void kuplajarjestaminen(Profiili profiili, Lista<Profiili> suosikit, HashMap<Profiili, Integer> preferenssit) {
@@ -134,6 +134,7 @@ public class Algoritmi {
      * Tulostaa hahmo-pelaaja -parit debuggausta varten; jos hahmolla ei ole vielä pelaajaa,
      * sen kanssa tulostuu 4everalone-teksti
      * @param hahmot käsiteltävät hahmot
+     * @return
      */
     public static String tulostaParit (Lista<Profiili> hahmot) {
         String tulostettava = "";
@@ -195,6 +196,8 @@ public class Algoritmi {
     
     /**
      * Luodaan hahmot, pelaajat ja niille kullekin suosikkilistat
+     * @param hahmotied
+     * @param pelaajatied
      * @return luodut hahmot eli algoritmin ytimen tarvitsema lähtödata
      */
     public static Lista<Profiili> luoHahmotJaPelaajat(File hahmotied, File pelaajatied) {

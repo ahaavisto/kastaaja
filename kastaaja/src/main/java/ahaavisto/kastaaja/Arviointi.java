@@ -29,9 +29,6 @@ public class Arviointi {
                     break;
                 }
             }
-            if (!onkoVastaavaa) {
-                System.out.println(o);
-            }
             onkoVastaavaa = false;
         }
         return samoja;
@@ -91,6 +88,7 @@ public class Arviointi {
      * @param pelaajatiedosto 
      */
     public void testaaKuinkaMoniSaaSuosikkinsa(File hahmotiedosto, File pelaajatiedosto) {
+        System.out.println("KUINKA MONI SAA YKKÖSVAIHTOEHTONSA");
         Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
         Lista<Profiili> hahmotMuokkaamaton = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
         Lista<Profiili> pelaajat = hahmot.get(0).getSuosikit();
@@ -117,7 +115,7 @@ public class Arviointi {
 
         String[] eka = luoListaPareistaVertailuun(hahmotKosijoina, true);
         String[] toka = luoListaPareistaVertailuun(pelaajatKosijoina, false); //järjestys eri kuin muissa, jotta järjestys hahmo+pelaaja
-        System.out.println("samoja pareja kahta eri profiilien järjestystä verratessa: " + montakoSamaa(toka, eka));       
+        System.out.println("samoja pareja kun pelaajat kosijoina hahmojen sijaan: " + montakoSamaa(toka, eka));       
     }
     
     /**
@@ -167,15 +165,14 @@ public class Arviointi {
         
         String[] eka = luoListaPareistaVertailuun(hahmot, true);
         String[] toka = luoListaPareistaVertailuun(hahmotSekoitettuna, true);
-        System.out.println("samoja pareja oli: " + montakoSamaa(toka, eka));
-        
-        
+        System.out.println("samoja pareja oli kahta profiilien järjestystä verratessa: " + montakoSamaa(toka, eka));
     }
     
     /**
      * Testaa, kauanko suoritukseen menee eri pituisilla syötteillä.
      */
     public static void testaaSuoritusaikaa() {
+        System.out.println("SUORITUSAIKA ERI PITUISILLA SYÖTTEILLÄ");
         if (onkoTiedostotValittu()) {
             for (int i = 0; i < 10; i++) {
                 testaaAika("10+10", new File("assets/hahmot.csv"), new File("assets/pelaajat.csv"));
@@ -206,7 +203,7 @@ public class Arviointi {
         long loppu = System.nanoTime();
         long erotus = (loppu-alku);
         double erotusMillisekunteina = (double)erotus/1000000;
-        System.out.println("aikaa kului, kun syötteen koko oli "+ syotteenKoko + ": " + erotusMillisekunteina + " ms");
+        System.out.println("Syötteen koko oli "+ syotteenKoko + ": " + erotusMillisekunteina + " ms");
     }
     
 }

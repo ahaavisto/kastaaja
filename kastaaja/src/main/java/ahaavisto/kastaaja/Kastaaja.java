@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ahaavisto.kastaaja;
 
 import java.io.File;
@@ -17,7 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- *
+ * Pääluokka, joka sisältää lähinnä käyttöliittymän
  * @author arkkis
  */
 public class Kastaaja extends Application{
@@ -39,7 +35,7 @@ public class Kastaaja extends Application{
     }
     
     /**
-     * Ohjelman koko käyttöliittymä on atm tässä
+     * Algoritmin graafinen käyttöliittymä
      * @param ikkuna 
      */
     @Override
@@ -95,8 +91,8 @@ public class Kastaaja extends Application{
     
 
     public static void main(String[] args) {
-        hahmotiedosto = new File("assets/hahmot100.csv"); //oletus jos ei valita muuta
-        pelaajatiedosto = new File("assets/pelaajat100.csv"); //oletus jos ei valita muuta
+        hahmotiedosto = new File("assets/hahmot.csv"); //Arviointi-luokan käyttämät tiedostot
+        pelaajatiedosto = new File("assets/pelaajat.csv");
 
         //Aja varsinainen ohjelma:
         launch();
@@ -106,8 +102,8 @@ public class Kastaaja extends Application{
         Arviointi a = new Arviointi();
         a.testaaKuinkaMoniSaaSuosikkinsa(hahmotiedosto, pelaajatiedosto);
         a.testaaProfiilienEriJarjestyksilla(hahmotiedosto, pelaajatiedosto);
-        //t.testaaEriEtusijaisuudella(hahmotiedosto, pelaajatiedosto);
-        //t.testaaSuorituskykya();
+        a.testaaEriEtusijaisuudella(hahmotiedosto, pelaajatiedosto);
+        a.testaaSuoritusaikaa();
         
     }
 }
