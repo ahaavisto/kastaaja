@@ -9,13 +9,13 @@
  * @author arkkis
  */
 
-import ahaavisto.kastaaja.Kastaaja;
+import ahaavisto.kastaaja.Algoritmi;
 import ahaavisto.kastaaja.Profiili;
 import ahaavisto.kastaaja.Lista;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class TestKastaaja {
+public class TestAlgoritmi {
     static Profiili hahmo1, hahmo2, pelaaja1, pelaaja2;
     static Lista<Profiili> hahmot, pelaajat;
             
@@ -64,7 +64,7 @@ public class TestKastaaja {
     @Test
     public void testLuoListaSuosikeista() {
         luoProfiilitIlmanSuosikkeja();
-        Kastaaja.luoListaSuosikeista(pelaaja1, hahmot);
+        Algoritmi.luoListaSuosikeista(pelaaja1, hahmot);
         Lista<Profiili> suosikit = pelaaja1.getSuosikit();
         assertEquals("suosikkien pituus on", 2, suosikit.size());
         assertEquals("ekana suosikkina on", hahmo2, suosikit.get(0));
@@ -74,7 +74,7 @@ public class TestKastaaja {
     @Test
     public void testKihlaus() {
         luoProfiilit();
-        Kastaaja.kihlaus(hahmo1, pelaaja1);
+        Algoritmi.kihlaus(hahmo1, pelaaja1);
         assertEquals("Kihloissa hahmon kanssa", pelaaja1, hahmo1.getKihlattu());
         assertEquals("Kihloissa pelaajan kanssa", hahmo1, pelaaja1.getKihlattu());
     }
@@ -82,8 +82,8 @@ public class TestKastaaja {
     @Test
     public void testKihlausEroToimii() {
         luoProfiilit();
-        Kastaaja.kihlaus(hahmo1, pelaaja1);
-        Kastaaja.kihlaus(hahmo2, pelaaja1);
+        Algoritmi.kihlaus(hahmo1, pelaaja1);
+        Algoritmi.kihlaus(hahmo2, pelaaja1);
         assertEquals("Kihloissa hahmon kanssa", pelaaja1, hahmo2.getKihlattu());
         assertEquals("Kihloissa pelaajan kanssa", hahmo2, pelaaja1.getKihlattu());
         assertEquals("aiempi kihlaus purkautunut", null, hahmo1.getKihlattu());
@@ -95,7 +95,7 @@ public class TestKastaaja {
         Lista<Integer> preferenssit = new Lista<>();
         preferenssit.add(1);
         preferenssit.add(2);
-        Kastaaja.kuplajarjestaminen(pelaaja1, hahmot, preferenssit);
+        Algoritmi.kuplajarjestaminen(pelaaja1, hahmot, preferenssit);
         Lista<Profiili> testilista = new Lista<>();
         testilista.add(hahmo1);
         testilista.add(hahmo2);
@@ -108,7 +108,7 @@ public class TestKastaaja {
         luoProfiilit();
         Lista<Profiili> hylatyt = new Lista<>();
         hylatyt.add(pelaaja1);        
-        Kastaaja.poistetaanTurhatToiveet(hylatyt, hahmo1);
+        Algoritmi.poistetaanTurhatToiveet(hylatyt, hahmo1);
         assertTrue("Poistamaton yhä listalla", pelaaja1.getSuosikit().contains(hahmo2));
         assertFalse("Poistettu ei ole enää listalla", pelaaja1.getSuosikit().contains(hahmo1));
     }
@@ -116,7 +116,7 @@ public class TestKastaaja {
     @Test
     public void testPoistetaanHuonommatKuinNykyinen() {
         luoProfiilit();
-        Kastaaja.poistetaanHuonommatKuinNykyinen(hahmo1, pelaaja1);
+        Algoritmi.poistetaanHuonommatKuinNykyinen(hahmo1, pelaaja1);
         assertTrue("Poistamaton yhä listalla", hahmo1.getSuosikit().contains(pelaaja1));
         assertFalse("Poistettu ei ole enää listalla", hahmo1.getSuosikit().contains(pelaaja2));
     }
