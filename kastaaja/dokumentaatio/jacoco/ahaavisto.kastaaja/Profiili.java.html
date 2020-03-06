@@ -13,7 +13,7 @@ public class Profiili {
     private int[] statsit; // hahmon/pelaajan sarjaksi lukuja parametrisoidut ominaisuudet, joiden perusteella hahmot ja pelaajat yhdistetään
 <span class="fc" id="L14">    private Profiili kihlattu = null; //mihin profiiliin yhdistetty (jos on)</span>
     private Lista&lt;Profiili&gt; suosikit; //preferenssijärjestys toisen profiililuokan hahmoille
-    private String nimi; //&quot;id&quot;
+    private final String nimi; //&quot;id&quot;
 
 <span class="fc" id="L18">    public Profiili(String nimi) {</span>
 <span class="fc" id="L19">        this.statsit = new int[10];</span>
@@ -49,9 +49,9 @@ public class Profiili {
 
     @Override
     public int hashCode() {
-<span class="fc" id="L52">        int hash = 3;</span>
-<span class="fc" id="L53">        hash = 67 * hash + Objects.hashCode(this.nimi);</span>
-<span class="fc" id="L54">        return hash;</span>
+<span class="nc" id="L52">        int hash = 3;</span>
+<span class="nc" id="L53">        hash = 67 * hash + Objects.hashCode(this.nimi);</span>
+<span class="nc" id="L54">        return hash;</span>
     }
 
     @Override

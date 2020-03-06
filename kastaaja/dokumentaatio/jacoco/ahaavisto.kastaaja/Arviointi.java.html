@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Arviointi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kastaaja</a> &gt; <a href="index.source.html" class="el_package">ahaavisto.kastaaja</a> &gt; <span class="el_source">Arviointi.java</span></div><h1>Arviointi.java</h1><pre class="source lang-java linenums">package ahaavisto.kastaaja;
+
+import static ahaavisto.kastaaja.Algoritmi.algoritminYdin;
+import static ahaavisto.kastaaja.Algoritmi.luoHahmotJaPelaajat;
+import static ahaavisto.kastaaja.Kastaaja.onkoTiedostotValittu;
+import java.io.File;
+import java.util.Random;
+
+/**
+ * Algoritmin toimintaa testaavia/arvioivia metodeita
+ * @author arkkis
+ */
+<span class="nc" id="L13">public class Arviointi {</span>
+    
+    /**
+     * Laskee montako samaa alkiota annetuissa taulukoissa on
+     * @param eka
+     * @param toka
+     * @return summa, montako alkioista oli samoja
+     */
+    public static int montakoSamaa(Object[] eka, Object[] toka) {
+<span class="fc" id="L22">        int samoja = 0;</span>
+<span class="fc" id="L23">        boolean onkoVastaavaa = false;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        for(Object o: eka) {</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">            for(Object verrattava: toka) {</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">                if (o.equals(verrattava)) {</span>
+<span class="fc" id="L27">                    samoja++;</span>
+<span class="fc" id="L28">                    onkoVastaavaa = true;</span>
+<span class="fc" id="L29">                    break;</span>
+                }
+            }
+<span class="fc" id="L32">            onkoVastaavaa = false;</span>
+        }
+<span class="fc" id="L34">        return samoja;</span>
+    }
+    
+    /**
+     * Fisher-Yatesin algoritmi profiililistan sekoittamiseen testaamista varten,
+     * jotta voidaan testata, kuinka paljon tulokseen vaikuttaa, missä järjestyksessä syötteen profiilit ovat
+     * @param profiilit
+     * @return profiilit sekoitetussa järjestyksessä
+     */
+    public static Lista&lt;Profiili&gt; sekoitaProfiilienJarjestys(Lista&lt;Profiili&gt; profiilit) {
+<span class="fc" id="L44">        Random random = new Random();        </span>
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">        for (int i = 0; i &lt; profiilit.size()-2; i++) {</span>
+<span class="nc" id="L46">            int j = random.nextInt(profiilit.size()-i) + i;</span>
+<span class="nc" id="L47">            profiilit.swap(i, j);</span>
+        }
+<span class="fc" id="L49">        return profiilit;</span>
+    }
+    
+    /**
+     * Laskee, montako hahmoista ja pelaajista sai lopulta ykkössuosikkinsa.
+     * Tulostaa parit, joissa sekä hahmo että pelaaja saivat ykkössuosikkinsa, eli maksimi-optimaaliset parit
+     * @param hahmot
+     * @param hahmotMuokkaamaton hahmot-lista jota ei ole algoritmia ajettaessa muokattu; tällä hetkellä tarvitaan tässä erikseen
+     * @param pelaajat
+     * @return taulukko, jossa ensimmäisenä kuinka moni hahmoista sai ykkösvaihtoehtonsa ja toisena pelaajista sama
+     */
+    public int[] laskeYkkosvaihtoehdot(Lista&lt;Profiili&gt; hahmot, Lista&lt;Profiili&gt; hahmotMuokkaamaton, Lista&lt;Profiili&gt; pelaajat) {
+<span class="nc" id="L61">        int ykkosvaihtoehtoja = 0;</span>
+<span class="nc" id="L62">        int pelaajienYkkosvaihtoehtoja = 0;</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        for (int i = 0; i &lt; hahmot.size(); i++) {</span>
+<span class="nc" id="L64">            Profiili lopullinenKihlattu = hahmot.get(i).getKihlattu();</span>
+<span class="nc" id="L65">            Profiili ykkosvaihtoehto = hahmotMuokkaamaton.get(i).getSuosikit().get(0);</span>
+<span class="nc" id="L66">            Profiili pelaaja = lopullinenKihlattu;</span>
+<span class="nc" id="L67">            Profiili pelaajanYkkosvaihtoehto = Algoritmi.luoListaSuosikeista(pelaaja, hahmot).get(0);</span>
+<span class="nc" id="L68">            int molemmatSaaneetParhaan = 0;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">            if (lopullinenKihlattu.equals(ykkosvaihtoehto)) {</span>
+<span class="nc" id="L70">                ykkosvaihtoehtoja++;</span>
+<span class="nc" id="L71">                molemmatSaaneetParhaan++;</span>
+            }
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            if (pelaajanYkkosvaihtoehto.equals(hahmot.get(i))) {</span>
+<span class="nc" id="L74">                pelaajienYkkosvaihtoehtoja++;</span>
+<span class="nc" id="L75">                molemmatSaaneetParhaan++;</span>
+            }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">            if (molemmatSaaneetParhaan == 2) {</span>
+<span class="nc" id="L78">                System.out.println(&quot;Molemminpuolisia ykkösvaihtoehtoja ovat: &quot; + hahmot.get(i) + &quot; + &quot; + pelaaja);</span>
+            }
+        }
+<span class="nc" id="L81">        int[] summat = {ykkosvaihtoehtoja, pelaajienYkkosvaihtoehtoja};</span>
+<span class="nc" id="L82">        return summat;</span>
+    }
+    
+    /**
+     * Tutkitaan, kuinka moni hahmoista ja pelaajista saa ykkösvaihtoehtonsa lopullisessa kastauksessa
+     * @param hahmotiedosto
+     * @param pelaajatiedosto 
+     */
+    public void testaaKuinkaMoniSaaSuosikkinsa(File hahmotiedosto, File pelaajatiedosto) {
+<span class="nc" id="L91">        System.out.println(&quot;KUINKA MONI SAA YKKÖSVAIHTOEHTONSA&quot;);</span>
+<span class="nc" id="L92">        Lista&lt;Profiili&gt; hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L93">        Lista&lt;Profiili&gt; hahmotMuokkaamaton = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L94">        Lista&lt;Profiili&gt; pelaajat = hahmot.get(0).getSuosikit();</span>
+<span class="nc" id="L95">        Algoritmi.algoritminYdin(hahmot);</span>
+        
+<span class="nc" id="L97">        int[] ykkosvaihtoehdot = laskeYkkosvaihtoehdot(hahmot, hahmotMuokkaamaton, pelaajat);</span>
+        
+<span class="nc" id="L99">        System.out.println(&quot;Alkuperäisen ykkösensä hahmoista sai:&quot; + ykkosvaihtoehdot[0]);</span>
+<span class="nc" id="L100">        System.out.println(&quot;Alkuperäisen ykkösensä pelaajista sai:&quot; + ykkosvaihtoehdot[1]);</span>
+<span class="nc" id="L101">    }</span>
+    
+    /**
+     * Suoritetaan algoritmi sekä niin, että hahmot kosivat pelaajia että toisin päin,
+     * ja vertaillaan, kuinka moni syntyvistä pareista on sama
+     * @param hahmotiedosto 
+     * @param pelaajatiedosto 
+     */
+    public void testaaEriEtusijaisuudella(File hahmotiedosto, File pelaajatiedosto) {
+<span class="nc" id="L110">        Lista&lt;Profiili&gt; hahmotKosijoina = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L111">        Algoritmi.algoritminYdin(hahmotKosijoina);</span>
+
+<span class="nc" id="L113">        Lista&lt;Profiili&gt; pelaajatKosijoina = Algoritmi.luoHahmotJaPelaajat(pelaajatiedosto, hahmotiedosto);</span>
+<span class="nc" id="L114">        Algoritmi.algoritminYdin(pelaajatKosijoina);       </span>
+
+<span class="nc" id="L116">        String[] eka = luoListaPareistaVertailuun(hahmotKosijoina, true);</span>
+<span class="nc" id="L117">        String[] toka = luoListaPareistaVertailuun(pelaajatKosijoina, false); //järjestys eri kuin muissa, jotta järjestys hahmo+pelaaja</span>
+<span class="nc" id="L118">        System.out.println(&quot;samoja pareja kun pelaajat kosijoina hahmojen sijaan: &quot; + montakoSamaa(toka, eka));       </span>
+<span class="nc" id="L119">    }</span>
+    
+    /**
+     * Luodaan taulukko, jossa tekstimuodossa kaikki aiemmin luodut parit
+     * @param lista
+     * @param jarjestys ensin käsitelty profiili ja sitten sen kihlattu (true), vai toisin päin, jota tarvitaan kun
+     * verrataan tulosta, jos kosijana toimivatkin pelaajat hahmojen sijaan
+     * @return 
+     */
+    public String[] luoListaPareistaVertailuun(Lista&lt;Profiili&gt; lista, boolean jarjestys) {
+<span class="nc" id="L129">        String[] taulukko = new String[lista.size()];        </span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (int i = 0; i &lt; lista.size(); i++) {</span>
+<span class="nc" id="L131">            Profiili profiili = lista.get(i);</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">            if (jarjestys) {</span>
+<span class="nc" id="L133">                taulukko[i] = profiili + &quot;+&quot; + profiili.getKihlattu();</span>
+            } else {
+<span class="nc" id="L135">                taulukko[i] = profiili.getKihlattu() + &quot;+&quot; + profiili;</span>
+            }           
+        } 
+<span class="nc" id="L138">        return taulukko;</span>
+    }
+    
+    /**
+     * Tutkitaan, kuinka paljon kastauksen lopputulokseen vaikuttaa profiilien järjestys lähdetiedostoissa
+     * @param hahmotied
+     * @param pelaajatied 
+     */
+    public void testaaProfiilienEriJarjestyksilla(File hahmotied, File pelaajatied) {
+        //ekana lähdetiedostossa oleva oletusjärjestys
+<span class="nc" id="L148">        Lista&lt;Profiili&gt; hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotied, pelaajatied);</span>
+<span class="nc" id="L149">        Algoritmi.algoritminYdin(hahmot);</span>
+
+<span class="nc" id="L151">        Lista&lt;Profiili&gt; hahmotSekoitettuna = Algoritmi.lueData(new Lista&lt;&gt;(), hahmotied);</span>
+<span class="nc" id="L152">        Lista&lt;Profiili&gt; pelaajatSekoitettuna = Algoritmi.lueData(new Lista&lt;&gt;(), pelaajatied);       </span>
+        
+<span class="nc" id="L154">        hahmotSekoitettuna = sekoitaProfiilienJarjestys(hahmotSekoitettuna);</span>
+<span class="nc" id="L155">        pelaajatSekoitettuna = sekoitaProfiilienJarjestys(pelaajatSekoitettuna);</span>
+
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        for (int i = 0; i &lt; hahmotSekoitettuna.size(); i++) {</span>
+<span class="nc" id="L158">            Algoritmi.luoListaSuosikeista(hahmotSekoitettuna.get(i), pelaajatSekoitettuna);</span>
+        }
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        for (int i = 0; i &lt; pelaajatSekoitettuna.size(); i++) {</span>
+<span class="nc" id="L161">            Algoritmi.luoListaSuosikeista(pelaajatSekoitettuna.get(i), hahmotSekoitettuna);</span>
+        }
+
+<span class="nc" id="L164">        Algoritmi.algoritminYdin(hahmotSekoitettuna);</span>
+        
+<span class="nc" id="L166">        String[] eka = luoListaPareistaVertailuun(hahmot, true);</span>
+<span class="nc" id="L167">        String[] toka = luoListaPareistaVertailuun(hahmotSekoitettuna, true);</span>
+<span class="nc" id="L168">        System.out.println(&quot;samoja pareja oli kahta profiilien järjestystä verratessa: &quot; + montakoSamaa(toka, eka));</span>
+<span class="nc" id="L169">    }</span>
+    
+    /**
+     * Testaa, kauanko suoritukseen menee eri pituisilla syötteillä.
+     */
+    public static void testaaSuoritusaikaa() {
+<span class="nc" id="L175">        System.out.println(&quot;SUORITUSAIKA ERI PITUISILLA SYÖTTEILLÄ&quot;);</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">        if (onkoTiedostotValittu()) {</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc" id="L178">                testaaAika(&quot;10+10&quot;, new File(&quot;assets/hahmot.csv&quot;), new File(&quot;assets/pelaajat.csv&quot;));</span>
+            }
+        }        
+<span class="nc bnc" id="L181" title="All 2 branches missed.">        if (onkoTiedostotValittu()) {</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">            for (int i = 0; i &lt; 10; i++) {            </span>
+<span class="nc" id="L183">                testaaAika(&quot;100+100&quot;, new File(&quot;assets/hahmot100.csv&quot;), new File(&quot;assets/pelaajat100.csv&quot;));</span>
+            }
+        } 
+<span class="nc bnc" id="L186" title="All 2 branches missed.">        for (int i = 0; i &lt; 10; i++) {</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">            if (onkoTiedostotValittu()) {</span>
+<span class="nc" id="L188">                testaaAika(&quot;1000+1000&quot;, new File(&quot;assets/hahmot1000.csv&quot;), new File(&quot;assets/pelaajat1000.csv&quot;));</span>
+            }
+        }         
+<span class="nc" id="L191">    }</span>
+    
+    /**
+     * Ajaa algoritmin ja kertoo ajan, kauanko siinä kesti
+     * @param syotteenKoko
+     * @param hahmotiedosto
+     * @param pelaajatiedosto 
+     */
+    public static void testaaAika(String syotteenKoko, File hahmotiedosto, File pelaajatiedosto) {
+<span class="nc" id="L200">        Lista&lt;Profiili&gt; hahmot = luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L201">        long alku = System.nanoTime();</span>
+<span class="nc" id="L202">        algoritminYdin(hahmot);</span>
+<span class="nc" id="L203">        long loppu = System.nanoTime();</span>
+<span class="nc" id="L204">        long erotus = (loppu-alku);</span>
+<span class="nc" id="L205">        double erotusMillisekunteina = (double)erotus/1000000;</span>
+<span class="nc" id="L206">        System.out.println(&quot;Syötteen koko oli &quot;+ syotteenKoko + &quot;: &quot; + erotusMillisekunteina + &quot; ms&quot;);</span>
+<span class="nc" id="L207">    }</span>
+    
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

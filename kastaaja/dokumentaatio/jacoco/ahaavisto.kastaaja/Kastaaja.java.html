@@ -1,14 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Kastaaja.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kastaaja</a> &gt; <a href="index.source.html" class="el_package">ahaavisto.kastaaja</a> &gt; <span class="el_source">Kastaaja.java</span></div><h1>Kastaaja.java</h1><pre class="source lang-java linenums">/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="fi"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Kastaaja.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">kastaaja</a> &gt; <a href="index.source.html" class="el_package">ahaavisto.kastaaja</a> &gt; <span class="el_source">Kastaaja.java</span></div><h1>Kastaaja.java</h1><pre class="source lang-java linenums">
 package ahaavisto.kastaaja;
 
 import java.io.File;
-import static java.lang.Integer.parseInt;
-import java.util.HashMap;
-import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,17 +13,17 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- *
+ * Pääluokka, joka sisältää lähinnä käyttöliittymän
  * @author arkkis
  */
-<span class="nc" id="L26">public class Kastaaja extends Application{</span>
+<span class="nc" id="L19">public class Kastaaja extends Application{</span>
 
-<span class="fc" id="L28">    static Lista&lt;Profiili&gt; vapaat = new Lista&lt;&gt;();</span>
+<span class="fc" id="L21">    static Lista&lt;Profiili&gt; vapaat = new Lista&lt;&gt;();</span>
     static File hahmotiedosto;
     static File pelaajatiedosto;
     
     public static Integer getVapaidenMaara() {
-<span class="nc" id="L33">        return vapaat.size();</span>
+<span class="nc" id="L26">        return vapaat.size();</span>
     }
     
     /**
@@ -38,279 +31,80 @@ import javafx.stage.Stage;
      * @param listaVapaista ne hahmot, jotka ovat vapaana (aluksi)
      */
     public static void setVapaat(Lista&lt;Profiili&gt; listaVapaista) {
-<span class="nc" id="L41">        vapaat = listaVapaista;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L34">        vapaat = listaVapaista;</span>
+<span class="nc" id="L35">    }</span>
     
     /**
-     * Ohjelman koko käyttöliittymä on atm tässä
+     * Algoritmin graafinen käyttöliittymä
      * @param ikkuna 
      */
     @Override
     public void start(Stage ikkuna) {
-<span class="nc" id="L50">        ikkuna.setTitle(&quot;Kastaaja-app&quot;);</span>
+<span class="nc" id="L43">        ikkuna.setTitle(&quot;Kastaaja-app&quot;);</span>
 
-<span class="nc" id="L52">        FileChooser valitsin = new FileChooser();</span>
+<span class="nc" id="L45">        FileChooser valitsin = new FileChooser();</span>
 
-<span class="nc" id="L54">        Label opaste = new Label(&quot;Valitse lähdetiedostot (.csv)&quot;);</span>
-<span class="nc" id="L55">        Button hahmonappi = new Button(&quot;Valitse hahmolista-tiedosto&quot;);</span>
-<span class="nc" id="L56">        Button pelaajanappi = new Button(&quot;Valitse pelaajalista-tiedosto&quot;);</span>
-<span class="nc" id="L57">        Button aloitusnappi = new Button(&quot;Aja algoritmi&quot;);</span>
-<span class="nc" id="L58">        TextArea tulos = new TextArea(&quot;Algoritmin tulos tulee tähän&quot;);</span>
+<span class="nc" id="L47">        Label opaste = new Label(&quot;Valitse lähdetiedostot (.csv)&quot;);</span>
+<span class="nc" id="L48">        Button hahmonappi = new Button(&quot;Valitse hahmolista-tiedosto&quot;);</span>
+<span class="nc" id="L49">        Button pelaajanappi = new Button(&quot;Valitse pelaajalista-tiedosto&quot;);</span>
+<span class="nc" id="L50">        Button aloitusnappi = new Button(&quot;Aja algoritmi&quot;);</span>
+<span class="nc" id="L51">        TextArea tulos = new TextArea(&quot;Algoritmin tulos tulee tähän&quot;);</span>
         
-<span class="nc" id="L60">        hahmonappi.setOnAction(e -&gt; {</span>
-<span class="nc" id="L61">            hahmotiedosto = valitsin.showOpenDialog(ikkuna);</span>
-<span class="nc" id="L62">            hahmonappi.setText(&quot;Hahmolistaksi valittu &quot; + hahmotiedosto.getName());</span>
-<span class="nc" id="L63">        });</span>
+<span class="nc" id="L53">        hahmonappi.setOnAction(e -&gt; {</span>
+<span class="nc" id="L54">            hahmotiedosto = valitsin.showOpenDialog(ikkuna);</span>
+<span class="nc" id="L55">            hahmonappi.setText(&quot;Hahmolistaksi valittu &quot; + hahmotiedosto.getName());</span>
+<span class="nc" id="L56">        });</span>
         
-<span class="nc" id="L65">        pelaajanappi.setOnAction(e -&gt; {</span>
-<span class="nc" id="L66">            pelaajatiedosto = valitsin.showOpenDialog(ikkuna);</span>
-<span class="nc" id="L67">            pelaajanappi.setText(&quot;Pelaajalistaksi valittu &quot; + pelaajatiedosto.getName());</span>
-<span class="nc" id="L68">        });</span>
+<span class="nc" id="L58">        pelaajanappi.setOnAction(e -&gt; {</span>
+<span class="nc" id="L59">            pelaajatiedosto = valitsin.showOpenDialog(ikkuna);</span>
+<span class="nc" id="L60">            pelaajanappi.setText(&quot;Pelaajalistaksi valittu &quot; + pelaajatiedosto.getName());</span>
+<span class="nc" id="L61">        });</span>
         
-<span class="nc" id="L70">        aloitusnappi.setOnAction(e -&gt; {     </span>
-<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (onkoTiedostotValittu()) {</span>
-<span class="nc" id="L72">                Lista&lt;Profiili&gt; hahmot = luoHahmotJaPelaajat();</span>
-<span class="nc" id="L73">                algoritminYdin(hahmot);        </span>
-<span class="nc" id="L74">                tulos.setText(tulostaParit(hahmot));</span>
+<span class="nc" id="L63">        aloitusnappi.setOnAction(e -&gt; {     </span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (onkoTiedostotValittu()) {</span>
+<span class="nc" id="L65">                Lista&lt;Profiili&gt; hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L66">                Algoritmi.algoritminYdin(hahmot);        </span>
+<span class="nc" id="L67">                tulos.setText(Algoritmi.tulostaParit(hahmot));</span>
             }
-<span class="nc" id="L76">        }); </span>
+<span class="nc" id="L69">        }); </span>
         
-<span class="nc" id="L78">        VBox komponenttiryhma = new VBox();</span>
-<span class="nc" id="L79">        komponenttiryhma.getChildren().add(opaste);</span>
-<span class="nc" id="L80">        komponenttiryhma.getChildren().add(hahmonappi);</span>
-<span class="nc" id="L81">        komponenttiryhma.getChildren().add(pelaajanappi);</span>
-<span class="nc" id="L82">        komponenttiryhma.getChildren().add(aloitusnappi);</span>
-<span class="nc" id="L83">        komponenttiryhma.getChildren().add(tulos);</span>
+<span class="nc" id="L71">        VBox komponenttiryhma = new VBox();</span>
+<span class="nc" id="L72">        komponenttiryhma.getChildren().add(opaste);</span>
+<span class="nc" id="L73">        komponenttiryhma.getChildren().add(hahmonappi);</span>
+<span class="nc" id="L74">        komponenttiryhma.getChildren().add(pelaajanappi);</span>
+<span class="nc" id="L75">        komponenttiryhma.getChildren().add(aloitusnappi);</span>
+<span class="nc" id="L76">        komponenttiryhma.getChildren().add(tulos);</span>
 
-<span class="nc" id="L85">        Scene nakyma = new Scene(komponenttiryhma);</span>
+<span class="nc" id="L78">        Scene nakyma = new Scene(komponenttiryhma);</span>
 
-<span class="nc" id="L87">        ikkuna.setScene(nakyma);</span>
-<span class="nc" id="L88">        ikkuna.show();</span>
-<span class="nc" id="L89">    }</span>
+<span class="nc" id="L80">        ikkuna.setScene(nakyma);</span>
+<span class="nc" id="L81">        ikkuna.show();</span>
+<span class="nc" id="L82">    }</span>
     
     public static boolean onkoTiedostotValittu() {
-<span class="nc bnc" id="L92" title="All 4 branches missed.">        if (hahmotiedosto != null &amp;&amp; pelaajatiedosto != null) {</span>
-<span class="nc" id="L93">            return true;</span>
+<span class="nc bnc" id="L85" title="All 4 branches missed.">        if (hahmotiedosto != null &amp;&amp; pelaajatiedosto != null) {</span>
+<span class="nc" id="L86">            return true;</span>
         }
-<span class="nc" id="L95">        return false;</span>
+<span class="nc" id="L88">        return false;</span>
     }
 
-    /**
-     *
-     * @param eka profiili jonka sopivuutta verrataan tokaan
-     * @param toka profiili johon ekan sopivuutta verrataan
-     * @param suosikit map joka mäppää ekan profiilin mätsäävyysarvon kuhunkin
-     * profiiliin
-     * @return vastaus metodin nimen esittämään kysymykseen
-     */
-    public static boolean onko_isompi(Profiili eka, Profiili toka, HashMap&lt;Profiili, Integer&gt; suosikit) {
-<span class="fc" id="L107">        int ekan_arvo = suosikit.get(eka);</span>
-<span class="fc" id="L108">        int tokan_arvo = suosikit.get(toka);</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (ekan_arvo &gt; tokan_arvo) {</span>
-<span class="fc" id="L110">            return true;</span>
-        }
-<span class="fc" id="L112">        return false;</span>
-    }
-
-    /**
-     * Luodaan kyseiselle profiilille (eli hahmolle/pelaajalle) lista, missä
-     * järjestyksessä se preferoi toisen profiililuokan profiileita
-     *
-     * @param profiili hahmo/pelaaja jolle luodaan preferenssilistaa
-     * @param verrattavat ne pelaajat/hahmot jotka halutaan järjestää
-     */
-    public static void luo_lista_suosikeista(Profiili profiili, Lista&lt;Profiili&gt; verrattavat) {
-<span class="fc" id="L123">        HashMap&lt;Profiili, Integer&gt; preferenssit = new HashMap&lt;&gt;();</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        for (int i = 0; i &lt; verrattavat.size(); i++) {</span>
-<span class="fc" id="L125">            Profiili verrattava = verrattavat.get(i);</span>
-<span class="fc" id="L126">            int erotus = 0;</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">            for (int j = 0; j &lt; profiili.getStatsit().length; j++) {</span>
-<span class="fc" id="L128">                erotus += Math.abs(profiili.getStatsit()[j] - verrattava.getStatsit()[j]);</span>
-            }
-<span class="fc" id="L130">            preferenssit.put(verrattava, erotus);</span>
-        }
-<span class="fc" id="L132">        Lista&lt;Profiili&gt; tulevat_suosikit = new Lista(verrattavat);//verrattavat</span>
-<span class="fc" id="L133">        kuplajarjestaminen(profiili, tulevat_suosikit, preferenssit);</span>
-            
-        
-<span class="fc" id="L136">    }</span>
-
-    /**
-     * Luodaan preferenssijärjestys sen perusteella, kuinka paljon kunkin
-     * ominaisuuden abs(hahmo-pelaaja) erotusten yhteissumma on, ensimmäisenä paras vaihtoehto
-     * 
-    * @param profiili se jonka suosikit halutaan tallentaa järjestetyksi
-     * taulukoksi
-     * @param suosikit toistaiseksi järjestämätön taulukko toisen profiililuokan
-     * profiileista
-     * @param preferenssit map jossa tallessa tieto käsiteltävän profiilin
-     * preferensseista toisen profiililuokan profiileihin
-     */
-    public static void kuplajarjestaminen(Profiili profiili, Lista&lt;Profiili&gt; suosikit, HashMap&lt;Profiili, Integer&gt; preferenssit) {
-<span class="fc" id="L150">        boolean eiValmis = true;</span>
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        while (eiValmis) {</span>
-<span class="fc" id="L152">            eiValmis = false;</span>
-<span class="fc bfc" id="L153" title="All 2 branches covered.">            for (int i = 0; i &lt; suosikit.size() - 1; i++) {</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">                if (onko_isompi(suosikit.get(i), suosikit.get(i + 1), preferenssit)) {</span>
-<span class="fc" id="L155">                    suosikit.swap(i, i+1);</span>
-<span class="fc" id="L156">                    eiValmis = true;</span>
-                }
-            }
-        }
-<span class="fc" id="L160">        profiili.setSuosikit(suosikit);</span>
-<span class="fc" id="L161">    }</span>
-
-    /**
-     * funktio yhdistää parametrina saamansa profiilit, ja päivittää muiden
-     * profiilien tarvittavat tiedot, eli purkaa mahdollisen edellisen
-     * kihlauksen ja poistaa suosikkilistoista ne vaihtoehdot, jotka eivät tule
-     * enää kysymykseen
-     *
-     * @param kosija profiili joka yhdistetään kosittavaan profiiliin
-     * @param kosittava
-     */
-    public static void Kihlaus(Profiili kosija, Profiili kosittava) {
-<span class="fc bfc" id="L173" title="All 2 branches covered.">        if (kosittava.getKihlattu() != null) { //puretaan vanha kihlaus</span>
-<span class="fc" id="L174">            Profiili ex = kosittava.getKihlattu();</span>
-<span class="fc" id="L175">            ex.setKihlattu(null);</span>
-<span class="fc" id="L176">            vapaat.add(ex);</span>
-        }
-<span class="fc" id="L178">        kosittava.setKihlattu(kosija);</span>
-<span class="fc" id="L179">        kosija.setKihlattu(kosittava);</span>
-        
-<span class="fc" id="L181">        Lista&lt;Profiili&gt; hylatyt = poistetaanHuonommatKuinNykyinen(kosittava, kosija);</span>
-
-<span class="fc" id="L183">        poistetaanTurhatToiveet(hylatyt, kosittava);</span>
-<span class="fc" id="L184">    }</span>
     
-    /**
-     * Algoritmin perusidean mukaisesti, poistetaan &quot;kihloihin&quot; päätyneen hahmon
-     * listalta kaikki nykyistä huonommat vaihtoehdot
-     * @param profiili hahmo, jonka suosikkeja käsitellään
-     * @param kosija pelaaja, jonka kanssa ollaan nyt &quot;kihloissa&quot;
-     * @return lista hylätyistä pelaajista; näitä käsitellään seuraavaksi poistetaanTurhatToiveet-funktiossa
-     */
-    public static Lista&lt;Profiili&gt; poistetaanHuonommatKuinNykyinen(Profiili profiili, Profiili kosija) {
-<span class="fc" id="L194">        Lista&lt;Profiili&gt; hylatyt_suosikit = new Lista&lt;&gt;();</span>
-<span class="fc" id="L195">        Lista&lt;Profiili&gt; suosikit = profiili.getSuosikit();</span>
-<span class="fc bfc" id="L196" title="All 2 branches covered.">        for (int i = 0; i &lt; suosikit.size(); i++) {</span>
-<span class="fc bfc" id="L197" title="All 2 branches covered.">            if (suosikit.get(i) == kosija) {</span>
-<span class="pc bpc" id="L198" title="1 of 2 branches missed.">                if (i + 1 &lt;= suosikit.size() - 1) {</span>
-<span class="fc" id="L199">                    hylatyt_suosikit = suosikit.subList(i+1, suosikit.size());</span>
-                }    
-<span class="fc" id="L201">                profiili.setSuosikit(suosikit.subList(0, i+1));   </span>
-<span class="fc" id="L202">                break;</span>
-            }
-        }
-<span class="fc" id="L205">        return hylatyt_suosikit;</span>
-    }
-    
-    /**
-     * Poistetaan kunkin kyseisen hahmon hylkäämien pelaajien suosikkilistasta tuo hahmo,
-     * sillä algoritmin mukaan niistä ei voi tulla enää paria
-     * @param hylatyt_suosikit pelaajat, jotka ovat käsiteltävän hahmon 
-     * suosikkilistassa alempana kuin nykyinen kihlattu, eli eivät voi tulla valituksi
-     * @param hylkaajaHahmo hahmo jota käsitellään
-     */
-    public static void poistetaanTurhatToiveet(Lista&lt;Profiili&gt; hylatyt_suosikit, Profiili hylkaajaHahmo) {
-<span class="fc bfc" id="L216" title="All 2 branches covered.">        for (int i = 0; i &lt; hylatyt_suosikit.size(); i++) {</span>
-<span class="fc" id="L217">            Profiili hylatty = hylatyt_suosikit.get(i);            </span>
-<span class="fc bfc" id="L218" title="All 2 branches covered.">            for (int j = 0; j &lt; hylatty.getSuosikit().size(); j++) {</span>
-<span class="pc bpc" id="L219" title="1 of 2 branches missed.">                if (hylatty.getSuosikit().get(j).equals(hylkaajaHahmo)) {</span>
-<span class="fc" id="L220">                    hylatty.getSuosikit().remove(j);</span>
-                }
-            }
-        }
-<span class="fc" id="L224">    }</span>
-    
-    /**
-     * Tulostaa hahmo-pelaaja -parit debuggausta varten; jos hahmolla ei ole vielä pelaajaa,
-     * sen kanssa tulostuu 4everalone-teksti
-     * @param hahmot käsiteltävät hahmot
-     */
-    public static String tulostaParit (Lista&lt;Profiili&gt; hahmot) {
-<span class="nc" id="L232">        String tulostettava = &quot;&quot;;</span>
-<span class="nc" id="L233">        tulostettava += &quot;Hahmo-pelaaja -parit:\n&quot;;</span>
-<span class="nc bnc" id="L234" title="All 2 branches missed.">        for (int i = 0; i &lt; hahmot.size(); i++) {</span>
-<span class="nc" id="L235">            Profiili hahmo = hahmot.get(i);</span>
-<span class="nc bnc" id="L236" title="All 2 branches missed.">            if (hahmo.getKihlattu() != null) {</span>
-<span class="nc" id="L237">            tulostettava += hahmo.getNimi() + &quot; + &quot; + hahmo.getKihlattu().getNimi() + &quot;\n&quot;;</span>
-            } else {
-<span class="nc" id="L239">                tulostettava += hahmo.getNimi() + &quot; 4everalone\n&quot;;</span>
-            }
-        }
-<span class="nc" id="L242">        return tulostettava;</span>
-    }
-    
-    /**
-     * Datan lukeminen lähdetiedostoista Profiili-olioita listaaviksi listoiksi
-     * @param profiilit hahmot/pelaajalista, joka tässä funktiossa täytetään tiedostosta saadulla datalla
-     * @param tiedosto hahmo/pelaajalista tiedostomuodossa
-     * @return valmis hahmo/pelaajalista
-     */
-    public static Lista&lt;Profiili&gt; lueData(Lista&lt;Profiili&gt; profiilit, File tiedosto) {       
-        try
-        {          
-<span class="nc bnc" id="L254" title="All 2 branches missed.">            for(Scanner sc = new Scanner(tiedosto); sc.hasNext(); ) {</span>
-<span class="nc" id="L255">              String line = sc.nextLine();</span>
-<span class="nc" id="L256">              String[] splitattu = line.split(&quot;,&quot;);</span>
-<span class="nc" id="L257">              Profiili uusi = new Profiili(splitattu[0]); //tiedostossa ekana nimi-string</span>
-<span class="nc" id="L258">              int[] statsit = new int[10];</span>
-<span class="nc bnc" id="L259" title="All 2 branches missed.">                for (int i = 1; i &lt; splitattu.length; i++) { //ja sen jälkeen int-muotoiset statsit</span>
-<span class="nc" id="L260">                    statsit[i-1] = parseInt(splitattu[i]);</span>
-                }
-<span class="nc" id="L262">              uusi.setStatsit(statsit);</span>
-<span class="nc" id="L263">              profiilit.add(uusi);</span>
-<span class="nc" id="L264">            } </span>
-        } 
-<span class="nc" id="L266">        catch(Exception ex) </span>
-        { 
-<span class="nc" id="L268">           System.out.println(&quot;Tapahtui poikkeus lähdetiedoston käsittelyssä!&quot;);  </span>
-<span class="nc" id="L269">           ex.printStackTrace();</span>
-<span class="nc" id="L270">        }</span>
-<span class="nc" id="L271">        return profiilit;</span>
-    }
-    
-    /**
-     * Varsinainen hahmojen ja pelaajien mätsäys. Käydään läpi niin kauan, kunnes kaikilla
-     * hahmoilla on pelaaja.
-     * @param hahmot 
-     */
-    public static void algoritminYdin(Lista&lt;Profiili&gt; hahmot) {
-<span class="nc" id="L280">        vapaat.addAll(hahmot);</span>
-<span class="nc bnc" id="L281" title="All 2 branches missed.">        while (vapaat.size() &gt; 0) {</span>
-<span class="nc" id="L282">            Profiili kosija = vapaat.get(0);</span>
-<span class="nc" id="L283">            vapaat.remove(0); //poistetaan kosiomatkalle lähtijä</span>
-<span class="nc" id="L284">            Profiili kosittava = kosija.getSuosikit().get(0);</span>
-<span class="nc" id="L285">            Kihlaus(kosija, kosittava);</span>
-<span class="nc" id="L286">        }</span>
-<span class="nc" id="L287">    }</span>
-    
-    /**
-     * Luodaan hahmot, pelaajat ja niille kullekin suosikkilistat
-     * @return luodut hahmot eli algoritmin ytimen tarvitsema lähtödata
-     */
-    public static Lista&lt;Profiili&gt; luoHahmotJaPelaajat() {
-<span class="nc" id="L294">        Lista&lt;Profiili&gt; hahmot = lueData(new Lista&lt;&gt;(), hahmotiedosto);</span>
-<span class="nc" id="L295">        Lista&lt;Profiili&gt; pelaajat = lueData(new Lista&lt;&gt;(), pelaajatiedosto);</span>
-        
-<span class="nc bnc" id="L297" title="All 2 branches missed.">        for (int i = 0; i &lt; hahmot.size(); i++) {</span>
-<span class="nc" id="L298">            luo_lista_suosikeista(hahmot.get(i), pelaajat);</span>
-        }
-<span class="nc bnc" id="L300" title="All 2 branches missed.">        for (int i = 0; i &lt; pelaajat.size(); i++) {</span>
-<span class="nc" id="L301">            luo_lista_suosikeista(pelaajat.get(i), hahmot);</span>
-        }
-<span class="nc" id="L303">        return hahmot;</span>
-    }
 
     public static void main(String[] args) {
-<span class="nc" id="L307">        launch();        </span>
-        /*
-        Lista&lt;Profiili&gt; hahmot = luoHahmotJaPelaajat();
-        algoritminYdin(hahmot);
+<span class="nc" id="L94">        hahmotiedosto = new File(&quot;assets/hahmot.csv&quot;); //Arviointi-luokan käyttämät tiedostot</span>
+<span class="nc" id="L95">        pelaajatiedosto = new File(&quot;assets/pelaajat.csv&quot;);</span>
+
+        //Aja varsinainen ohjelma:
+<span class="nc" id="L98">        launch();</span>
         
-        tulostaParit(hahmot);
-        */
-<span class="nc" id="L314">    }</span>
+        //Aja suorituskyky- ja indifference-testaus:
+        
+<span class="nc" id="L102">        Arviointi a = new Arviointi();</span>
+<span class="nc" id="L103">        a.testaaKuinkaMoniSaaSuosikkinsa(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L104">        a.testaaProfiilienEriJarjestyksilla(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L105">        a.testaaEriEtusijaisuudella(hahmotiedosto, pelaajatiedosto);</span>
+<span class="nc" id="L106">        a.testaaSuoritusaikaa();</span>
+        
+<span class="nc" id="L108">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

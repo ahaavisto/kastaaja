@@ -1,4 +1,6 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-kastaaja,ahaavisto.kastaaja,Profiili,12,69,3,5,5,24,5,10,2,9
-kastaaja,ahaavisto.kastaaja,Lista,51,225,9,23,3,46,9,19,0,12
-kastaaja,ahaavisto.kastaaja,Kastaaja,339,232,22,24,78,49,25,18,13,7
+kastaaja,ahaavisto.kastaaja,Profiili,24,57,3,5,8,21,6,9,3,8
+kastaaja,ahaavisto.kastaaja,Lista,34,277,7,29,2,53,7,24,0,13
+kastaaja,ahaavisto.kastaaja,Kastaaja,184,5,6,0,47,1,12,1,9,1
+kastaaja,ahaavisto.kastaaja,Arviointi,413,62,29,7,79,13,23,5,8,2
+kastaaja,ahaavisto.kastaaja,Algoritmi,191,216,16,22,39,44,14,15,5,5

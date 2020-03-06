@@ -20,80 +20,76 @@ public class Lista&lt;E&gt; {
 <span class="fc" id="L20">    }</span>
 
     public void add(E e) {
-<span class="fc bfc" id="L23" title="All 2 branches covered.">        if (koko == sisalto.length) {</span>
-<span class="fc" id="L24">            kasvataKapasiteettia();</span>
-        }
-<span class="fc" id="L26">        sisalto[koko] = e;</span>
-<span class="fc" id="L27">        koko++;</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L23">        add(koko, e);</span>
+<span class="fc" id="L24">    }</span>
+    
+    /**
+     * Lisätään alkio tiettyyn indeksiin (kunhan indeksi on listan sisällä tai tulossa suoraa sen perään)
+     */
+    public void add(int index, E e) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (koko == sisalto.length) {</span>
+<span class="fc" id="L31">            kasvataKapasiteettia();</span>
+        }        
+<span class="fc bfc" id="L33" title="All 4 branches covered.">        if (index &lt; 0 || index &gt; koko) { //ei voi lisätä niin, että listaan jäisi tyhjää</span>
+<span class="fc" id="L34">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + index + &quot;, Size &quot; + koko);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        } else if (index &lt; koko) {</span>
+<span class="fc" id="L36">            sisalto[index] = e;</span>
+        } else { //kun lisätään listan viimeiseksi, koko kasvaa
+<span class="fc" id="L38">            sisalto[index] = e;</span>
+<span class="fc" id="L39">            koko++;</span>
+        }   
+<span class="fc" id="L41">    }</span>
     
     /**
      * Vaihtaa annetuissa indekseissä olevat oliot keskenään
      */
     public void swap(int ekaIndex, int tokaIndex) {
-<span class="pc bpc" id="L34" title="5 of 10 branches missed.">        if (ekaIndex &gt;= koko || ekaIndex &lt; 0 || tokaIndex &gt;= koko || tokaIndex &lt; 0 || ekaIndex &gt; tokaIndex) {</span>
-<span class="nc" id="L35">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + ekaIndex + &quot;, Size &quot; + koko);</span>
+<span class="pc bpc" id="L47" title="3 of 8 branches missed.">        if (ekaIndex &gt;= koko || ekaIndex &lt; 0 || tokaIndex &gt;= koko || tokaIndex &lt; 0) {</span>
+<span class="fc" id="L48">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + ekaIndex + &quot;, Size &quot; + koko);</span>
         }
-<span class="fc" id="L37">        Object eka = sisalto[ekaIndex];</span>
-<span class="fc" id="L38">        Object toka = sisalto[tokaIndex];</span>
-<span class="fc" id="L39">        sisalto[ekaIndex] = toka;</span>
-<span class="fc" id="L40">        sisalto[tokaIndex] = eka;</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L50">        Object eka = sisalto[ekaIndex];</span>
+<span class="fc" id="L51">        Object toka = sisalto[tokaIndex];</span>
+<span class="fc" id="L52">        sisalto[ekaIndex] = toka;</span>
+<span class="fc" id="L53">        sisalto[tokaIndex] = eka;</span>
+<span class="fc" id="L54">    }</span>
 
     @SuppressWarnings(&quot;unchecked&quot;)
     public E get(int i) {
-<span class="pc bpc" id="L45" title="2 of 4 branches missed.">        if (i &gt;= koko || i &lt; 0) {</span>
-<span class="nc" id="L46">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + i + &quot;, Size &quot; + koko);</span>
+<span class="pc bpc" id="L58" title="2 of 4 branches missed.">        if (i &gt;= koko || i &lt; 0) {</span>
+<span class="nc" id="L59">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + i + &quot;, Size &quot; + koko);</span>
         }
-<span class="fc" id="L48">        return (E) sisalto[i];</span>
+<span class="fc" id="L61">        return (E) sisalto[i];</span>
     }
     
     @SuppressWarnings(&quot;unchecked&quot;)
     public E remove(int i) {
-<span class="pc bpc" id="L53" title="2 of 4 branches missed.">        if (i &gt;= koko || i &lt; 0) {</span>
-<span class="nc" id="L54">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + i + &quot;, Size &quot; + koko);</span>
+<span class="pc bpc" id="L66" title="2 of 4 branches missed.">        if (i &gt;= koko || i &lt; 0) {</span>
+<span class="nc" id="L67">            throw new IndexOutOfBoundsException(&quot;Index: &quot; + i + &quot;, Size &quot; + koko);</span>
         }
-<span class="fc" id="L56">        Object poistettava = sisalto[i];</span>
+<span class="fc" id="L69">        Object poistettava = sisalto[i];</span>
         
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (int j = i; j &lt; koko-1; j++) {</span>
-<span class="fc" id="L59">            sisalto[j] = sisalto[j+1];</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (int j = i; j &lt; koko-1; j++) {</span>
+<span class="fc" id="L72">            sisalto[j] = sisalto[j+1];</span>
         }
-<span class="fc" id="L61">        sisalto[koko-1] = null;</span>
-<span class="fc" id="L62">        koko--;</span>
-<span class="fc" id="L63">        return (E) poistettava;</span>
+<span class="fc" id="L74">        sisalto[koko-1] = null;</span>
+<span class="fc" id="L75">        koko--;</span>
+<span class="fc" id="L76">        return (E) poistettava;</span>
     }
     
     public int size() {
-<span class="fc" id="L67">        return koko;</span>
+<span class="fc" id="L80">        return koko;</span>
     }
-    /** 
-    //Print method
-    @Override
-    public String toString() 
-    {
-         StringBuilder sb = new StringBuilder();
-         sb.append('[');
-         for(int i = 0; i &lt; koko ;i++) {
-             sb.append(sisalto[i].toString());
-             if(i&lt;koko-1){
-                 sb.append(&quot;,&quot;);
-             }
-         }
-         sb.append(']');
-         return sb.toString();
-    }*
-    */
      
     private void kasvataKapasiteettia() {
-<span class="fc" id="L88">        int uusiKoko = sisalto.length * 2;</span>
-<span class="fc" id="L89">        sisalto = Arrays.copyOf(sisalto, uusiKoko);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L84">        int uusiKoko = sisalto.length * 2;</span>
+<span class="fc" id="L85">        sisalto = Arrays.copyOf(sisalto, uusiKoko);</span>
+<span class="fc" id="L86">    }</span>
     
     /**
      * Testaamista varten
      */
     public int getKapasiteetti() {
-<span class="fc" id="L96">        return sisalto.length;</span>
+<span class="fc" id="L92">        return sisalto.length;</span>
     }
     
     /**
@@ -104,27 +100,27 @@ public class Lista&lt;E&gt; {
      */
     public Lista&lt;E&gt; subList(int fromIndex, int toIndex) {
         // todo tarkista että j &gt; i
-<span class="fc" id="L107">        Object[] uusi = Arrays.copyOfRange(sisalto, fromIndex, toIndex); //TODO tarkista että toimii halutusti</span>
-<span class="fc" id="L108">        Lista&lt;E&gt; uusiLista = new Lista&lt;&gt;();</span>
-<span class="fc bfc" id="L109" title="All 2 branches covered.">        for (int i = 0; i &lt; uusi.length; i++) {</span>
-<span class="fc" id="L110">            uusiLista.add((E) uusi[i]);</span>
+<span class="fc" id="L103">        Object[] uusi = Arrays.copyOfRange(sisalto, fromIndex, toIndex); //TODO tarkista että toimii halutusti</span>
+<span class="fc" id="L104">        Lista&lt;E&gt; uusiLista = new Lista&lt;&gt;();</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (int i = 0; i &lt; uusi.length; i++) {</span>
+<span class="fc" id="L106">            uusiLista.add((E) uusi[i]);</span>
         }
-<span class="fc" id="L112">        return uusiLista;</span>
+<span class="fc" id="L108">        return uusiLista;</span>
     }
     
     public void addAll(Lista lista) {
-<span class="fc bfc" id="L116" title="All 2 branches covered.">        for (int i = 0; i &lt; lista.size(); i++) {</span>
-<span class="fc" id="L117">            this.add((E) lista.get(i));</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        for (int i = 0; i &lt; lista.size(); i++) {</span>
+<span class="fc" id="L113">            this.add((E) lista.get(i));</span>
         }
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L115">    }</span>
     
     public boolean contains(E e) {
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        for (int i = 0; i &lt; koko; i++) {</span>
-<span class="fc bfc" id="L123" title="All 2 branches covered.">            if (this.get(i).equals(e)) {</span>
-<span class="fc" id="L124">                return true;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        for (int i = 0; i &lt; koko; i++) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            if (this.get(i).equals(e)) {</span>
+<span class="fc" id="L120">                return true;</span>
             }
         }
-<span class="fc" id="L127">        return false;</span>
+<span class="fc" id="L123">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
