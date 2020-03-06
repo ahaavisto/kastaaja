@@ -91,8 +91,8 @@ public class Kastaaja extends Application{
     
 
     public static void main(String[] args) {
-        hahmotiedosto = new File("assets/hahmot.csv"); //Arviointi-luokan käyttämät tiedostot
-        pelaajatiedosto = new File("assets/pelaajat.csv");
+        hahmotiedosto = new File("assets/hahmot100.csv"); //Arviointi-luokan käyttämät tiedostot
+        pelaajatiedosto = new File("assets/pelaajat100.csv");
 
         //Aja varsinainen ohjelma:
         launch();
