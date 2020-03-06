@@ -103,9 +103,9 @@ public class Kastaaja extends Application{
         
         //Aja suorituskyky- ja indifference-testaus:
         
-        Arviointi t = new Arviointi();
-        t.testaaKuinkaMoniSaaSuosikkinsa(hahmotiedosto, pelaajatiedosto);
-        //t.testaaProfiilienEriJarjestyksilla(hahmotiedosto, pelaajatiedosto);
+        Arviointi a = new Arviointi();
+        a.testaaKuinkaMoniSaaSuosikkinsa(hahmotiedosto, pelaajatiedosto);
+        a.testaaProfiilienEriJarjestyksilla(hahmotiedosto, pelaajatiedosto);
         //t.testaaEriEtusijaisuudella(hahmotiedosto, pelaajatiedosto);
         //t.testaaSuorituskykya();
         

@@ -1,26 +1,24 @@
 package ahaavisto.kastaaja;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import static ahaavisto.kastaaja.Algoritmi.algoritminYdin;
 import static ahaavisto.kastaaja.Algoritmi.luoHahmotJaPelaajat;
-import static ahaavisto.kastaaja.Kastaaja.hahmotiedosto;
 import static ahaavisto.kastaaja.Kastaaja.onkoTiedostotValittu;
-import static ahaavisto.kastaaja.Kastaaja.pelaajatiedosto;
 import java.io.File;
 import java.util.Random;
 
 /**
- *
+ * Algoritmin toimintaa testaavia/arvioivia metodeita
  * @author arkkis
  */
 public class Arviointi {
     
-    public int vertaa(Object[] eka, Object[] toka) {
+    /**
+     * Laskee montako samaa alkiota annetuissa taulukoissa on
+     * @param eka
+     * @param toka
+     * @return summa, montako alkioista oli samoja
+     */
+    public static int montakoSamaa(Object[] eka, Object[] toka) {
         int samoja = 0;
         boolean onkoVastaavaa = false;
         for(Object o: eka) {
@@ -41,13 +39,12 @@ public class Arviointi {
     
     /**
      * Fisher-Yatesin algoritmi profiililistan sekoittamiseen testaamista varten,
-     * jotta voidaan testata, vaikuttaako tulokseen, missä järjestyksessä syötteen profiilit ovat
+     * jotta voidaan testata, kuinka paljon tulokseen vaikuttaa, missä järjestyksessä syötteen profiilit ovat
      * @param profiilit
-     * @return 
+     * @return profiilit sekoitetussa järjestyksessä
      */
     public static Lista<Profiili> sekoitaProfiilienJarjestys(Lista<Profiili> profiilit) {
-        Random random = new Random();
-        
+        Random random = new Random();        
         for (int i = 0; i < profiilit.size()-2; i++) {
             int j = random.nextInt(profiilit.size()-i) + i;
             profiilit.swap(i, j);
@@ -55,144 +52,155 @@ public class Arviointi {
         return profiilit;
     }
     
-    public int getPelaajanIndeksi(Profiili pelaaja, Lista<Profiili> pelaajat) {
-        for (int i = 0; i < pelaajat.size(); i++) {
-            if (pelaajat.get(i).equals(pelaaja)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    public int[] laskeYkkosvaihtoehdot(Lista<Profiili> profiilit, Lista<Profiili> verrattavat, Lista<Profiili> pelaajat) {
+    /**
+     * Laskee, montako hahmoista ja pelaajista sai lopulta ykkössuosikkinsa.
+     * Tulostaa parit, joissa sekä hahmo että pelaaja saivat ykkössuosikkinsa, eli maksimi-optimaaliset parit
+     * @param hahmot
+     * @param hahmotMuokkaamaton hahmot-lista jota ei ole algoritmia ajettaessa muokattu; tällä hetkellä tarvitaan tässä erikseen
+     * @param pelaajat
+     * @return taulukko, jossa ensimmäisenä kuinka moni hahmoista sai ykkösvaihtoehtonsa ja toisena pelaajista sama
+     */
+    public int[] laskeYkkosvaihtoehdot(Lista<Profiili> hahmot, Lista<Profiili> hahmotMuokkaamaton, Lista<Profiili> pelaajat) {
         int ykkosvaihtoehtoja = 0;
         int pelaajienYkkosvaihtoehtoja = 0;
-        for (int i = 0; i < profiilit.size(); i++) {
-            Profiili lopullinenKihlattu = profiilit.get(i).getKihlattu();
-            Profiili ykkosvaihtoehto = verrattavat.get(i).getSuosikit().get(0);
-            Profiili pelaaja = pelaajat.get(getPelaajanIndeksi(lopullinenKihlattu, pelaajat));
-            Profiili pelaajanYkkosvaihtoehto = Algoritmi.luoListaSuosikeista(pelaaja, profiilit).get(0);
+        for (int i = 0; i < hahmot.size(); i++) {
+            Profiili lopullinenKihlattu = hahmot.get(i).getKihlattu();
+            Profiili ykkosvaihtoehto = hahmotMuokkaamaton.get(i).getSuosikit().get(0);
+            Profiili pelaaja = lopullinenKihlattu;
+            Profiili pelaajanYkkosvaihtoehto = Algoritmi.luoListaSuosikeista(pelaaja, hahmot).get(0);
             int molemmatSaaneetParhaan = 0;
             if (lopullinenKihlattu.equals(ykkosvaihtoehto)) {
                 ykkosvaihtoehtoja++;
                 molemmatSaaneetParhaan++;
             }
-            if (pelaajanYkkosvaihtoehto.equals(profiilit.get(i))) {
+            if (pelaajanYkkosvaihtoehto.equals(hahmot.get(i))) {
                 pelaajienYkkosvaihtoehtoja++;
                 molemmatSaaneetParhaan++;
             }
             if (molemmatSaaneetParhaan == 2) {
-                System.out.println("Molemminpuolisia ykkösvaihtoehtoja ovat: " + profiilit.get(i) + " + " + pelaaja);
+                System.out.println("Molemminpuolisia ykkösvaihtoehtoja ovat: " + hahmot.get(i) + " + " + pelaaja);
             }
         }
         int[] summat = {ykkosvaihtoehtoja, pelaajienYkkosvaihtoehtoja};
         return summat;
     }
     
-    
-    public void testaaKuinkaMoniSaaSuosikkinsa(File ekaFilu, File tokaFilu) {
-        Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat(ekaFilu, tokaFilu);
+    /**
+     * Tutkitaan, kuinka moni hahmoista ja pelaajista saa ykkösvaihtoehtonsa lopullisessa kastauksessa
+     * @param hahmotiedosto
+     * @param pelaajatiedosto 
+     */
+    public void testaaKuinkaMoniSaaSuosikkinsa(File hahmotiedosto, File pelaajatiedosto) {
+        Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
+        Lista<Profiili> hahmotMuokkaamaton = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
+        Lista<Profiili> pelaajat = hahmot.get(0).getSuosikit();
         Algoritmi.algoritminYdin(hahmot);
-        Lista<Profiili> hahmot2 = Algoritmi.luoHahmotJaPelaajat(ekaFilu, tokaFilu);
         
-        Lista<Profiili> pelaajat = hahmot2.get(0).getSuosikit();
-        int[] ykkosvaihtoehdot = laskeYkkosvaihtoehdot(hahmot, hahmot2, pelaajat);
+        int[] ykkosvaihtoehdot = laskeYkkosvaihtoehdot(hahmot, hahmotMuokkaamaton, pelaajat);
         
         System.out.println("Alkuperäisen ykkösensä hahmoista sai:" + ykkosvaihtoehdot[0]);
         System.out.println("Alkuperäisen ykkösensä pelaajista sai:" + ykkosvaihtoehdot[1]);
     }
     
-    public void testaaEriEtusijaisuudella(File ekaFilu, File tokaFilu) {
-        Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat(ekaFilu, tokaFilu);
-        Algoritmi.algoritminYdin(hahmot);
+    /**
+     * Suoritetaan algoritmi sekä niin, että hahmot kosivat pelaajia että toisin päin,
+     * ja vertaillaan, kuinka moni syntyvistä pareista on sama
+     * @param hahmotiedosto 
+     * @param pelaajatiedosto 
+     */
+    public void testaaEriEtusijaisuudella(File hahmotiedosto, File pelaajatiedosto) {
+        Lista<Profiili> hahmotKosijoina = Algoritmi.luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
+        Algoritmi.algoritminYdin(hahmotKosijoina);
 
-        Lista<Profiili> hahmot2 = Algoritmi.luoHahmotJaPelaajat(tokaFilu, ekaFilu);
-        Algoritmi.algoritminYdin(hahmot2);       
+        Lista<Profiili> pelaajatKosijoina = Algoritmi.luoHahmotJaPelaajat(pelaajatiedosto, hahmotiedosto);
+        Algoritmi.algoritminYdin(pelaajatKosijoina);       
 
-        String[] eka = new String[hahmot.size()];
-        for (int i = 0; i < hahmot.size(); i++) {
-            Profiili hahmo = hahmot.get(i);
-            eka[i] = hahmo + "+" + hahmo.getKihlattu();
-        }
-
-        String[] toka = new String[hahmot2.size()];
-        for (int i = 0; i < hahmot2.size(); i++) {
-            Profiili hahmo = hahmot2.get(i);
-            toka[i] = hahmo.getKihlattu() + "+" + hahmo;
-        }       
-
-        System.out.println("samoja pareja oli: " + vertaa(toka, eka));
-        
-        
+        String[] eka = luoListaPareistaVertailuun(hahmotKosijoina, true);
+        String[] toka = luoListaPareistaVertailuun(pelaajatKosijoina, false); //järjestys eri kuin muissa, jotta järjestys hahmo+pelaaja
+        System.out.println("samoja pareja kahta eri profiilien järjestystä verratessa: " + montakoSamaa(toka, eka));       
     }
     
+    /**
+     * Luodaan taulukko, jossa tekstimuodossa kaikki aiemmin luodut parit
+     * @param lista
+     * @param jarjestys ensin käsitelty profiili ja sitten sen kihlattu (true), vai toisin päin, jota tarvitaan kun
+     * verrataan tulosta, jos kosijana toimivatkin pelaajat hahmojen sijaan
+     * @return 
+     */
+    public String[] luoListaPareistaVertailuun(Lista<Profiili> lista, boolean jarjestys) {
+        String[] taulukko = new String[lista.size()];        
+        for (int i = 0; i < lista.size(); i++) {
+            Profiili profiili = lista.get(i);
+            if (jarjestys) {
+                taulukko[i] = profiili + "+" + profiili.getKihlattu();
+            } else {
+                taulukko[i] = profiili.getKihlattu() + "+" + profiili;
+            }           
+        } 
+        return taulukko;
+    }
+    
+    /**
+     * Tutkitaan, kuinka paljon kastauksen lopputulokseen vaikuttaa profiilien järjestys lähdetiedostoissa
+     * @param hahmotied
+     * @param pelaajatied 
+     */
     public void testaaProfiilienEriJarjestyksilla(File hahmotied, File pelaajatied) {
-        //ekana tiedostossa oleva oletusjärjestys
+        //ekana lähdetiedostossa oleva oletusjärjestys
         Lista<Profiili> hahmot = Algoritmi.luoHahmotJaPelaajat(hahmotied, pelaajatied);
         Algoritmi.algoritminYdin(hahmot);
 
-        Lista<Profiili> hahmot2 = Algoritmi.lueData(new Lista<>(), hahmotied);
-        Lista<Profiili> pelaajat2 = Algoritmi.lueData(new Lista<>(), pelaajatied);       
+        Lista<Profiili> hahmotSekoitettuna = Algoritmi.lueData(new Lista<>(), hahmotied);
+        Lista<Profiili> pelaajatSekoitettuna = Algoritmi.lueData(new Lista<>(), pelaajatied);       
         
-        hahmot2 = sekoitaProfiilienJarjestys(hahmot2);
-        pelaajat2 = sekoitaProfiilienJarjestys(pelaajat2);
+        hahmotSekoitettuna = sekoitaProfiilienJarjestys(hahmotSekoitettuna);
+        pelaajatSekoitettuna = sekoitaProfiilienJarjestys(pelaajatSekoitettuna);
 
-        for (int i = 0; i < hahmot2.size(); i++) {
-            Algoritmi.luoListaSuosikeista(hahmot2.get(i), pelaajat2);
+        for (int i = 0; i < hahmotSekoitettuna.size(); i++) {
+            Algoritmi.luoListaSuosikeista(hahmotSekoitettuna.get(i), pelaajatSekoitettuna);
         }
-        for (int i = 0; i < pelaajat2.size(); i++) {
-            Algoritmi.luoListaSuosikeista(pelaajat2.get(i), hahmot2);
-        }
-
-        Algoritmi.algoritminYdin(hahmot2);
-
-        String[] eka = new String[hahmot.size()];
-        for (int i = 0; i < hahmot.size(); i++) {
-            Profiili hahmo = hahmot.get(i);
-            eka[i] = hahmo + "+" + hahmo.getKihlattu();
+        for (int i = 0; i < pelaajatSekoitettuna.size(); i++) {
+            Algoritmi.luoListaSuosikeista(pelaajatSekoitettuna.get(i), hahmotSekoitettuna);
         }
 
-        String[] toka = new String[hahmot2.size()];
-        for (int i = 0; i < hahmot2.size(); i++) {
-            Profiili hahmo = hahmot2.get(i);
-            toka[i] = hahmo + "+" + hahmo.getKihlattu();
-        }       
-
-        System.out.println("samoja pareja oli: " + vertaa(toka, eka));
+        Algoritmi.algoritminYdin(hahmotSekoitettuna);
+        
+        String[] eka = luoListaPareistaVertailuun(hahmot, true);
+        String[] toka = luoListaPareistaVertailuun(hahmotSekoitettuna, true);
+        System.out.println("samoja pareja oli: " + montakoSamaa(toka, eka));
         
         
     }
     
-    public static void testaaSuorituskykya() {
-        
-        hahmotiedosto = new File("assets/hahmot.csv");
-        pelaajatiedosto = new File("assets/pelaajat.csv");
-        for (int i = 0; i < 10; i++) {
-            if (onkoTiedostotValittu()) {
-                testaaAika("10+10", hahmotiedosto, pelaajatiedosto);
+    /**
+     * Testaa, kauanko suoritukseen menee eri pituisilla syötteillä.
+     */
+    public static void testaaSuoritusaikaa() {
+        if (onkoTiedostotValittu()) {
+            for (int i = 0; i < 10; i++) {
+                testaaAika("10+10", new File("assets/hahmot.csv"), new File("assets/pelaajat.csv"));
             }
-        }
-        
-        hahmotiedosto = new File("assets/hahmot100.csv");
-        pelaajatiedosto = new File("assets/pelaajat100.csv");
-        for (int i = 0; i < 10; i++) {
-            if (onkoTiedostotValittu()) {
-                testaaAika("100+100", hahmotiedosto, pelaajatiedosto);
+        }        
+        if (onkoTiedostotValittu()) {
+            for (int i = 0; i < 10; i++) {            
+                testaaAika("100+100", new File("assets/hahmot100.csv"), new File("assets/pelaajat100.csv"));
             }
         } 
-        
-        hahmotiedosto = new File("assets/hahmot1000.csv");
-        pelaajatiedosto = new File("assets/pelaajat1000.csv");
         for (int i = 0; i < 10; i++) {
             if (onkoTiedostotValittu()) {
-                testaaAika("1000+1000", hahmotiedosto, pelaajatiedosto);
+                testaaAika("1000+1000", new File("assets/hahmot1000.csv"), new File("assets/pelaajat1000.csv"));
             }
-        } 
-        
+        }         
     }
     
-    public static void testaaAika(String syotteenKoko, File eka, File toka) {
-        Lista<Profiili> hahmot = luoHahmotJaPelaajat(eka, toka);
+    /**
+     * Ajaa algoritmin ja kertoo ajan, kauanko siinä kesti
+     * @param syotteenKoko
+     * @param hahmotiedosto
+     * @param pelaajatiedosto 
+     */
+    public static void testaaAika(String syotteenKoko, File hahmotiedosto, File pelaajatiedosto) {
+        Lista<Profiili> hahmot = luoHahmotJaPelaajat(hahmotiedosto, pelaajatiedosto);
         long alku = System.nanoTime();
         algoritminYdin(hahmot);
         long loppu = System.nanoTime();
